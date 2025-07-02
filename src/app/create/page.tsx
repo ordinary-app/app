@@ -288,6 +288,7 @@ export default function CreatePage() {
                         setLicenseType(null);
                       }
                     }}
+                  className="data-[state=checked]:bg-yellow-300"
                   />
                 </div>
 
@@ -310,10 +311,10 @@ export default function CreatePage() {
                             className="sr-only"
                           />
                           <div className={`
-                            relative p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
                             ${
                               licenseType === 'token-bound-nft'
-                                ? 'border-blue-500 bg-blue-50 shadow-sm'
+                                ? 'border-yellow-500 bg-yellow-50 shadow-sm'
                                 : 'border-gray-200 bg-white hover:border-gray-300'
                             }
                           `}>
@@ -322,7 +323,7 @@ export default function CreatePage() {
                                 w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
                                 ${
                                   licenseType === 'token-bound-nft'
-                                    ? 'border-blue-500 bg-blue-500'
+                                    ? 'border-yellow-300 bg-yellow-300'
                                     : 'border-gray-300 group-hover:border-gray-400'
                                 }
                               `}>
@@ -355,10 +356,10 @@ export default function CreatePage() {
                             className="sr-only"
                           />
                           <div className={`
-                            relative p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
                             ${
                               licenseType === 'creative-commons'
-                                ? 'border-green-500 bg-green-50 shadow-sm'
+                                ? 'border-blue-500 bg-blue-50 shadow-sm'
                                 : 'border-gray-200 bg-white hover:border-gray-300'
                             }
                           `}>
@@ -367,7 +368,7 @@ export default function CreatePage() {
                                 w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
                                 ${
                                   licenseType === 'creative-commons'
-                                    ? 'border-green-500 bg-green-500'
+                                    ? 'border-blue-500 bg-blue-500'
                                     : 'border-gray-300 group-hover:border-gray-400'
                                 }
                               `}>
@@ -605,11 +606,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by" className="text-sm font-medium cursor-pointer">
                               CC BY
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY (Attribution) allows both commercial use and the creation of derivative works, but requires
                               attribution to the original creator.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
                         <div className="flex items-start space-x-3">
@@ -625,11 +627,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by-nc" className="text-sm font-medium cursor-pointer">
                               CC BY-NC (default)
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY-NC (Attribution-NonCommercial) does not permit commercial use but allows for the creation of derivative works.
                               Attribution to the original creator is required.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
@@ -646,11 +649,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by-nd" className="text-sm font-medium cursor-pointer">
                               CC BY-ND
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY-ND (Attribution-NoDerivs) permits commercial use but does not allow the creation of derivative works.
                               Attribution to the original creator is required.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
@@ -667,11 +671,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc0" className="text-sm font-medium cursor-pointer">
                               CC0
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC0 (Public Domain Dedication) permits both commercial use and the creation of derivative works, without the
                               need for attribution.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
