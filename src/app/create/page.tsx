@@ -12,12 +12,25 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, LinkIcon, FileText, Loader2 } from "lucide-react"
+import { getLensClient } from "@/lib/client"
+import { AnyClient } from "@lens-protocol/client";
+import { image, textOnly } from "@lens-protocol/metadata";
+import { uploadFile } from "@/utils/upload-file";
+import { toast as toastSonner } from "sonner";
+import { attachReactRefresh } from "next/dist/build/webpack-config"
+
+interface AttachmentProps {
+  name: string;
+  size: number;
+  type: string;
+  url?: string;
+}
+
 
 export default function CreatePage() {
   const [content, setContent] = useState("")
   const [isOriginal, setIsOriginal] = useState(false)
-  //const [originalLink, setOriginalLink] = useState("")
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [selectedFile, setSelectedFile] = useState<AttachmentProps[] | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const [licenseType, setLicenseType] = useState<'creative-commons' | 'token-bound-nft' | null>(null)
@@ -26,21 +39,41 @@ export default function CreatePage() {
   const [tbnlDerivatives, setTbnlDerivatives] = useState<'D' | 'DT' | 'DTSA' | 'ND'>('D')
   const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
-  //const [hoveredLicense, setHoveredLicense] = useState<'token-bound-nft' | 'creative-commons' | null>(null)
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        // 10MB limit
-        toast({
-          title: "Error",
-          description: "File size must be less than 10MB",
-          variant: "destructive",
-        })
-        return
+  const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList: FileList = event.target.files!
+    if (Array.from(fileList).some(i => i.size > 5 * 1024 * 1024)) {
+      // 5MB limit
+      toast({
+        title: "Error",
+        description: "File size must be less than 5MB",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      let attachments = [];
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+       
+        const url = await uploadFile(file)
+  
+        let res = {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          url,
+        }
+        attachments.push(res)
       }
-      setSelectedFile(file)
+  
+      setSelectedFile(attachments)
+    } catch (uploadError) {
+      console.error("Error uploading profile picture:", uploadError);
+      toastSonner.error("Failed to upload profile picture. Please try again.");
+      // setLoading(false);
+      return;
     }
   }
 
@@ -67,7 +100,15 @@ export default function CreatePage() {
 
     setIsSubmitting(true)
 
+    let pictureUrl: string | undefined;
+    let metadataUri: string | undefined;
+    let client: AnyClient | null = null;
+
     try {
+      client = await getLensClient();
+      if (!client || !client.isSessionClient()) {
+        throw new Error("Failed to get public client");
+      }
       // Prepare license metadata following Lens Protocol standards
       let licenseValue = null
       if (isOriginal) {
@@ -160,17 +201,19 @@ export default function CreatePage() {
                     <input
                       type="file"
                       accept="image/*"
+                      multiple
                       onChange={handleFileSelect}
                       className="hidden"
                       id="file-upload"
                     />
                     <label htmlFor="file-upload" className="cursor-pointer">
                       {selectedFile ? (
-                        <div className="space-y-2">
-                          <ImageIcon className="h-8 w-8 mx-auto text-green-600" />
-                          <p className="text-sm font-medium">{selectedFile.name}</p>
-                          <p className="text-xs text-gray-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                        </div>
+                        selectedFile.map(file => (
+                          <div className="space-y-2" key={file.name}>
+                            <ImageIcon className="h-8 w-8 mx-auto text-green-600" />
+                            <p className="text-sm font-medium">{file.name}</p>
+                          </div>
+                        ))
                       ) : (
                         <div className="space-y-2">
                           <Upload className="h-8 w-8 mx-auto text-gray-400" />
