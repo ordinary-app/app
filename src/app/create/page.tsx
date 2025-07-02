@@ -46,11 +46,11 @@ export default function CreatePage() {
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList = event.target.files!
-    if (Array.from(fileList).some(i => i.size > 5 * 1024 * 1024)) {
-      // 5MB limit
+    if (Array.from(fileList).some(i => i.size > 8 * 1024 * 1024)) {
+      // 8MB limit
       toast({
         title: "Error",
-        description: "File size must be less than 5MB",
+        description: "File size must be less than 8MB",
         variant: "destructive",
       })
       return
@@ -109,7 +109,7 @@ export default function CreatePage() {
       let metadata;
             
       //license Metadata
-      let licenseValue: string | null = null
+      let licenseValue: string
       if (isOriginal) {
         if (licenseType === 'creative-commons') {
           licenseValue = ccLicense
@@ -152,7 +152,7 @@ export default function CreatePage() {
           attributes.push({
             key: "license",
             type: MetadataAttributeType.STRING,
-            value: licenseValue,
+            value: licenseMetadata,
           });
         }
         return attributes;
