@@ -119,8 +119,8 @@ export default function CreatePage() {
       let metadata;
       const attributes = [
         {
-          type: "originalDate",
-          key: MetadataAttributeType.DATE,
+          key: "originalDate",
+          type: MetadataAttributeType.DATE,
           value: new Date().toISOString(),
         }
       ];
@@ -140,12 +140,14 @@ export default function CreatePage() {
             license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
             attributes,
           },
-          attachments: selectedFile!.map(i => ({
-            item: i.url!,
-            type: i.type!,
-            license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
-            attributes,
-          })),
+          ...(selectedFile.length > 1 && {
+            attachments: selectedFile!.map(i => ({
+              item: i.url!,
+              type: i.type!,
+              license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
+              attributes,
+            })),
+          })
         })
       }
       console.log('xxxxx metadata', metadata)
