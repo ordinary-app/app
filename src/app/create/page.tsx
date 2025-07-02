@@ -14,10 +14,12 @@ import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, LinkIcon, FileText, Loader2 } from "lucide-react"
 import { getLensClient } from "@/lib/client"
 import { AnyClient } from "@lens-protocol/client";
-import { image, textOnly } from "@lens-protocol/metadata";
+import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
 import { toast as toastSonner } from "sonner";
 import { attachReactRefresh } from "next/dist/build/webpack-config"
+import { useRouter } from "next/navigation"
+import { storageClient } from "@/lib/storage-client";
 
 interface AttachmentProps {
   name: string;
@@ -39,6 +41,8 @@ export default function CreatePage() {
   const [tbnlDerivatives, setTbnlDerivatives] = useState<'D' | 'DT' | 'DTSA' | 'ND'>('D')
   const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
+  const router = useRouter()
+
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList = event.target.files!
@@ -53,12 +57,12 @@ export default function CreatePage() {
     }
 
     try {
+      // Upload image to Grove storage
       let attachments = [];
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
-       
         const url = await uploadFile(file)
-  
+        console.log("Upload image success -----", url);
         let res = {
           name: file.name,
           size: file.size,
@@ -68,6 +72,7 @@ export default function CreatePage() {
         attachments.push(res)
       }
   
+      console.log("Attachmentss =======", attachments);
       setSelectedFile(attachments)
     } catch (uploadError) {
       console.error("Error uploading profile picture:", uploadError);
@@ -100,16 +105,7 @@ export default function CreatePage() {
 
     setIsSubmitting(true)
 
-    let pictureUrl: string | undefined;
-    let metadataUri: string | undefined;
-    let client: AnyClient | null = null;
-
     try {
-      client = await getLensClient();
-      if (!client || !client.isSessionClient()) {
-        throw new Error("Failed to get public client");
-      }
-      // Prepare license metadata following Lens Protocol standards
       let licenseValue = null
       if (isOriginal) {
         if (licenseType === 'creative-commons') {
@@ -119,41 +115,53 @@ export default function CreatePage() {
         }
       }
 
-      // Simulate API call to create post
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Create post metadata with license information:
+      let metadata;
+      const attributes = [
+        {
+          type: "originalDate",
+          key: MetadataAttributeType.DATE,
+          value: new Date().toISOString(),
+        }
+      ];
 
-      // In a real app, you would:
-      // 1. Upload media to Grove storage if selectedFile exists
-      // 2. Create post metadata with license information:
-      //    const metadata = textOnly({
-      //      content,
-      //      ...(licenseValue && {
-      //        attributes: [
-      //          {
-      //            type: "String",
-      //            key: "license",
-      //            value: licenseValue
-      //          }
-      //        ]
-      //      })
-      //    })
+      if (!selectedFile) {
+        metadata = textOnly({
+          content,
+        })
+      } else {
+        //TODO: fix type error(MediaImageMimeType, MetadataLicenseType)
+        //TODO: get license value from state
+        metadata = image({
+          content,
+          image: {
+            item: selectedFile[0].url!,
+            type: selectedFile[0].type!,
+            license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
+            attributes,
+          },
+          attachments: selectedFile!.map(i => ({
+            item: i.url!,
+            type: i.type!,
+            license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
+            attributes,
+          })),
+        })
+      }
+      console.log('xxxxx metadata', metadata)
       // 3. Upload metadata to storage and create post via Lens Protocol SDK
+      const res = await storageClient.uploadAsJson(metadata);
 
-      console.log('Post content:', content)
-      console.log('License info:', licenseValue ? { type: "String", key: "license", value: licenseValue } : 'No license')
-      //console.log('Original statement link:', isOriginal ? originalLink : 'Not marked as original')
+      console.log("Create Post success=======", res); // e.g., lens://4f91ca…
 
       toast({
         title: "Success",
         description: "Your post has been created successfully!",
       })
 
-      // Reset form
-      setContent("")
-      setIsOriginal(false)
-      //setOriginalLink("")
-      setSelectedFile(null)
+      router.push("/");
     } catch (error) {
+      console.log('xxxx errrr', error)
       toast({
         title: "Error",
         description: "Failed to create post. Please try again.",

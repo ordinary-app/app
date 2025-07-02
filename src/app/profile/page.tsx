@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Edit, MapPin, Calendar, LinkIcon, Heart, MessageCircle } from "lucide-react"
 import { useCurrentProfileStorage } from "@/stores/profile-store"
+import { usePosts } from "@lens-protocol/react";
+
 
 export default function ProfilePage() {
   const currentProfile= useCurrentProfileStorage(state => state.currentProfile)
@@ -19,6 +21,14 @@ export default function ProfilePage() {
     following: 567,
     likes: 2890,
   })
+  const { data, loading, error } = usePosts({
+    filter: {
+      authors: [currentProfile?.address], // the author's EVM address
+    },
+  });
+
+
+  console.log("Get post -----", data)
 
   const mockUserPosts = [
     {
