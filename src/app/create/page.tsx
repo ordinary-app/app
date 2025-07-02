@@ -294,45 +294,99 @@ export default function CreatePage() {
                 {/* License Selection - Only show when marked as original */}
                 {isOriginal && (
                   <div className="space-y-4 p-4 bg-blue-50 rounded-lg">
-                    <Label className="text-sm font-medium">License Selection</Label>
+                    <Label className="text-sm font-medium">Choose a License</Label>
                     
                     {/* License Type Selection */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Token Bound NFT Licenses - Left */}
-                        <div className="space-y-2">
-                          <Button
-                            type="button"
-                            variant={licenseType === 'token-bound-nft' ? 'default' : 'outline'}
-                            className="h-auto p-3 rounded-full w-full"
-                            onClick={() => setLicenseType('token-bound-nft')}
-                            title="Blockchain-based licensing with customizable terms"
-                          >
-                            <strong>Token Bound NFT License</strong>
-                          </Button>
-                          <p className="text-xs text-gray-600 text-center">
-                            Blockchain-based licensing
+                    <div className="flex flex-col sm:grid sm:grid-cols-2 gap-3">
+                      {/* Token Bound NFT License */}
+                      <div className="space-y-2">
+                        <label className="block cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="licenseType"
+                            value="token-bound-nft"
+                            checked={licenseType === 'token-bound-nft'}
+                            onChange={() => setLicenseType('token-bound-nft')}
+                            className="sr-only"
+                          />
+                          <div className={`
+                            relative p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            ${
+                              licenseType === 'token-bound-nft'
+                                ? 'border-blue-500 bg-blue-50 shadow-sm'
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }
+                          `}>
+                            <div className="flex items-start space-x-3">
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
+                                ${
+                                  licenseType === 'token-bound-nft'
+                                    ? 'border-blue-500 bg-blue-500'
+                                    : 'border-gray-300 group-hover:border-gray-400'
+                                }
+                              `}>
+                                {licenseType === 'token-bound-nft' && (
+                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 text-sm mb-1">
+                                  Token Bound NFT License
+                                </div>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                  Blockchain-based licensing
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
 
-
-                          </p>
-                        </div>
-
-                      {/* Creative Commons Licenses - Right */}
-                        <div className="space-y-2">
-                          <Button
-                            type="button"
-                           variant={licenseType === 'creative-commons' ? 'default' : 'outline'}
-                            className="h-auto p-3 rounded-full w-full"
-                            onClick={() => setLicenseType('creative-commons')}
-                            title="Standard Creative Commons licensing options"
-                          >
-                            <strong>Creative Commons License</strong>
-                         </Button>
-                          <p className="text-xs text-gray-600 text-center">
-                            Standard Creative Commons licensing
-                          </p>
-                        </div>
-
-
+                      {/* Creative Commons License */}
+                      <div className="space-y-2">
+                        <label className="block cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="licenseType"
+                            value="creative-commons"
+                            checked={licenseType === 'creative-commons'}
+                            onChange={() => setLicenseType('creative-commons')}
+                            className="sr-only"
+                          />
+                          <div className={`
+                            relative p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            ${
+                              licenseType === 'creative-commons'
+                                ? 'border-green-500 bg-green-50 shadow-sm'
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }
+                          `}>
+                            <div className="flex items-start space-x-3">
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
+                                ${
+                                  licenseType === 'creative-commons'
+                                    ? 'border-green-500 bg-green-500'
+                                    : 'border-gray-300 group-hover:border-gray-400'
+                                }
+                              `}>
+                                {licenseType === 'creative-commons' && (
+                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 text-sm mb-1">
+                                  Creative Commons License
+                                </div>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                  Standard Creative Commons licensing
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
                     </div>
 
                     {/* Token Bound NFT License Options */}
