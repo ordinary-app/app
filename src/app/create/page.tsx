@@ -106,55 +106,91 @@ export default function CreatePage() {
     setIsSubmitting(true)
 
     try {
-      let licenseValue = null
+      let metadata;
+            
+      //license Metadata
+      let licenseValue: string | null = null
       if (isOriginal) {
         if (licenseType === 'creative-commons') {
           licenseValue = ccLicense
         } else if (licenseType === 'token-bound-nft') {
-          licenseValue = `TBNL-${tbnlCommercial}-${tbnlDerivatives}-${tbnlPublicLicense}-${tbnlAuthority}`
+          licenseValue = `TBNL_${tbnlCommercial}_${tbnlDerivatives}_${tbnlPublicLicense}_${tbnlAuthority}`
         }
       }
 
-      // Create post metadata with license information:
-      let metadata;
-      const attributes = [
-        {
-          key: "originalDate",
-          type: MetadataAttributeType.DATE,
-          value: new Date().toISOString(),
+      const getLicenseType = (): MetadataLicenseType | undefined => {
+        if (!isOriginal) return undefined
+        
+        if (licenseType === 'creative-commons') {
+          switch (licenseValue) {
+            case 'CC BY': return MetadataLicenseType.CC_BY
+            case 'CC BY-NC': return MetadataLicenseType.CC_BY_NC
+            case 'CC BY-ND': return MetadataLicenseType.CC_BY_ND
+            case 'CC0': return MetadataLicenseType.CCO
+          }
         }
-      ];
+        
+        if (licenseType === 'token-bound-nft') {
+          return MetadataLicenseType[licenseValue as keyof typeof MetadataLicenseType]
+        }
+      }
+      
+      const licenseMetadata = getLicenseType();
 
+      //Get attributes
+      const attributes = getPostAttributes();
+      function getPostAttributes(): any[] {
+        const attributes: any[] = [
+          {
+            key: "originalDate",
+            type: MetadataAttributeType.DATE,
+            value: new Date().toISOString(),
+          }
+        ];
+        
+        if (isOriginal) {
+          attributes.push({
+            key: "license",
+            type: MetadataAttributeType.STRING,
+            value: licenseValue,
+          });
+        }
+        return attributes;
+      }
+
+      //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
-          content,
+          content,          
+          ...(licenseMetadata && { license: licenseMetadata }),
+          attributes,
         })
-      } else {
-        //TODO: fix type error(MediaImageMimeType, MetadataLicenseType)
-        //TODO: get license value from state
+      } 
+      else {
         metadata = image({
           content,
           image: {
             item: selectedFile[0].url!,
-            type: selectedFile[0].type!,
-            license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
+            type: selectedFile[0].type as MediaImageMimeType,
+            ...(licenseMetadata && { license: licenseMetadata }),
             attributes,
           },
           ...(selectedFile.length > 1 && {
-            attachments: selectedFile!.map(i => ({
+            attachments: selectedFile.slice(1).map(i => ({
               item: i.url!,
-              type: i.type!,
-              license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
-              attributes,
+              type: i.type as MediaImageMimeType,
+              ...(licenseMetadata && { license: licenseMetadata }),
+            attributes,
             })),
           })
         })
       }
+
       console.log('xxxxx metadata', metadata)
       // 3. Upload metadata to storage and create post via Lens Protocol SDK
-      const res = await storageClient.uploadAsJson(metadata);
+      //const res = await storageClient.uploadAsJson(metadata);
 
-      console.log("Create Post success=======", res); // e.g., lens://4f91ca…
+      //console.log("Create Post success=======", res); // e.g., lens://4f91ca…
 
       toast({
         title: "Success",
@@ -301,7 +337,7 @@ export default function CreatePage() {
 
                     {/* Token Bound NFT License Options */}
                     {licenseType === 'token-bound-nft' && (
-                      <div className="space-y-6 pl-6">
+                      <div className="space-y-6 pl-3">
                         {/* Commercial Usage */}
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">Commercial Usage</Label>
