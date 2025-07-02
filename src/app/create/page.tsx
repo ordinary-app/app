@@ -106,55 +106,91 @@ export default function CreatePage() {
     setIsSubmitting(true)
 
     try {
-      let licenseValue = null
+      let metadata;
+            
+      //license Metadata
+      let licenseValue: string | null = null
       if (isOriginal) {
         if (licenseType === 'creative-commons') {
           licenseValue = ccLicense
         } else if (licenseType === 'token-bound-nft') {
-          licenseValue = `TBNL-${tbnlCommercial}-${tbnlDerivatives}-${tbnlPublicLicense}-${tbnlAuthority}`
+          licenseValue = `TBNL_${tbnlCommercial}_${tbnlDerivatives}_${tbnlPublicLicense}_${tbnlAuthority}`
         }
       }
 
-      // Create post metadata with license information:
-      let metadata;
-      const attributes = [
-        {
-          key: "originalDate",
-          type: MetadataAttributeType.DATE,
-          value: new Date().toISOString(),
+      const getLicenseType = (): MetadataLicenseType | undefined => {
+        if (!isOriginal) return undefined
+        
+        if (licenseType === 'creative-commons') {
+          switch (licenseValue) {
+            case 'CC BY': return MetadataLicenseType.CC_BY
+            case 'CC BY-NC': return MetadataLicenseType.CC_BY_NC
+            case 'CC BY-ND': return MetadataLicenseType.CC_BY_ND
+            case 'CC0': return MetadataLicenseType.CCO
+          }
         }
-      ];
+        
+        if (licenseType === 'token-bound-nft') {
+          return MetadataLicenseType[licenseValue as keyof typeof MetadataLicenseType]
+        }
+      }
+      
+      const licenseMetadata = getLicenseType();
 
+      //Get attributes
+      const attributes = getPostAttributes();
+      function getPostAttributes(): any[] {
+        const attributes: any[] = [
+          {
+            key: "originalDate",
+            type: MetadataAttributeType.DATE,
+            value: new Date().toISOString(),
+          }
+        ];
+        
+        if (isOriginal) {
+          attributes.push({
+            key: "license",
+            type: MetadataAttributeType.STRING,
+            value: licenseValue,
+          });
+        }
+        return attributes;
+      }
+
+      //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
-          content,
+          content,          
+          ...(licenseMetadata && { license: licenseMetadata }),
+          attributes,
         })
-      } else {
-        //TODO: fix type error(MediaImageMimeType, MetadataLicenseType)
-        //TODO: get license value from state
+      } 
+      else {
         metadata = image({
           content,
           image: {
             item: selectedFile[0].url!,
-            type: selectedFile[0].type!,
-            license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
+            type: selectedFile[0].type as MediaImageMimeType,
+            ...(licenseMetadata && { license: licenseMetadata }),
             attributes,
           },
           ...(selectedFile.length > 1 && {
-            attachments: selectedFile!.map(i => ({
+            attachments: selectedFile.slice(1).map(i => ({
               item: i.url!,
-              type: i.type!,
-              license: MetadataLicenseType.TBNL_C_DTSA_NPL_Ledger,
-              attributes,
+              type: i.type as MediaImageMimeType,
+              ...(licenseMetadata && { license: licenseMetadata }),
+            attributes,
             })),
           })
         })
       }
+
       console.log('xxxxx metadata', metadata)
       // 3. Upload metadata to storage and create post via Lens Protocol SDK
-      const res = await storageClient.uploadAsJson(metadata);
+      //const res = await storageClient.uploadAsJson(metadata);
 
-      console.log("Create Post success=======", res); // e.g., lens://4f91ca…
+      //console.log("Create Post success=======", res); // e.g., lens://4f91ca…
 
       toast({
         title: "Success",
@@ -252,56 +288,111 @@ export default function CreatePage() {
                         setLicenseType(null);
                       }
                     }}
+                  className="data-[state=checked]:bg-yellow-300"
                   />
                 </div>
 
                 {/* License Selection - Only show when marked as original */}
                 {isOriginal && (
                   <div className="space-y-4 p-4 bg-blue-50 rounded-lg">
-                    <Label className="text-sm font-medium">License Selection</Label>
+                    <Label className="text-sm font-medium">Choose a License</Label>
                     
                     {/* License Type Selection */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Token Bound NFT Licenses - Left */}
-                        <div className="space-y-2">
-                          <Button
-                            type="button"
-                            variant={licenseType === 'token-bound-nft' ? 'default' : 'outline'}
-                            className="h-auto p-3 rounded-full w-full"
-                            onClick={() => setLicenseType('token-bound-nft')}
-                            title="Blockchain-based licensing with customizable terms"
-                          >
-                            <strong>Token Bound NFT License</strong>
-                          </Button>
-                          <p className="text-xs text-gray-600 text-center">
-                            Blockchain-based licensing
+                    <div className="flex flex-col sm:grid sm:grid-cols-2 gap-3">
+                      {/* Token Bound NFT License */}
+                      <div className="space-y-2">
+                        <label className="block cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="licenseType"
+                            value="token-bound-nft"
+                            checked={licenseType === 'token-bound-nft'}
+                            onChange={() => setLicenseType('token-bound-nft')}
+                            className="sr-only"
+                          />
+                          <div className={`
+                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            ${
+                              licenseType === 'token-bound-nft'
+                                ? 'border-yellow-500 bg-yellow-50 shadow-sm'
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }
+                          `}>
+                            <div className="flex items-start space-x-3">
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
+                                ${
+                                  licenseType === 'token-bound-nft'
+                                    ? 'border-yellow-300 bg-yellow-300'
+                                    : 'border-gray-300 group-hover:border-gray-400'
+                                }
+                              `}>
+                                {licenseType === 'token-bound-nft' && (
+                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 text-sm mb-1">
+                                  Token Bound NFT License
+                                </div>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                  Blockchain-based licensing
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
 
-
-                          </p>
-                        </div>
-
-                      {/* Creative Commons Licenses - Right */}
-                        <div className="space-y-2">
-                          <Button
-                            type="button"
-                           variant={licenseType === 'creative-commons' ? 'default' : 'outline'}
-                            className="h-auto p-3 rounded-full w-full"
-                            onClick={() => setLicenseType('creative-commons')}
-                            title="Standard Creative Commons licensing options"
-                          >
-                            <strong>Creative Commons License</strong>
-                         </Button>
-                          <p className="text-xs text-gray-600 text-center">
-                            Standard Creative Commons licensing
-                          </p>
-                        </div>
-
-
+                      {/* Creative Commons License */}
+                      <div className="space-y-2">
+                        <label className="block cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="licenseType"
+                            value="creative-commons"
+                            checked={licenseType === 'creative-commons'}
+                            onChange={() => setLicenseType('creative-commons')}
+                            className="sr-only"
+                          />
+                          <div className={`
+                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
+                            ${
+                              licenseType === 'creative-commons'
+                                ? 'border-blue-500 bg-blue-50 shadow-sm'
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }
+                          `}>
+                            <div className="flex items-start space-x-3">
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
+                                ${
+                                  licenseType === 'creative-commons'
+                                    ? 'border-blue-500 bg-blue-500'
+                                    : 'border-gray-300 group-hover:border-gray-400'
+                                }
+                              `}>
+                                {licenseType === 'creative-commons' && (
+                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 text-sm mb-1">
+                                  Creative Commons License
+                                </div>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                  Standard Creative Commons licensing
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
                     </div>
 
                     {/* Token Bound NFT License Options */}
                     {licenseType === 'token-bound-nft' && (
-                      <div className="space-y-6 pl-6">
+                      <div className="space-y-6 pl-3">
                         {/* Commercial Usage */}
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">Commercial Usage</Label>
@@ -515,11 +606,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by" className="text-sm font-medium cursor-pointer">
                               CC BY
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY (Attribution) allows both commercial use and the creation of derivative works, but requires
                               attribution to the original creator.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
                         <div className="flex items-start space-x-3">
@@ -535,11 +627,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by-nc" className="text-sm font-medium cursor-pointer">
                               CC BY-NC (default)
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY-NC (Attribution-NonCommercial) does not permit commercial use but allows for the creation of derivative works.
                               Attribution to the original creator is required.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
@@ -556,11 +649,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc-by-nd" className="text-sm font-medium cursor-pointer">
                               CC BY-ND
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC BY-ND (Attribution-NoDerivs) permits commercial use but does not allow the creation of derivative works.
                               Attribution to the original creator is required.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
@@ -577,11 +671,12 @@ export default function CreatePage() {
                           <div className="flex-1">
                             <Label htmlFor="cc0" className="text-sm font-medium cursor-pointer">
                               CC0
-                            </Label>
                             <p className="text-xs text-gray-600 mt-1">
                               CC0 (Public Domain Dedication) permits both commercial use and the creation of derivative works, without the
                               need for attribution.
                             </p>
+                            </Label>
+                            
                           </div>
                         </div>
 
