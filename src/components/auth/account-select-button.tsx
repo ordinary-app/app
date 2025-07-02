@@ -22,7 +22,6 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
   // const resetBlogStorage = useBlogStorage((state) => state.resetState);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { signMessageAsync, error, isError, isPending, variables } = useSignMessage();
-  const isLandingPage = pathname === "/";
   const setProfileSelectModalOpen = useUIStore((state) => state.setProfileSelectModalOpen);
   const setCurrentProfile = useCurrentProfileStorage((state) => state.setCurrentProfile)
 
@@ -108,10 +107,6 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
 
       // resetBlogStorage();
       await onSuccess?.();
-
-      if (isLandingPage) {
-        router.push(`/feed`);
-      }
       setProfileSelectModalOpen(false);
 
       // window.location.reload();

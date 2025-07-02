@@ -1,4 +1,4 @@
-import { storageClient } from "@/lib/lens/storage-client";
+import { storageClient } from "@/lib/storage-client";
 
 /**
  * Resolves an image URL from a given URI.
@@ -10,9 +10,6 @@ import { storageClient } from "@/lib/lens/storage-client";
  */
 export const resolveUrl = (uri: string | undefined): string => {
   if (!uri) return "";
-  if (uri.startsWith("ipfs://")) {
-    return `https://fountain.4everland.link/ipfs/${uri.slice(7)}`;
-  }
   if (uri.startsWith("lens://")) {
     return storageClient.resolve(uri);
   }
