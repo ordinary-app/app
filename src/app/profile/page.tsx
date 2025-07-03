@@ -72,11 +72,11 @@ export default function ProfilePage() {
 
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h1 className="text-3xl font-bold">{currentProfile?.metadata?.bio || "Anonymous User"}</h1>
+                    <h1 className="text-3xl font-bold">@{currentProfile?.username?.localName || "Anonymous User"}</h1>
                     <Badge variant="secondary">Verified</Badge>
                   </div>
 
-                  <p className="text-gray-600 mb-2">@{currentProfile?.username?.localName || "anonymous"}</p>
+                  {/* <p className="text-gray-600 mb-2">@{currentProfile?.username?.localName || "anonymous"}</p> */}
 
                   <p className="text-gray-800 mb-4 max-w-2xl">
                     {currentProfile?.metadata?.bio ||

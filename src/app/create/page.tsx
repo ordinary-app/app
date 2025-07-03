@@ -13,13 +13,18 @@ import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, LinkIcon, FileText, Loader2 } from "lucide-react"
 import { getLensClient } from "@/lib/client"
-import { AnyClient } from "@lens-protocol/client";
+import { AnyClient, SessionClient, uri } from "@lens-protocol/client";
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
 import { toast as toastSonner } from "sonner";
 import { attachReactRefresh } from "next/dist/build/webpack-config"
 import { useRouter } from "next/navigation"
 import { storageClient } from "@/lib/storage-client";
+import { acl } from '@/lib/acl';
+import { post } from "@lens-protocol/client/actions";
+
+
+
 
 interface AttachmentProps {
   name: string;
@@ -107,7 +112,12 @@ export default function CreatePage() {
 
     try {
       let metadata;
-            
+      let client = await getLensClient();
+
+      if (!client || !client.isSessionClient()) {
+        throw new Error("Failed to get public client");
+      }
+  
       //license Metadata
       let licenseValue: string
       if (isOriginal) {
@@ -187,10 +197,10 @@ export default function CreatePage() {
       }
 
       console.log('xxxxx metadata', metadata)
-      // 3. Upload metadata to storage and create post via Lens Protocol SDK
-      const res = await storageClient.uploadAsJson(metadata);
-
-      console.log("Create Post success=======", res); // e.g., lens://4f91ca…
+      // Upload metadata to storage and create post via Lens Protocol SDK
+      const { uri } = await storageClient.uploadAsJson(metadata);
+      const result = await post(client, { contentUri: uri });
+      console.log("Create Post success=======", uri, result); // e.g., lens://4f91ca…
 
       toast({
         title: "Success",
