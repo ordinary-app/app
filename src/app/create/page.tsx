@@ -148,13 +148,13 @@ export default function CreatePage() {
           }
         ];
         
-        if (isOriginal) {
+        //if (isOriginal) {
           attributes.push({
             key: "license",
             type: MetadataAttributeType.STRING,
             value: licenseMetadata,
           });
-        }
+        //}
         return attributes;
       }
 
@@ -162,7 +162,7 @@ export default function CreatePage() {
       if (!selectedFile) {
         metadata = textOnly({
           content,          
-          ...(licenseMetadata && { license: licenseMetadata }),
+          //...(licenseMetadata && { license: licenseMetadata }),
           attributes,
         })
       } 
@@ -172,14 +172,14 @@ export default function CreatePage() {
           image: {
             item: selectedFile[0].url!,
             type: selectedFile[0].type as MediaImageMimeType,
-            ...(licenseMetadata && { license: licenseMetadata }),
+            //...(licenseMetadata && { license: licenseMetadata }),
             attributes,
           },
           ...(selectedFile.length > 1 && {
             attachments: selectedFile.slice(1).map(i => ({
               item: i.url!,
               type: i.type as MediaImageMimeType,
-              ...(licenseMetadata && { license: licenseMetadata }),
+              //...(licenseMetadata && { license: licenseMetadata }),
             attributes,
             })),
           })
@@ -188,9 +188,9 @@ export default function CreatePage() {
 
       console.log('xxxxx metadata', metadata)
       // 3. Upload metadata to storage and create post via Lens Protocol SDK
-      //const res = await storageClient.uploadAsJson(metadata);
+      const res = await storageClient.uploadAsJson(metadata);
 
-      //console.log("Create Post success=======", res); // e.g., lens://4f91ca…
+      console.log("Create Post success=======", res); // e.g., lens://4f91ca…
 
       toast({
         title: "Success",
