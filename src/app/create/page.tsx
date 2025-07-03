@@ -1,29 +1,22 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
-import { Upload, ImageIcon, LinkIcon, FileText, Loader2 } from "lucide-react"
+import { Upload, ImageIcon, FileText, Loader2 } from "lucide-react"
 import { getLensClient } from "@/lib/client"
-import { AnyClient, SessionClient, uri } from "@lens-protocol/client";
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
-import { toast as toastSonner } from "sonner";
-import { attachReactRefresh } from "next/dist/build/webpack-config"
 import { useRouter } from "next/navigation"
 import { storageClient } from "@/lib/storage-client";
-import { acl } from '@/lib/acl';
+// import { acl } from '@/lib/acl';
 import { post } from "@lens-protocol/client/actions";
-
-
 
 
 interface AttachmentProps {
@@ -33,13 +26,11 @@ interface AttachmentProps {
   url?: string;
 }
 
-
 export default function CreatePage() {
   const [content, setContent] = useState("")
   const [isOriginal, setIsOriginal] = useState(false)
   const [selectedFile, setSelectedFile] = useState<AttachmentProps[] | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
   const [licenseType, setLicenseType] = useState<'creative-commons' | 'token-bound-nft' | null>(null)
   const [ccLicense, setCcLicense] = useState("CC BY-NC")
   const [tbnlCommercial, setTbnlCommercial] = useState<'C' | 'NC'>('NC')
@@ -47,6 +38,7 @@ export default function CreatePage() {
   const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
   const router = useRouter()
+  const { toast } = useToast()
 
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,13 +68,14 @@ export default function CreatePage() {
         }
         attachments.push(res)
       }
-  
-      console.log("Attachmentss =======", attachments);
       setSelectedFile(attachments)
     } catch (uploadError) {
-      console.error("Error uploading profile picture:", uploadError);
-      toastSonner.error("Failed to upload profile picture. Please try again.");
-      // setLoading(false);
+      console.error("Error uploading image:", uploadError);
+      toast({
+        title: "Error",
+        description: "Failed to upload image. Please try again.",
+        variant: "destructive",
+      })
       return;
     }
   }
@@ -128,25 +121,6 @@ export default function CreatePage() {
         }
       }
 
-      const getLicenseType = (): MetadataLicenseType | undefined => {
-        if (!isOriginal) return undefined
-        
-        if (licenseType === 'creative-commons') {
-          switch (licenseValue) {
-            case 'CC BY': return MetadataLicenseType.CC_BY
-            case 'CC BY-NC': return MetadataLicenseType.CC_BY_NC
-            case 'CC BY-ND': return MetadataLicenseType.CC_BY_ND
-            case 'CC0': return MetadataLicenseType.CCO
-          }
-        }
-        
-        if (licenseType === 'token-bound-nft') {
-          return MetadataLicenseType[licenseValue as keyof typeof MetadataLicenseType]
-        }
-      }
-      
-      const licenseMetadata = getLicenseType();
-
       //Get attributes
       const attributes = getPostAttributes();
       function getPostAttributes(): any[] {
@@ -158,21 +132,21 @@ export default function CreatePage() {
           }
         ];
         
-        //if (isOriginal) {
+        if (licenseValue) {
           attributes.push({
             key: "license",
             type: MetadataAttributeType.STRING,
-            value: licenseMetadata,
+            value: licenseValue,
           });
-        //}
+        }
         return attributes;
       }
 
+      console.log('xxx metadata----', selectedFile, attributes)
       //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
           content,          
-          //...(licenseMetadata && { license: licenseMetadata }),
           attributes,
         })
       } 
@@ -182,25 +156,18 @@ export default function CreatePage() {
           image: {
             item: selectedFile[0].url!,
             type: selectedFile[0].type as MediaImageMimeType,
-            //...(licenseMetadata && { license: licenseMetadata }),
-            attributes,
           },
-          ...(selectedFile.length > 1 && {
-            attachments: selectedFile.slice(1).map(i => ({
-              item: i.url!,
-              type: i.type as MediaImageMimeType,
-              //...(licenseMetadata && { license: licenseMetadata }),
-            attributes,
-            })),
-          })
+          attachments: selectedFile.map(i => ({
+            item: i.url!,
+            type: i.type as MediaImageMimeType,
+          })),
+          attributes,
         })
       }
 
-      console.log('xxxxx metadata', metadata)
       // Upload metadata to storage and create post via Lens Protocol SDK
       const { uri } = await storageClient.uploadAsJson(metadata);
-      const result = await post(client, { contentUri: uri });
-      console.log("Create Post success=======", uri, result); // e.g., lens://4f91ca…
+      await post(client, { contentUri: uri });
 
       toast({
         title: "Success",
@@ -265,9 +232,9 @@ export default function CreatePage() {
                     <label htmlFor="file-upload" className="cursor-pointer">
                       {selectedFile ? (
                         selectedFile.map(file => (
-                          <div className="space-y-2" key={file.name}>
-                            <ImageIcon className="h-8 w-8 mx-auto text-green-600" />
-                            <p className="text-sm font-medium">{file.name}</p>
+                          <div className="flex space-x-2 items-center" key={file.name}>
+                            <ImageIcon className="h-8 w-8 text-green-600" />
+                            <span className="text-sm font-medium">{file.name}</span>
                           </div>
                         ))
                       ) : (
