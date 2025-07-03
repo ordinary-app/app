@@ -67,7 +67,7 @@ export default function HomePage() {
           </div>
         </header>
 
-        {/* Hero Section */}
+        {/* Subtitle Section */}
         <main className="max-w-4xl mx-auto px-4 py-16">
           <div className="text-center mb-16">
             <h1 className="text-5xl font-serif mb-6 leading-tight">
