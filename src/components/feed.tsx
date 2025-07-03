@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star } from "lucide-react"
+import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { client } from "@/lib/client"
 import { fetchPosts } from "@lens-protocol/client/actions"
@@ -41,15 +41,47 @@ export function Feed() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
+  const [newPostsAvailable, setNewPostsAvailable] = useState(false)
+  const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date())
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const lastPostIdRef = useRef<string | null>(null)
 
   //调用 Lens 获取原始数据
   useEffect(() => {
     loadPostsFromLens()
+    
+    // 设置定时刷新（每45秒检查一次新内容）
+    intervalRef.current = setInterval(() => {
+      checkForNewPosts()
+    }, 45000) // 45秒
+    
+    // 页面焦点事件监听
+    const handleFocus = () => {
+      const timeSinceLastRefresh = Date.now() - lastRefreshTime.getTime()
+      // 如果超过2分钟没刷新，则自动刷新
+      if (timeSinceLastRefresh > 120000) {
+        checkForNewPosts()
+      }
+    }
+    
+    window.addEventListener('focus', handleFocus)
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
 
-  const loadPostsFromLens = async () => {
+  const loadPostsFromLens = useCallback(async (isRefresh = false) => {
     try {
-      setLoading(true)
+      if (isRefresh) {
+        setRefreshing(true)
+      } else {
+        setLoading(true)
+      }
       setError(null)
       
       const result = await fetchPosts(client, {
@@ -70,15 +102,64 @@ export function Feed() {
       
       const { items } = result.value
       const transformedPosts = transformLensPostsToLocal(items)
+      
+      if (transformedPosts.length > 0) {
+        lastPostIdRef.current = transformedPosts[0].id
+      }
+      
       setPosts(transformedPosts)
+      setLastRefreshTime(new Date())
+      setNewPostsAvailable(false)
       
     } catch (err) {
       console.error("Error fetching posts:", err)
       setError("Failed to fetch posts")
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
-  }
+  }, [])
+  
+  const checkForNewPosts = useCallback(async () => {
+    try {
+      const result = await fetchPosts(client, {
+        filter: {
+          feeds: [
+            {
+              globalFeed: true,
+            },
+          ],
+        },
+      })
+      
+      if (result.isErr()) {
+        return
+      }
+      
+      const { items } = result.value
+      const transformedPosts = transformLensPostsToLocal(items)
+      
+      // 检查是否有新帖子
+      if (transformedPosts.length > 0 && transformedPosts[0].id !== lastPostIdRef.current) {
+        setNewPostsAvailable(true)
+      }
+    } catch (err) {
+      console.error("Error checking for new posts:", err)
+    }
+  }, [])
+  
+  const handleRefresh = useCallback((e?: React.MouseEvent) => {
+    e?.preventDefault()
+    loadPostsFromLens(true)
+  }, [loadPostsFromLens])
+  
+  const handleLoadNewPosts = useCallback((e?: React.MouseEvent) => {
+    e?.preventDefault()
+    setNewPostsAvailable(false)
+    loadPostsFromLens(true)
+    // 滚动到顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [loadPostsFromLens])
 
   //数据转换函数
   const transformLensPostsToLocal = (anyPosts: readonly AnyPost[]): Post[] => {
@@ -331,34 +412,44 @@ export function Feed() {
     )
   }
 
-  if (error) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-red-600 mb-4">Failed to load posts from Lens Protocol</p>
-        <p className="text-gray-600 mb-4">{error}</p>
-        <Button onClick={loadPostsFromLens} variant="outline">
-          Try Again
-        </Button>
-      </div>
-    )
-  }
-
-  if (posts.length === 0) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-600">No posts available</p>
-        <Button onClick={loadPostsFromLens} variant="outline" className="mt-4">
-          Refresh
-        </Button>
-      </div>
-    )
-  }
-
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      {/* 新帖子提示 */}
+      {newPostsAvailable && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
+          <Button 
+            onClick={handleLoadNewPosts}
+            className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg animate-bounce"
+            size="sm"
+          >
+            <ChevronUp className="h-4 w-4 mr-1" />
+            New posts available
+          </Button>
+        </div>
+      )}
+      
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Latest Fanworks</h1>
         <p className="text-gray-600">Discover amazing fanworks from our community</p>
+        
+        {/* 第一条帖子上方的信息栏 */}
+        {posts.length > 0 && (
+          <div className="flex justify-center items-center gap-4 mt-4 text-sm">
+            <div className="text-gray-400">
+              Last updated: {lastRefreshTime.toLocaleTimeString()}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 h-10"
+            >
+              <RefreshCw className={`h-3 w-3 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+          </div>
+        )}
       </div>
 
       {posts.map((post) => (
