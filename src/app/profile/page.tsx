@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,11 +10,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Edit, MapPin, Calendar, LinkIcon, Heart, MessageCircle } from "lucide-react"
 import { useCurrentProfileStorage } from "@/stores/profile-store"
 import { usePosts } from "@lens-protocol/react";
-
+import dayjs from 'dayjs';
 
 export default function ProfilePage() {
   const currentProfile= useCurrentProfileStorage(state => state.currentProfile)
-  const [userPosts, setUserPosts] = useState([])
   const [stats, setStats] = useState({
     posts: 12,
     followers: 1234,
@@ -27,31 +26,21 @@ export default function ProfilePage() {
     },
   });
 
-
-  console.log("Get post -----", data)
-
-  const mockUserPosts = [
-    {
-      id: "1",
-      content: "Working on some exciting new features for our decentralized social platform! 🚀",
-      timestamp: "2 days ago",
+  const userPosts = useMemo(() => {
+    if (loading) return [];
+    const posts = data?.items ?? [];
+    return posts.map(i => ( {
+      id: i.id,
+      content: i.metadata?.content,
+      timestamp: dayjs(i.timestamp).format("MMM D YYYY HH:mm"),
       likes: 45,
       comments: 12,
       isOriginal: true,
-    },
-    {
-      id: "2",
-      content: "Just finished reading an amazing paper on blockchain scalability. The future is bright!",
-      timestamp: "1 week ago",
-      likes: 23,
-      comments: 8,
-      isOriginal: false,
-    },
-  ]
+      attachments: i.metadata?.attachments ?? [],
+    }))
+  }, [data, loading])
 
-  useEffect(() => {
-    setUserPosts(mockUserPosts)
-  }, [])
+  console.log("Get post -----", data)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -72,11 +61,11 @@ export default function ProfilePage() {
 
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h1 className="text-3xl font-bold">{currentProfile?.metadata?.bio || "Anonymous User"}</h1>
+                    <h1 className="text-3xl font-bold">@{currentProfile?.username?.localName || "Anonymous User"}</h1>
                     <Badge variant="secondary">Verified</Badge>
                   </div>
 
-                  <p className="text-gray-600 mb-2">@{currentProfile?.username?.localName || "anonymous"}</p>
+                  {/* <p className="text-gray-600 mb-2">@{currentProfile?.username?.localName || "anonymous"}</p> */}
 
                   <p className="text-gray-800 mb-4 max-w-2xl">
                     {currentProfile?.metadata?.bio ||
@@ -154,6 +143,19 @@ export default function ProfilePage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-800 mb-4">{post.content}</p>
+                    {
+                      post.attachments.length > 0 && (
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          {
+                            post.attachments.map(p => (
+                              <div className="border-[1px] border-[#a9b2bc] dark:border-[#708090] relative h-full w-full overflow-hidden rounded-lg object-cover max-h-[500px]">
+                                <img loading="lazy" alt="attachment" className="h-full w-full object-cover" src={p.item} />
+                              </div>
+                            ))
+                          }
+                        </div>
+                      )
+                    }
                     <div className="flex items-center space-x-6 text-sm text-gray-600">
                       <div className="flex items-center">
                         <Heart className="h-4 w-4 mr-1" />
