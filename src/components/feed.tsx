@@ -5,11 +5,13 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { client } from "@/lib/client"
 import { fetchPosts } from "@lens-protocol/client/actions"
 import { Post as LensPost, AnyPost } from "@lens-protocol/client"
+import { resolveUrl } from "@/utils/resolve-url"
 
 interface Post {
   id: string
@@ -185,7 +187,8 @@ export function Feed() {
           author: {
             handle: author.username?.localName || "unknown",
             displayName: author.metadata?.name || author.username?.localName || "Unknown User",
-            avatar: author.metadata?.picture?.optimized?.uri || "/placeholder.svg?height=40&width=40",
+            avatar: author.metadata?.picture ? resolveUrl(author.metadata?.picture) : undefined,
+            //依然是从URI中读一下头像
           },
           isOriginal,
           gatewayUrl: undefined,
@@ -413,7 +416,8 @@ export function Feed() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <TooltipProvider>
+      <div className="max-w-2xl mx-auto space-y-6">
       {/* 新帖子提示 */}
       {newPostsAvailable && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
@@ -465,9 +469,36 @@ export function Feed() {
                   <div className="flex items-center space-x-2">
                     <h3 className="font-semibold">{post.author.displayName}</h3>
                     {post.isOriginal && (
-                      <Badge variant="secondary" className="text-xs">
-                        Original
-                      </Badge>
+                      <Tooltip delayDuration={300}>
+                        <TooltipTrigger asChild>
+                          <button 
+                            className="relative focus:outline-none"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                            }}
+                            onTouchStart={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <Badge variant="secondary" className="text-xs cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-colors shadow-lg">
+                              Original
+                            </Badge>
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent 
+                          className="border border-black-500 rounded-md text-sm font-medium"
+                          sideOffset={3}
+                          side="right"
+                          style={{ 
+                            backgroundColor: '#F7D777', 
+                            color: '#000000',
+                            zIndex: 9999
+                          }}
+                        >
+                          薯条 token id = 1
+                        </TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
                   <p className="text-sm text-gray-500">@{post.author.handle}</p>
@@ -530,10 +561,6 @@ export function Feed() {
               </div>
 
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" className="text-gray-600">
-                  <MessageCircle className="h-4 w-4 mr-1" />
-                  {post.comments}
-                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -543,11 +570,16 @@ export function Feed() {
                   <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
                   {post.likes}
                 </Button>
+                <Button variant="ghost" size="sm" className="text-gray-600">
+                  <MessageCircle className="h-4 w-4 mr-1" />
+                  {post.comments}
+                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
       ))}
-    </div>
+      </div>
+    </TooltipProvider>
   )
 }

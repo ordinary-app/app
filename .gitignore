@@ -8,7 +8,7 @@
 
 # testing
 /coverage
-*.txt
+/txt
 
 # next.js
 /.next/
