@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ import { usePosts } from "@lens-protocol/react";
 
 export default function ProfilePage() {
   const currentProfile= useCurrentProfileStorage(state => state.currentProfile)
-  const [userPosts, setUserPosts] = useState([])
+  // const [userPosts, setUserPosts] = useState([])
   const [stats, setStats] = useState({
     posts: 12,
     followers: 1234,
@@ -27,31 +27,19 @@ export default function ProfilePage() {
     },
   });
 
-
-  console.log("Get post -----", data)
-
-  const mockUserPosts = [
-    {
-      id: "1",
-      content: "Working on some exciting new features for our decentralized social platform! 🚀",
-      timestamp: "2 days ago",
+  const userPosts = useMemo(() => {
+    if (loading) return [];
+    const posts = data?.items ?? [];
+    return posts.map(i => ( {
+      id: i.id,
+      content: i.metadata?.content,
+      timestamp: i.timestamp,
       likes: 45,
       comments: 12,
       isOriginal: true,
-    },
-    {
-      id: "2",
-      content: "Just finished reading an amazing paper on blockchain scalability. The future is bright!",
-      timestamp: "1 week ago",
-      likes: 23,
-      comments: 8,
-      isOriginal: false,
-    },
-  ]
-
-  useEffect(() => {
-    setUserPosts(mockUserPosts)
-  }, [])
+    }))
+  }, [data, loading])
+  console.log("Get post -----", data)
 
   return (
     <div className="min-h-screen bg-gray-50">
