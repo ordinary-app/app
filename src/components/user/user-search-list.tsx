@@ -2,8 +2,8 @@ import { Account } from "@lens-protocol/client";
 import { fetchAccounts } from "@lens-protocol/client/actions";
 import { User2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getLensClient } from "@/lib/lens/client";
-import { resolveUrl } from "@/lib/utils/resolve-url";
+import { getLensClient } from "@/lib/client";
+import { resolveUrl } from "@/utils/resolve-url";
 import { MentionableUser } from "./user-search";
 
 export function UserSearchList({ query, onSelect }: { query: string; onSelect: (user: MentionableUser) => void }) {
