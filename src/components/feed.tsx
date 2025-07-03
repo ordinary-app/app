@@ -7,6 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { client } from "@/lib/client"
+import { fetchPosts } from "@lens-protocol/client/actions"
+import { Post as LensPost, AnyPost } from "@lens-protocol/client"
 
 interface Post {
   id: string
@@ -17,7 +20,7 @@ interface Post {
     avatar?: string
   }
   isOriginal: boolean
-  originalLink?: string
+  gatewayUrl?: string
   likes: number
   comments: number
   isLiked: boolean
@@ -27,93 +30,233 @@ interface Post {
     type: "image" | "text"
     url?: string
   }
-  category: "fanfiction" | "fanart" | "cosplay"
+  attachments: Array<{
+    item: string
+    type: string
+  }>
 }
 
 export function Feed() {
+  const { toast } = useToast()
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [error, setError] = useState<string | null>(null)
 
+  //调用 Lens 获取原始数据
   useEffect(() => {
-    loadFeed()
+    loadPostsFromLens()
   }, [])
 
-  const loadFeed = async () => {
+  const loadPostsFromLens = async () => {
     try {
-      // Mock data for demonstration - in real app, fetch from Lens Protocol
-      const mockPosts: Post[] = [
-        {
-          id: "1",
-          content:
-            "Just finished writing a new chapter for my Harry Potter fanfic! Check it out and let me know what you think. ⚡ #fanfiction #harrypotter",
-          author: {
-            handle: "potterhead_writes",
-            displayName: "Lily PotterFan",
-            avatar: "/placeholder.svg?height=40&width=40",
-          },
-          isOriginal: true,
-          originalLink: "https://example.com/fanfic",
-          likes: 112,
-          comments: 34,
-          isLiked: false,
-          isFollowing: true,
-          timestamp: "1 hour ago",
-          media: { type: "text" },
-          category: "fanfiction",
+      setLoading(true)
+      setError(null)
+      
+      const result = await fetchPosts(client, {
+        filter: {
+          feeds: [
+            {
+              globalFeed: true,
+            },
+          ],
         },
-        {
-          id: "2",
-          content: "I drew some fanart of Geralt from The Witcher! What do you think? 🐺 #fanart #witcher",
-          author: {
-            handle: "geralt_artist",
-            displayName: "John WitcherArt",
-            avatar: "/placeholder.svg?height=40&width=40",
-          },
-          isOriginal: false,
-          likes: 256,
-          comments: 67,
-          isLiked: true,
-          isFollowing: false,
-          timestamp: "3 hours ago",
-          media: {
-            type: "image",
-            url: "/placeholder.svg?height=300&width=500",
-          },
-          category: "fanart",
-        },
-        {
-          id: "3",
-          content:
-            "Attending Comic-Con this weekend as Star Wars character! So excited to meet other fans. ✨ #cosplay #starwars",
-          author: {
-            handle: "starwars_cosplayer",
-            displayName: "Leia Cosplay",
-            avatar: "/placeholder.svg?height=40&width=40",
-          },
-          isOriginal: true,
-          originalLink: "https://example.com/cosplay",
-          likes: 189,
-          comments: 42,
-          isLiked: false,
-          isFollowing: true,
-          timestamp: "5 hours ago",
-          media: { type: "text" },
-          category: "cosplay",
-        },
-      ]
-
-      setPosts(mockPosts)
-    } catch (error) {
-      console.error("Failed to load feed:", error)
-      toast({
-        title: "Error",
-        description: "Failed to load feed",
-        variant: "destructive",
       })
+      
+      if (result.isErr()) {
+        console.error("Lens API error:", result.error)
+        setError(result.error.message || "Failed to fetch posts")
+        return
+      }
+      
+      const { items } = result.value
+      const transformedPosts = transformLensPostsToLocal(items)
+      setPosts(transformedPosts)
+      
+    } catch (err) {
+      console.error("Error fetching posts:", err)
+      setError("Failed to fetch posts")
     } finally {
       setLoading(false)
     }
+  }
+
+  //数据转换函数
+  const transformLensPostsToLocal = (anyPosts: readonly AnyPost[]): Post[] => {
+    return anyPosts
+      .filter((anyPost): anyPost is LensPost => anyPost.__typename === 'Post')
+      .map((lensPost) => {
+        const content = extractContentFromMetadata(lensPost.metadata)
+        const author = lensPost.author
+        const stats = lensPost.stats
+        
+        // Get media if available
+        const media = extractMedia(lensPost.metadata)
+        
+        // Get attachments
+        const attachments = extractAttachments(lensPost.metadata)
+        
+        // Check if post has license to determine if it's original
+        const isOriginal = checkIfOriginal(lensPost.metadata)
+        
+        return {
+          id: lensPost.id,
+          content,
+          author: {
+            handle: author.username?.localName || "unknown",
+            displayName: author.metadata?.name || author.username?.localName || "Unknown User",
+            avatar: author.metadata?.picture?.optimized?.uri || "/placeholder.svg?height=40&width=40",
+          },
+          isOriginal,
+          gatewayUrl: undefined,
+          likes: stats?.upvotes || 0,
+          comments: stats?.comments || 0,
+          isLiked: false,
+          isFollowing: false,
+          timestamp: formatTimestamp(lensPost.timestamp),
+          media,
+          attachments,
+        }
+      })
+  }
+
+
+  // 检查是否为原创内容（基于license属性）
+  const checkIfOriginal = (metadata: any): boolean => {
+    if (!metadata?.attributes) return false
+    
+    // 查找license属性
+    const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license")
+    return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== ""
+  }
+
+  //提取图片/视频链接
+  const extractContentFromMetadata = (metadata: any): string => {
+    if (!metadata) return "No content available"
+    
+    // Handle different metadata types
+    switch (metadata.__typename) {
+      case 'TextOnlyMetadata':
+        return metadata.content || "No content available"
+      case 'ArticleMetadata':
+        return metadata.content || "No content available"
+      case 'ImageMetadata':
+        return metadata.content || "No content available"
+      case 'VideoMetadata':
+        return metadata.content || "No content available"
+      case 'AudioMetadata':
+        return metadata.content || "No content available"
+      default:
+        return "No content available"
+    }
+  }
+
+  const extractAttachments = (metadata: any): Array<{ item: string; type: string }> => {
+    if (!metadata) return []
+    
+    const attachments: Array<{ item: string; type: string }> = []
+    
+    // 只有特定的 metadata 类型才有 attachments
+    if (metadata.__typename === 'ImageMetadata' || metadata.__typename === 'ArticleMetadata') {
+      if (metadata.attachments && Array.isArray(metadata.attachments)) {
+        metadata.attachments.forEach((att: any) => {
+          if (att.item && att.type) {
+            attachments.push({
+              item: att.item,
+              type: att.type
+            })
+          }
+        })
+      }
+    }
+    
+    // 对于 ImageMetadata，也包含主图片
+    if (metadata.__typename === 'ImageMetadata' && metadata.image) {
+      const imageUrl = metadata.image.optimized?.uri || metadata.image.raw?.uri
+      if (imageUrl) {
+        // 将主图片添加到开头
+        attachments.unshift({
+          item: imageUrl,
+          type: metadata.image.type || 'image/jpeg'
+        })
+      }
+    }
+    
+    return attachments
+  }
+
+  const extractMedia = (metadata: any): { type: "image" | "text"; url?: string } => {
+    if (!metadata) return { type: "text" }
+    
+    // Handle different metadata types
+    switch (metadata.__typename) {
+      case 'ImageMetadata':
+        // 检查主图片
+        if (metadata.image?.optimized?.uri) {
+          return {
+            type: "image",
+            url: metadata.image.optimized.uri,
+          }
+        }
+        // 如果没有optimized版本，尝试原始图片
+        if (metadata.image?.raw?.uri) {
+          return {
+            type: "image",
+            url: metadata.image.raw.uri,
+          }
+        }
+        break
+      case 'VideoMetadata':
+        if (metadata.video?.optimized?.uri) {
+          return {
+            type: "image", // Show video thumbnail as image for now
+            url: metadata.video.optimized.uri,
+          }
+        }
+        if (metadata.video?.raw?.uri) {
+          return {
+            type: "image",
+            url: metadata.video.raw.uri,
+          }
+        }
+        break
+      case 'ArticleMetadata':
+        // 检查attachments中的图片
+        if (metadata.attachments && metadata.attachments.length > 0) {
+          const imageAttachment = metadata.attachments.find((att: any) => 
+            att.type && att.type.startsWith('image/')
+          )
+          if (imageAttachment) {
+            if (imageAttachment.item?.optimized?.uri) {
+              return {
+                type: "image",
+                url: imageAttachment.item.optimized.uri,
+              }
+            }
+            if (imageAttachment.item?.raw?.uri) {
+              return {
+                type: "image",
+                url: imageAttachment.item.raw.uri,
+              }
+            }
+          }
+        }
+        break
+    }
+    return { type: "text" }
+  }
+
+
+  //转换为相对时间
+  const formatTimestamp = (timestamp: string): string => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diff = now.getTime() - date.getTime()
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const days = Math.floor(hours / 24)
+    
+    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`
+    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`
+    return "Just now"
   }
 
   const handleLike = async (postId: string) => {
@@ -188,6 +331,29 @@ export function Feed() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-600 mb-4">Failed to load posts from Lens Protocol</p>
+        <p className="text-gray-600 mb-4">{error}</p>
+        <Button onClick={loadPostsFromLens} variant="outline">
+          Try Again
+        </Button>
+      </div>
+    )
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-600">No posts available</p>
+        <Button onClick={loadPostsFromLens} variant="outline" className="mt-4">
+          Refresh
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="text-center mb-8">
@@ -212,9 +378,6 @@ export function Feed() {
                         Original
                       </Badge>
                     )}
-                    <Badge variant="outline" className="text-xs">
-                      {post.category}
-                    </Badge>
                   </div>
                   <p className="text-sm text-gray-500">@{post.author.handle}</p>
                   <p className="text-xs text-gray-400">{post.timestamp}</p>
@@ -245,46 +408,29 @@ export function Feed() {
           <CardContent className="space-y-4">
             <p className="text-gray-800 leading-relaxed">{post.content}</p>
 
-            {post.media?.type === "image" && post.media.url && (
-              <div className="rounded-lg overflow-hidden">
-                <img
-                  src={post.media.url || "/placeholder.svg"}
-                  alt="Post media"
-                  className="w-full h-auto max-h-96 object-cover"
-                />
-              </div>
-            )}
-
-            {post.isOriginal && post.originalLink && (
-              <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-lg">
-                <ExternalLink className="h-4 w-4 text-blue-600" />
-                <a
-                  href={post.originalLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline text-sm"
-                >
-                  View Original Statement
-                </a>
-              </div>
-            )}
+            {/* 显示附件图片 */}
+            {
+              post.attachments.length > 0 && (
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  {
+                    post.attachments.map((p, index) => (
+                      <div key={index} className="border-[1px] border-[#a9b2bc] dark:border-[#708090] relative h-full w-full overflow-hidden rounded-lg object-cover max-h-[500px]">
+                        <img loading="lazy" alt="attachment" className="h-full w-full object-cover" src={p.item} />
+                      </div>
+                    ))
+                  }
+                </div>
+              )
+            }
 
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex items-center space-x-6">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleLike(post.id)}
-                  className={post.isLiked ? "text-red-600" : "text-gray-600"}
-                >
-                  <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
-                  {post.likes}
+                <Button variant="ghost" size="sm" className="text-gray-600">
+                  <Bookmark className="h-4 w-4 mr-1" />
+                  Bookmark
                 </Button>
 
-                <Button variant="ghost" size="sm" className="text-gray-600">
-                  <MessageCircle className="h-4 w-4 mr-1" />
-                  {post.comments}
-                </Button>
+                
 
                 <Button variant="ghost" size="sm" className="text-gray-600">
                   <Share className="h-4 w-4 mr-1" />
@@ -294,12 +440,17 @@ export function Feed() {
 
               <div className="flex items-center space-x-4">
                 <Button variant="ghost" size="sm" className="text-gray-600">
-                  <Bookmark className="h-4 w-4 mr-1" />
-                  Bookmark
+                  <MessageCircle className="h-4 w-4 mr-1" />
+                  {post.comments}
                 </Button>
-                <Button variant="ghost" size="sm" className="text-gray-600">
-                  <Star className="h-4 w-4 mr-1" />
-                  Support Creator
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleLike(post.id)}
+                  className={post.isLiked ? "text-red-600" : "text-gray-600"}
+                >
+                  <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
+                  {post.likes}
                 </Button>
               </div>
             </div>
