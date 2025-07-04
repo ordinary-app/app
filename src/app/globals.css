@@ -92,3 +92,139 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 199 89% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ChipDock Harbor Theme Custom Styles */
+@layer components {
+  .harbor-gradient {
+    @apply bg-harbor-gradient;
+  }
+
+  .harbor-text {
+    @apply bg-harbor-gradient bg-clip-text text-transparent;
+  }
+
+  .harbor-card {
+    @apply bg-gradient-to-br from-harbor-50 to-harbor-100 border-harbor-200;
+  }
+
+  .harbor-button {
+    @apply bg-harbor-gradient hover:shadow-lg hover:shadow-harbor-500/25 transition-all duration-300;
+  }
+
+  /* ChipDock Chip Theme Custom Styles */
+  .chip-gradient {
+    @apply bg-chip-gradient;
+  }
+
+  .chip-text {
+    @apply bg-chip-gradient bg-clip-text text-transparent;
+  }
+
+  .chip-card {
+    @apply bg-gradient-to-br from-chip-50 to-chip-100 border-chip-200;
+  }
+
+  .chip-button {
+    @apply bg-gradient-to-r from-chip-600 via-chip-500 to-chip-400 hover:shadow-lg hover:shadow-chip-500/25 transition-all duration-300;
+  }
+
+  .chip-badge {
+    @apply bg-chip-100 text-chip-800 border border-chip-300 hover:bg-chip-200;
+  }
+
+  .chip-glow {
+    @apply animate-chip-glow;
+  }
+
+  .wave-animation {
+    animation: wave 3s ease-in-out infinite;
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .anchor-animation {
+    animation: anchor-swing 4s ease-in-out infinite;
+  }
+}
+
+/* Harbor Wave Background Pattern */
+.harbor-wave-bg {
+  background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 25%, #bae6fd 50%, #7dd3fc 75%, #38bdf8 100%);
+  background-size: 200% 100%;
+  animation: wave-flow 8s ease-in-out infinite;
+}
+
+/* Chip Golden Background Pattern */
+.chip-wave-bg {
+  background: linear-gradient(90deg, #fef3c7 0%, #fde68a 25%, #fcd34d 50%, #fbbf24 75%, #f59e0b 100%);
+  background-size: 200% 100%;
+  animation: wave-flow 8s ease-in-out infinite;
+}
+
+@keyframes wave-flow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

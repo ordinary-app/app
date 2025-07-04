@@ -108,7 +108,7 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
             <div className="flex flex-col items-center space-y-4">
               <Avatar className="h-24 w-24">
                 <AvatarImage 
-                  src={profilePictureUrl || resolveUrl(currentProfile?.metadata?.picture) || "/lufei.jpg"} 
+                  src={profilePictureUrl || resolveUrl(currentProfile?.metadata?.picture) || "/gull.jpg"} 
                 />
                 <AvatarFallback className="text-2xl">
                   {name?.charAt(0)?.toUpperCase() || "U"}

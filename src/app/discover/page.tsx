@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -9,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Search, TrendingUp, Users, Hash } from "lucide-react"
 
-export default function ExplorePage() {
+export default function DiscoverPage() {
   const [searchQuery, setSearchQuery] = useState("")
 
   const trendingTopics = [
@@ -46,12 +45,10 @@ export default function ExplorePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-4">Explore</h1>
+            <h1 className="text-3xl font-bold mb-4">Discover</h1>
             <div className="relative max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
@@ -166,4 +163,4 @@ export default function ExplorePage() {
       </main>
     </div>
   )
-}
+} 
