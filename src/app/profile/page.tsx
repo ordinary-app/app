@@ -95,7 +95,7 @@ export default function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={currentProfile?.metadata?.picture || "/lufei.jpg"} />
+                  <AvatarImage src={currentProfile?.metadata?.picture || "/gull.jpg"} />
                   <AvatarFallback className="text-2xl">
                     {currentProfile?.username?.localName?.charAt(0)?.toUpperCase() || "U"}
                   </AvatarFallback>

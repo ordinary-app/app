@@ -7,6 +7,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { Web3Provider } from "@/app/Web3Provider"
 import { GlobalModals } from "@/components/global-modals"
 import { AuthManager } from "@/components/auth-manager"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,7 +29,11 @@ export default function RootLayout({
           <Web3Provider>
             <AuthManager />
             <GlobalModals />
-            {children}
+            <Header />
+            <main>
+              {children}
+            </main>
+            <Footer />
             <Toaster />
           </Web3Provider>
         </ThemeProvider>
