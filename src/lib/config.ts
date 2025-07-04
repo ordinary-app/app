@@ -4,7 +4,7 @@ import { lensTestnet, sepolia } from 'wagmi/chains';
 
 export const config = createConfig(
   getDefaultConfig({
-    appName: 'Treehouse',
+    appName: 'ChipDock',
     chains: [sepolia, lensTestnet],
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
   })
