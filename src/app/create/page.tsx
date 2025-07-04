@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -190,8 +189,6 @@ export default function CreatePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <Card>
