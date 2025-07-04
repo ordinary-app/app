@@ -16,7 +16,10 @@ import { storageClient } from "@/lib/storage-client";
 // import { acl } from '@/lib/acl';
 import { post } from "@lens-protocol/client/actions";
 import { useLensAuthStore } from "@/stores/auth-store"
-
+import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
+import { abi } from '@/lib/abi'
+import { useAppConfigStore } from "@/stores/app-config-store"
+import { useReconnectWallet } from "@/hooks/use-reconnect-wallet"
 
 interface AttachmentProps {
   name: string;
@@ -38,8 +41,15 @@ export default function CreatePage() {
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
   const router = useRouter()
   const { toast } = useToast()
-  const { sessionClient } = useLensAuthStore();
+  const { sessionClient: client, currentProfile } = useLensAuthStore();
+  const { contractAddress, explorerUrl } = useAppConfigStore();
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
+  const { address, isConnected } = useAccount();
+  const reconnectWallet = useReconnectWallet();
 
+
+  // console.log('xxxx wallet', address, isConnected, client, currentProfile)
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList = event.target.files!
@@ -59,7 +69,7 @@ export default function CreatePage() {
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
         const url = await uploadFile(file)
-        console.log("Upload image success -----", url);
+        // console.log("Upload image success -----", url);
         let res = {
           name: file.name,
           size: file.size,
@@ -104,13 +114,16 @@ export default function CreatePage() {
     setIsSubmitting(true)
 
     try {
-      let metadata;
-      let client = sessionClient;
 
       if (!client || !client.isSessionClient()) {
         throw new Error("Failed to get public client");
       }
   
+      if (!walletClient) {
+        reconnectWallet();
+        return;
+      }
+
       //license Metadata
       let licenseValue: string
       if (isOriginal) {
@@ -121,6 +134,7 @@ export default function CreatePage() {
         }
       }
 
+      let metadata;
       //Get attributes
       const attributes = getPostAttributes();
       function getPostAttributes(): any[] {
@@ -142,7 +156,8 @@ export default function CreatePage() {
         return attributes;
       }
 
-      console.log('xxx metadata----', selectedFile, attributes)
+      // console.log('xxx metadata----', selectedFile, attributes)
+
       //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
@@ -167,8 +182,27 @@ export default function CreatePage() {
 
       // Upload metadata to storage and create post via Lens Protocol SDK
       const { uri } = await storageClient.uploadAsJson(metadata);
+      
+      // mint NFT for original conent
+      if (isOriginal) {
+        const { request } = await publicClient?.simulateContract({
+          address: contractAddress,
+          abi,
+          functionName: 'safeMint', 
+          args: [uri], 
+          account: address,
+        });
+        const txHash = await walletClient.writeContract(request);
+       
+        // console.log('xxxxx ressssss', txHash)
+        toast({
+          title: "Chips +1",
+          description: `View on explorer: ${explorerUrl}${txHash}`
+        })
+      }
+ 
       await post(client, { contentUri: uri });
-
+      
       toast({
         title: "Success",
         description: "Your post has been created successfully!",
@@ -177,9 +211,10 @@ export default function CreatePage() {
       router.push("/");
     } catch (error) {
       console.log('xxxx errrr', error)
+      //TODO: error太长会展示不全
       toast({
         title: "Error",
-        description: "Failed to create post. Please try again.",
+        description: error?.message ?? "Failed to create post. Please try again.",
         variant: "destructive",
       })
     } finally {
