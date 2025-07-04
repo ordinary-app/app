@@ -10,13 +10,13 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, FileText, Loader2 } from "lucide-react"
-import { getLensClient } from "@/lib/client"
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
 import { useRouter } from "next/navigation"
 import { storageClient } from "@/lib/storage-client";
 // import { acl } from '@/lib/acl';
 import { post } from "@lens-protocol/client/actions";
+import { useLensAuthStore } from "@/stores/auth-store"
 
 
 interface AttachmentProps {
@@ -39,6 +39,7 @@ export default function CreatePage() {
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
   const router = useRouter()
   const { toast } = useToast()
+  const { sessionClient } = useLensAuthStore();
 
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +106,7 @@ export default function CreatePage() {
 
     try {
       let metadata;
-      let client = await getLensClient();
+      let client = sessionClient;
 
       if (!client || !client.isSessionClient()) {
         throw new Error("Failed to get public client");

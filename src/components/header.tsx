@@ -9,29 +9,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, Search, Edit } from "lucide-react"
+import { User, LogOut, Search, Edit, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useCurrentProfileStorage } from "@/stores/profile-store"
-import { useAccount, useDisconnect } from "wagmi";
-import { getLensClient } from "@/lib/client"
+import { useDisconnect } from "wagmi";
 import { useRouter } from "next/navigation"
+import { useLensAuthStore } from "@/stores/auth-store"
+import { useState } from "react"
+import { Dialog, DialogContent } from "./ui/dialog"
 
 export function Header() {
   const { disconnect: disconnectWallet } = useDisconnect();
-  const { currentProfile, setCurrentProfile } = useCurrentProfileStorage();
+  const { currentProfile, setCurrentProfile, sessionClient, setSessionClient } = useLensAuthStore();
   const router = useRouter()
 
   const handleDisconnect = async () => {
     disconnectWallet();
-    const client = await getLensClient();
-
-    if (client.isSessionClient()) {
-      await client.logout();
-      setCurrentProfile(null);
-    }
-
+    await sessionClient?.logout();
+    setCurrentProfile(null);
+    setSessionClient(null);
     router.push("/");
   };
+  
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4">

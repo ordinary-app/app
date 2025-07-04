@@ -1,18 +1,14 @@
 import { Account, evmAddress } from "@lens-protocol/client";
 import { fetchAccountsAvailable } from "@lens-protocol/client/actions";
-import { useAuthenticatedUser } from "@lens-protocol/react";
 import { Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
-// import { env } from "@/env";
-// import { useBlogStorage } from "@/hooks/use-blog-storage";
-import { getLensClient, getPublicClient } from "@/lib/client";
-// import { syncBlogsQuietly } from "../blog/blog-sync-button";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { ScrollArea } from "../ui/scroll-area";
 import { SelectAccountButton } from "./account-select-button";
 import { OnboardingModal } from "./onboarding-modal";
+import { useLensAuthStore } from "@/stores/auth-store";
 
 export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?: (open: boolean) => void }) {
   const { address } = useAccount();
@@ -22,21 +18,17 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showProfileSelect, setShowProfileSelect] = useState(true);
   const [isOnboardingLoading, setIsOnboardingLoading] = useState(false);
-  // const setBlogs = useBlogStorage((state) => state.setBlogs);
   const { signMessageAsync } = useSignMessage();
   const { address: walletAddress } = useAccount();
-  const { data: authenticatedUser, loading: isAuthenticatedUserLoading } = useAuthenticatedUser();
+  const { client, setSessionClient } = useLensAuthStore();
 
   const fetchAccounts = async () => {
     if (!address) return;
 
     try {
       setLoading(true);
-      const client = await getLensClient();
 
-      if (!client) {
-        throw new Error("Failed to authenticate");
-      }
+      if (!client) throw new Error("Failed to authenticate");
 
       const result = await fetchAccountsAvailable(client, {
         managedBy: evmAddress(address),
@@ -63,11 +55,10 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
   const handleShowOnboarding = async () => {
     setIsOnboardingLoading(true);
     try {
-      const client = await getPublicClient();
       if (!client) {
         throw new Error("Failed to get public client");
       }
-      const sessionClient = await client.login({
+      const authenticated = await client.login({
         onboardingUser: {
           wallet: walletAddress,
         },
@@ -75,11 +66,10 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
           return await signMessageAsync({ message });
         },
       });
-
-      if (sessionClient.isErr()) {
-        throw new Error(`Failed to get session client: ${sessionClient.error.message}`);
+      if (authenticated.isErr()) {
+        throw new Error(`Failed to get session client: ${authenticated.error.message}`);
       }
-
+      setSessionClient(authenticated.value);
       setShowProfileSelect(false);
       setShowOnboarding(true);
     } catch (err) {
@@ -104,18 +94,6 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
     await fetchAccounts();
 
     console.log("Syncing blogs after successful onboarding");
-    // const blogs = await syncBlogsQuietly();
-    // if (blogs) {
-    //   setBlogs(blogs);
-    // }
-  };
-
-  const handleSelectAccountSuccess = async () => {
-    console.log("Syncing blogs after successful account selection");
-    // const blogs = await syncBlogsQuietly();
-    // if (blogs) {
-    //   setBlogs(blogs);
-    // }
   };
 
   const isOpen = showOnboarding ? false : (open ?? showProfileSelect);
@@ -139,7 +117,7 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-96">
           <DialogHeader>
-            <DialogTitle className="h-8 text-base flex items-center">Login</DialogTitle>
+            <DialogTitle className="h-8 text-base flex items-center">Select profile</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4 items-center justify-center">
             {accounts?.length === 0 && (
@@ -148,32 +126,29 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
               </div>
             )}
 
-            {accounts?.length > 0 ? (
+            {accounts?.length > 0 && (
               <ScrollArea className="w-full max-h-[350px]">
                 <div className="w-full flex flex-col gap-2 pr-4">
                   {accounts.map((account) => (
                     <SelectAccountButton
                       key={account.address}
                       account={account}
-                      onSuccess={handleSelectAccountSuccess}
                     />
                   ))}
                 </div>
               </ScrollArea>
-            ) : (
-              <div className="w-full flex justify-end gap-2">
-                <Button
-                  className="w-full gap-2"
-                  variant="default"
-                  onClick={handleShowOnboarding}
-                  disabled={isOnboardingLoading}
-                >
-                  {isOnboardingLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                  {isOnboardingLoading ? "Signing in with Ethereum..." : "Sign up"}
-                </Button>
-              </div>
-            )
-          }
+            )}
+            <div className="w-full flex justify-end gap-2">
+              <Button
+                className="w-full gap-2"
+                variant="default"
+                onClick={handleShowOnboarding}
+                disabled={isOnboardingLoading}
+              >
+                {isOnboardingLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                {isOnboardingLoading ? "Signing in..." : "New Profile"}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

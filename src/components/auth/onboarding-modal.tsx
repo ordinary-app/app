@@ -8,13 +8,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
 import { useReconnectWallet } from "@/hooks/use-reconnect-wallet";
-import { getLensClient } from "@/lib/client";
 import { storageClient } from "@/lib/storage-client";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useCurrentProfileStorage } from "@/stores/profile-store";
+import { useLensAuthStore } from "@/stores/auth-store";
 
 interface OnboardingModalProps {
   open: boolean;
@@ -31,12 +30,9 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
   const [validationStatus, setValidationStatus] = useState<ValidationStatus>("idle");
   const [validationMessage, setValidationMessage] = useState<string>("");
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const router = useRouter();
-  const { signMessageAsync } = useSignMessage();
   const { data: walletClient } = useWalletClient();
   const reconnectWallet = useReconnectWallet();
-  const setCurrentProfile = useCurrentProfileStorage((state) => state.setCurrentProfile);
-
+  const { setCurrentProfile, sessionClient } = useLensAuthStore();
 
   const validateUsername = useCallback(async (name: string) => {
     if (!name || name.length <= 2) {
@@ -49,12 +45,11 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
     setValidationStatus("checking");
 
     try {
-      const client = await getLensClient();
-      if (!client || !client.isSessionClient()) {
-        throw new Error("Failed to get public client");
+      if (!sessionClient || !sessionClient.isSessionClient()) {
+        throw new Error("Failed to get session client");
       }
 
-      const result = await canCreateUsername(client, {
+      const result = await canCreateUsername(sessionClient, {
         localName: lowerCaseName,
       });
 
@@ -95,7 +90,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
       setValidationMessage("Error validating username");
       return false;
     }
-  }, []);
+  }, [sessionClient]);
 
   const handleUsernameChange = useCallback(
     (value: string) => {
@@ -160,7 +155,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
     let client: AnyClient | null = null;
 
     try {
-      client = await getLensClient();
+      client = sessionClient;
       if (!client || !client.isSessionClient()) {
         throw new Error("Failed to get public client");
       }
@@ -189,11 +184,6 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
 
       // Create Account, Fetch and Switch account
       const createToast = toast.loading("Creating your account...");
-
-      if (!client || client === null) {
-        throw new Error("Failed to get onboarding client");
-      }
-
       const result = await createAccountWithUsername(client, {
         username: {
           localName: username.toLowerCase(),
@@ -202,10 +192,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
       })
         .andThen(handleOperationWith(walletClient as any))
         .andThen(client.waitForTransaction)
-        .andThen((txHash) => {
-          console.log("Transaction hash:", txHash);
-          return fetchAccount(client!, { txHash });
-        })
+        .andThen((txHash) => fetchAccount(client!, { txHash }))
         .andThen((account) => {
           if (!account) return never("Account not found");
           console.log("Account created:", account);

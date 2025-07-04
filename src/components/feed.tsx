@@ -8,10 +8,10 @@ import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { client } from "@/lib/client"
 import { fetchPosts } from "@lens-protocol/client/actions"
 import { Post as LensPost, AnyPost } from "@lens-protocol/client"
 import { resolveUrl } from "@/utils/resolve-url"
+import { useLensAuthStore } from "@/stores/auth-store"
 
 interface Post {
   id: string
@@ -48,6 +48,7 @@ export function Feed() {
   const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date())
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const lastPostIdRef = useRef<string | null>(null)
+  const { client } = useLensAuthStore();
 
   //调用 Lens 获取原始数据
   useEffect(() => {

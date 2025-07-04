@@ -1,35 +1,45 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Search, Edit, Users, Shield, Heart, Coins, UserCheck } from "lucide-react"
+import { Search, Edit, Users, Shield, Heart, Coins, UserCheck, User, LogOut } from "lucide-react"
 import { ConnectKitButton } from "connectkit"
-import { useAccount } from "wagmi"
-import { useEffect } from "react"
-import { useUIStore } from "@/stores/ui-store"
-import { useCurrentProfileStorage } from "@/stores/profile-store"
+import { useProfileSelectStore } from "@/stores/profile-select-store"
 import { Header } from "@/components/header"
 import { Feed } from "@/components/feed"
-
+import { useLensAuthStore } from "@/stores/auth-store"
+import { useAccount, useDisconnect } from "wagmi"
+import { useEffect } from "react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import { UserAvatar } from "@/components/user/user-avatar"
 
 export default function HomePage() {
-  const { isConnected, address, isConnecting: loading, status } = useAccount();
-  const setProfileSelectModalOpen = useUIStore((state) => state.setProfileSelectModalOpen);
-  const currentProfile = useCurrentProfileStorage(state => state.currentProfile)
+  const { setProfileSelectModalOpen } = useProfileSelectStore();
+  const { currentProfile, loading } = useLensAuthStore();
+  const { address, isConnected, isConnecting } = useAccount();
+  const { disconnect } = useDisconnect();
 
   useEffect(() => {
-    if (isConnected && !currentProfile) {
-      setProfileSelectModalOpen(true);
+    // handle wagmi wallet connect error
+    if (address && !isConnected && isConnecting) {
+      disconnect();
     }
-  }, [isConnected, currentProfile]);
+  }, [address, isConnected, isConnecting]);
 
-  console.log('xxxx connect status------', isConnected, loading, currentProfile)
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-  //       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-  //     </div>
-  //   )
-  // }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    )
+  }
 
   if (!currentProfile) {
     return (
@@ -52,16 +62,43 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <ConnectKitButton.Custom>
-                  {({ show }) => {
-                      return (
-                        <Button onClick={show} className="bg-black text-white rounded-full hover:bg-gray-800">
-                          Login
+                {
+                  isConnected ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon" className="rounded-full shrink-0">
+                          <UserAvatar />
                         </Button>
-                      );
-                    // }
-                  }}
-                </ConnectKitButton.Custom>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-48" align="end" forceMount>
+                        <DropdownMenuItem 
+                          onClick={() =>{
+                            setProfileSelectModalOpen(true)
+                          }}
+                        >
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Select Profile</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={disconnect}>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          <span>Log out</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <ConnectKitButton.Custom>
+                      {({ show }) => {
+                          return (
+                            <Button onClick={show} className="bg-black text-white rounded-full hover:bg-gray-800">
+                              Connect Wallet
+                            </Button>
+                          );
+                        // }
+                      }}
+                    </ConnectKitButton.Custom>
+                  ) 
+                }
               </div>
             </div>
           </div>

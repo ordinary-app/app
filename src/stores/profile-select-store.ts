@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface UIState {
+interface IProfileSelectState {
   isProfileSelectModalOpen: boolean;
   setProfileSelectModalOpen: (isOpen: boolean) => void;
 }
 
-export const useUIStore = create<UIState>((set) => ({
+export const useProfileSelectStore = create<IProfileSelectState>((set) => ({
   isProfileSelectModalOpen: false,
   setProfileSelectModalOpen: (isOpen: boolean) => set({ isProfileSelectModalOpen: isOpen }),
 }));

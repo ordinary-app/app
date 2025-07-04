@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { Header } from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,17 +8,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Edit, MapPin, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark } from "lucide-react"
-import { useCurrentProfileStorage } from "@/stores/profile-store"
+import { Edit, MapPin, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader, Loader2 } from "lucide-react"
 import { usePosts } from "@lens-protocol/react";
 import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useToast } from "@/hooks/use-toast";
+import { useLensAuthStore } from "@/stores/auth-store"
 
 export default function ProfilePage() {
   const { toast } = useToast()
-  const currentProfile= useCurrentProfileStorage(state => state.currentProfile)
+  const { currentProfile } = useLensAuthStore();
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [stats, setStats] = useState({
     posts: 12,
@@ -80,7 +80,7 @@ export default function ProfilePage() {
     }
   }
 
-  console.log("Get post -----", data)
+  // console.log("Get post -----", data)
 
   return (
     <TooltipProvider>
@@ -164,104 +164,112 @@ export default function ProfilePage() {
             </TabsList>
 
             <TabsContent value="posts" className="space-y-6">
-              {userPosts.map((post: any) => (
-                <Card key={post.id} className="overflow-hidden">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Avatar>
-                          <AvatarImage src={post.author.avatar || "/placeholder.svg"} />
-                          <AvatarFallback>{post.author.displayName.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center space-x-2">
-                            <h3 className="font-semibold">{post.author.displayName}</h3>
-                            {post.isOriginal && (
-                              <Tooltip delayDuration={300}>
-                                <TooltipTrigger asChild>
-                                  <button 
-                                    className="relative focus:outline-none"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }}
-                                    onTouchStart={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                  >
-                                    <Badge variant="secondary" className="text-xs cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-colors shadow-lg">
-                                      Original
-                                    </Badge>
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent 
-                                  className="border border-black-500 rounded-md text-sm font-medium"
-                                  sideOffset={3}
-                                  side="right"
-                                  style={{ 
-                                    backgroundColor: '#F7D777', 
-                                    color: '#000000',
-                                    zIndex: 9999
-                                  }}
-                                >
-                                  薯条 token id = 1
-                                </TooltipContent>
-                              </Tooltip>
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-500">@{post.author.handle}</p>
-                          <p className="text-xs text-gray-400">{post.timestamp}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-800 mb-4">{post.content}</p>
-                    {
-                      post.attachments.length > 0 && (
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                          {
-                            post.attachments.map((p: any, index: number) => (
-                              <div key={index} className="border-[1px] border-[#a9b2bc] dark:border-[#708090] relative h-full w-full overflow-hidden rounded-lg object-cover max-h-[500px]">
-                                <img loading="lazy" alt="attachment" className="h-full w-full object-cover" src={p.item} />
+              {
+                loading ? (
+                  <Loader2 className="animate-spin mx-auto" />
+                ) : (
+                  userPosts.length > 0 ? userPosts.map((post: any) => (
+                    <Card key={post.id} className="overflow-hidden">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <Avatar>
+                              <AvatarImage src={post.author.avatar || "/placeholder.svg"} />
+                              <AvatarFallback>{post.author.displayName.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="flex items-center space-x-2">
+                                <h3 className="font-semibold">{post.author.displayName}</h3>
+                                {post.isOriginal && (
+                                  <Tooltip delayDuration={300}>
+                                    <TooltipTrigger asChild>
+                                      <button 
+                                        className="relative focus:outline-none"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                        }}
+                                        onTouchStart={(e) => {
+                                          e.stopPropagation();
+                                        }}
+                                      >
+                                        <Badge variant="secondary" className="text-xs cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-colors shadow-lg">
+                                          Original
+                                        </Badge>
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent 
+                                      className="border border-black-500 rounded-md text-sm font-medium"
+                                      sideOffset={3}
+                                      side="right"
+                                      style={{ 
+                                        backgroundColor: '#F7D777', 
+                                        color: '#000000',
+                                        zIndex: 9999
+                                      }}
+                                    >
+                                      薯条 token id = 1
+                                    </TooltipContent>
+                                  </Tooltip>
+                                )}
                               </div>
-                            ))
-                          }
+                              <p className="text-sm text-gray-500">@{post.author.handle}</p>
+                              <p className="text-xs text-gray-400">{post.timestamp}</p>
+                            </div>
+                          </div>
                         </div>
-                      )
-                    }
-                    <div className="flex items-center justify-between pt-4 border-t">
-                      <div className="flex items-center space-x-6">
-                        <Button variant="ghost" size="sm" className="text-gray-600">
-                          <Bookmark className="h-4 w-4 mr-1" />
-                          Bookmark
-                        </Button>
-
-                        <Button variant="ghost" size="sm" className="text-gray-600">
-                          <Share className="h-4 w-4 mr-1" />
-                          Share
-                        </Button>
-                      </div>
-
-                      <div className="flex items-center space-x-4">
-                        <Button variant="ghost" size="sm" className="text-gray-600">
-                          <MessageCircle className="h-4 w-4 mr-1" />
-                          {post.comments}
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleLike(post.id)}
-                          className={post.isLiked ? "text-red-600" : "text-gray-600"}
-                        >
-                          <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
-                          {post.likes}
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-800 mb-4">{post.content}</p>
+                        {
+                          post.attachments.length > 0 && (
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                              {
+                                post.attachments.map((p: any, index: number) => (
+                                  <div key={index} className="border-[1px] border-[#a9b2bc] dark:border-[#708090] relative h-full w-full overflow-hidden rounded-lg object-cover max-h-[500px]">
+                                    <img loading="lazy" alt="attachment" className="h-full w-full object-cover" src={p.item} />
+                                  </div>
+                                ))
+                              }
+                            </div>
+                          )
+                        }
+                        <div className="flex items-center justify-between pt-4 border-t">
+                          <div className="flex items-center space-x-6">
+                            <Button variant="ghost" size="sm" className="text-gray-600">
+                              <Bookmark className="h-4 w-4 mr-1" />
+                              Bookmark
+                            </Button>
+    
+                            <Button variant="ghost" size="sm" className="text-gray-600">
+                              <Share className="h-4 w-4 mr-1" />
+                              Share
+                            </Button>
+                          </div>
+    
+                          <div className="flex items-center space-x-4">
+                            <Button variant="ghost" size="sm" className="text-gray-600">
+                              <MessageCircle className="h-4 w-4 mr-1" />
+                              {post.comments}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleLike(post.id)}
+                              className={post.isLiked ? "text-red-600" : "text-gray-600"}
+                            >
+                              <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
+                              {post.likes}
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )) : (
+                    <div>no posts</div>
+                  )
+                )
+              }
             </TabsContent>
 
             <TabsContent value="original">

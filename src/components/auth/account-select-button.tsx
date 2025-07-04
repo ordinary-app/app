@@ -1,115 +1,57 @@
 "use client";
 
-import { Account } from "@lens-protocol/client";
+import { Account, err } from "@lens-protocol/client";
 import { Loader2 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
-// import { env } from "@/env";
-// import { useBlogStorage } from "@/hooks/use-blog-storage";
-import { getPublicClient } from "@/lib/client";
-import { useUIStore } from "@/stores/ui-store";
 import { Button } from "../ui/button";
 import { UserAvatar } from "../user/user-avatar";
-import { useCurrentProfileStorage } from "@/stores/profile-store";
-// import { setupUserAuth } from "./auth-manager";
+import { useLensAuthStore } from "@/stores/auth-store";
+import { useProfileSelectStore } from "@/stores/profile-select-store";
+import { toast } from "sonner";
 
-export function SelectAccountButton({ account, onSuccess }: { account: Account; onSuccess?: () => Promise<void> }) {
+export function SelectAccountButton({ account, onSuccess }: { account: Account; onSuccess?: () => void }) {
   const { address: walletAddress } = useAccount();
-  const router = useRouter();
-  const pathname = usePathname();
-  // const resetBlogStorage = useBlogStorage((state) => state.resetState);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const { signMessageAsync, error, isError, isPending, variables } = useSignMessage();
-  const setProfileSelectModalOpen = useUIStore((state) => state.setProfileSelectModalOpen);
-  const setCurrentProfile = useCurrentProfileStorage((state) => state.setCurrentProfile)
-
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(error?.message);
-      console.error(error);
-    }
-  }, [isError, error]);
+  const { signMessageAsync } = useSignMessage();
+  const { client, setCurrentProfile } = useLensAuthStore();
+  const setProfileSelectModalOpen = useProfileSelectStore((state) => state.setProfileSelectModalOpen);
 
   const login = async () => {
     setIsLoggingIn(true);
     try {
-      const client = await getPublicClient();
-
-      if (!client) {
-        throw new Error("No Lens client found");
-      }
-
-      if (!walletAddress) {
-        throw new Error("No wallet address found");
-      }
-
-      const isOwner = account.owner === walletAddress;
-      const ownerRequest = {
+      if (!client) throw new Error("No Lens client found");
+      if (!walletAddress) throw new Error("No wallet address found");
+      const authenticated = await client.login({
         accountOwner: {
           account: account.address,
           owner: walletAddress,
-          // app:
-          //   env.NEXT_PUBLIC_ENVIRONMENT === "development"
-          //     ? env.NEXT_PUBLIC_APP_ADDRESS_TESTNET
-          //     : env.NEXT_PUBLIC_APP_ADDRESS,
         },
-      };
-      const managerRequest = {
-        accountManager: {
-          account: account.address,
-          manager: walletAddress,
-          // app:
-          //   env.NEXT_PUBLIC_ENVIRONMENT === "development"
-          //     ? env.NEXT_PUBLIC_APP_ADDRESS_TESTNET
-          //     : env.NEXT_PUBLIC_APP_ADDRESS,
-        },
-      };
-      const challengeRequest = isOwner ? ownerRequest : managerRequest;
-
-      const authenticated = await client.login({
-        ...challengeRequest,
         signMessage: async (message: string) => {
           return await signMessageAsync({ message });
         },
       });
-
       if (authenticated.isErr()) {
         throw new Error(`Failed to get authenticated client: ${authenticated.error.message}`);
       }
-
+     
       const credentials = await authenticated.value.getCredentials();
-
       if (credentials.isErr()) {
         console.error("Failed to get credentials", credentials.error);
         throw new Error("Unable to retrieve authentication credentials");
       }
 
       const refreshToken = credentials.value?.refreshToken;
-
+      
       if (!refreshToken) {
         console.error("Failed to get refresh token - missing from credentials");
         throw new Error("Authentication token unavailable");
       }
-      setCurrentProfile(account)
-
-      // try {
-      //   await setupUserAuth(refreshToken);
-      // } catch (error) {
-      //   console.error("Error setting up user auth:", error);
-      //   throw new Error("Couldn't complete login process");
-      // }
 
       toast.success("Logged in successfully!");
-      console.log("Logged in successfully!");
-
-      // resetBlogStorage();
-      await onSuccess?.();
+      setCurrentProfile(account);
       setProfileSelectModalOpen(false);
-
-      // window.location.reload();
+      onSuccess?.();
     } catch (err) {
       console.error("Error logging in:", err);
       toast.error(err instanceof Error ? err.message : "Failed to log in. Please try again.");
@@ -131,7 +73,6 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
           {account.username?.localName ?? account.address}
         </div>
       </div>
-      <Button>Log In</Button>
       {isLoggingIn && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
     </Button>
   );
