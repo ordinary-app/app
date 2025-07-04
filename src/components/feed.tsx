@@ -482,19 +482,20 @@ export function Feed() {
                               e.stopPropagation();
                             }}
                           >
-                            <Badge variant="secondary" className="text-xs cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-colors shadow-lg">
-                              Original
-                            </Badge>
+                          <Badge
+                            variant="secondary"
+                            className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
+                          >
+                            Original
+                          </Badge>
                           </button>
                         </TooltipTrigger>
-                        <TooltipContent 
-                          className="border border-black-500 rounded-md text-sm font-medium"
+                        <TooltipContent
+                          className="z-[9999] border border-yellow-200 rounded-md text-xs font-medium text-neutral-800 px-3 py-1 shadow-md"
                           sideOffset={3}
                           side="right"
-                          style={{ 
-                            backgroundColor: '#F7D777', 
-                            color: '#000000',
-                            zIndex: 9999
+                          style={{
+                            background: 'linear-gradient(135deg, #fdf6e3, #f5deb3)', // 柔和渐变嘻嘻^^
                           }}
                         >
                           薯条 token id = 1

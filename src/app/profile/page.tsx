@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from "react"
 import { Header } from "@/components/header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Edit, MapPin, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader, Loader2 } from "lucide-react"
+import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine } from "lucide-react"
 import { usePosts } from "@lens-protocol/react";
 import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
@@ -60,10 +60,11 @@ export default function ProfilePage() {
         isLiked: false,
         timestamp: dayjs(post.timestamp).format("MMM D YYYY | HH:mm"),
         attachments: post.metadata?.attachments ?? [],
+        contentUri: post.contentUri,
       }))
   }, [data, loading, currentProfile])
 
-  const handleLike = async (postId: string) => {
+  const handleLike = async (_postId: string) => {
     try {
       // Update the post like status locally
       // Note: In a real app, you would call the API here
@@ -158,7 +159,7 @@ export default function ProfilePage() {
           <Tabs defaultValue="posts" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="posts">Posts</TabsTrigger>
-              <TabsTrigger value="original">Chips</TabsTrigger>
+              <TabsTrigger value="original">CHIPS</TabsTrigger>
               <TabsTrigger value="media">Media</TabsTrigger>
               <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
             </TabsList>
@@ -193,19 +194,20 @@ export default function ProfilePage() {
                                           e.stopPropagation();
                                         }}
                                       >
-                                        <Badge variant="secondary" className="text-xs cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-colors shadow-lg">
-                                          Original
-                                        </Badge>
+                                      <Badge
+                                        variant="secondary"
+                                        className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
+                                      >
+                                        Original
+                                      </Badge>
                                       </button>
                                     </TooltipTrigger>
-                                    <TooltipContent 
-                                      className="border border-black-500 rounded-md text-sm font-medium"
+                                    <TooltipContent
+                                      className="z-[9999] border border-yellow-200 rounded-md text-xs font-medium text-neutral-800 px-3 py-1 shadow-md"
                                       sideOffset={3}
                                       side="right"
-                                      style={{ 
-                                        backgroundColor: '#F7D777', 
-                                        color: '#000000',
-                                        zIndex: 9999
+                                      style={{
+                                        background: 'linear-gradient(135deg, #fdf6e3, #f5deb3)', // 柔和渐变
                                       }}
                                     >
                                       薯条 token id = 1
@@ -274,13 +276,30 @@ export default function ProfilePage() {
 
             <TabsContent value="original">
               <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-semibold mb-2">Original Statements (Chips)</h3>
-                    <p className="text-gray-600">Your original content and statements will appear here</p>
-                  </div>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <ScanLine className="w-5 h-5 text-orange-600" />
+                    <span>Original Statements</span>
+                  </CardTitle>
+                  <CardDescription>Your original content permanently stored on Grove Storage</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {userPosts
+                    .filter((post) => post.isOriginal)
+                    .map((post) => (
+                      <div
+                        key={post.id}
+                        className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"
+                      >
+                        <p className="text-gray-800 mb-2">{post.content}</p>
+                        <div className="flex items-start justify-between text-sm">
+                          <span className="text-orange-600 break-all flex-1 mr-2">Grove Storage: {post.contentUri || 'len://...'}</span>
+                          <span className="text-gray-500 flex-shrink-0">{post.timestamp}</span>
+                        </div>
+                      </div>
+                    ))}
                 </CardContent>
-              </Card>
+            </Card>
             </TabsContent>
 
             <TabsContent value="media">
