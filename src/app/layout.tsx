@@ -6,11 +6,12 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { Web3Provider } from "@/app/Web3Provider"
 import { GlobalModals } from "@/components/global-modals"
+import { AuthManager } from "@/components/auth-manager"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Treehouse",
+  title: "ChipDock",
   description: "A modern web application for interacting with the Lens Protocol",
 }
 
@@ -18,14 +19,15 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}) { 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Web3Provider>
-              <GlobalModals />
-              {children}
+            <AuthManager />
+            <GlobalModals />
+            {children}
             <Toaster />
           </Web3Provider>
         </ThemeProvider>

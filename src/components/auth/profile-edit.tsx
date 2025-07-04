@@ -10,8 +10,6 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Upload, X } from "lucide-react";
-import { useCurrentProfileStorage } from "@/stores/profile-store";
-import { getLensClient } from "@/lib/client";
 import { uploadFile } from "@/utils/upload-file";
 import { resolveUrl } from "@/utils/resolve-url";
 import { uri } from "@lens-protocol/client";
@@ -19,6 +17,7 @@ import { setAccountMetadata } from "@lens-protocol/client/actions";
 import { account as accountMetadataBuilder } from "@lens-protocol/metadata";
 import { storageClient } from "@/lib/storage-client";
 import { handleOperationWith } from "@lens-protocol/client/viem";
+import { useLensAuthStore } from "@/stores/auth-store";
 
 interface ProfileEditProps {
   open: boolean;
@@ -27,7 +26,7 @@ interface ProfileEditProps {
 
 export function ProfileEdit({ open, onClose }: ProfileEditProps) {
   const { data: walletClient } = useWalletClient();
-  const currentProfile = useCurrentProfileStorage(state => state.currentProfile);
+  const { currentProfile, sessionClient: client } = useLensAuthStore();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState<string>("");
   const [name, setName] = useState(currentProfile?.metadata?.name || "");
@@ -66,7 +65,6 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
         picture: pictureUri || undefined,
       });
 
-      const client = await getLensClient();
       
       // Check if we have a session client
       if (!client || !client.isSessionClient()) {
