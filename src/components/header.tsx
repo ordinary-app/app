@@ -17,7 +17,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useProfileSelectStore } from "@/stores/profile-select-store"
-import { UserAvatar } from "@/components/user/user-avatar"
+import { UserAvatar } from "@/components/user-avatar"
+import { toast } from "sonner";
+import copy from "copy-to-clipboard";
 
 
 export default function Header() {
@@ -28,7 +30,6 @@ export default function Header() {
   const { setProfileSelectModalOpen } = useProfileSelectStore();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  // const connect = useConnect()
 
   useEffect(() => {
     // handle wagmi wallet connect error
@@ -51,7 +52,6 @@ export default function Header() {
     { href: '/discover', label: 'SEARCH' },
   ]
 
-  //console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect, currentProfile, sessionClient)
   const handleDisconnect = async () => {
     disconnectWallet();
     await sessionClient?.logout();
@@ -69,7 +69,6 @@ export default function Header() {
             <div className="font-bold text-xl bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent"
             >CHIPDOCK</div>
           </Link>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navItems.map(({ href, label }) => {
@@ -78,7 +77,7 @@ export default function Header() {
                 <Link
                   key={href}
                   href={href}
-                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
+                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 cursor-pointer ${
                     isActive ? 'text-harbor-600' : ''
                   }`}
                 >

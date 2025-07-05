@@ -1,12 +1,15 @@
 import { useAccount } from "wagmi";
 import { toast } from "sonner";
+import { useReconnectWallet } from "./use-reconnect-wallet";
 
 export const useWalletCheck = () => {
   const { isConnected } = useAccount();
+  const reconnectWallet = useReconnectWallet();
 
   const checkWalletConnection = (action: string = "此操作") => {
     if (!isConnected) {
-      toast.error(`请先登录以${action}`);
+      reconnectWallet();
+      // toast.error(`重新登录以${action}，请继续操作`);
       return false;
     }
     return true;

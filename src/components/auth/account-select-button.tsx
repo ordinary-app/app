@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { Button } from "../ui/button";
-import { UserAvatar } from "../user/user-avatar";
+import { UserAvatar } from "../user-avatar";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { useProfileSelectStore } from "@/stores/profile-select-store";
 import { toast } from "sonner";

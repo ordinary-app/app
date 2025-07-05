@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, FileText, Loader2 } from "lucide-react"
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
@@ -16,6 +15,7 @@ import { storageClient } from "@/lib/storage-client";
 // import { acl } from '@/lib/acl';
 import { post } from "@lens-protocol/client/actions";
 import { useLensAuthStore } from "@/stores/auth-store"
+import { toast } from "sonner"
 
 
 interface AttachmentProps {
@@ -37,7 +37,6 @@ export default function CreatePage() {
   const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
   const router = useRouter()
-  const { toast } = useToast()
   const { sessionClient } = useLensAuthStore();
 
 
@@ -45,12 +44,8 @@ export default function CreatePage() {
     const fileList: FileList = event.target.files!
     if (Array.from(fileList).some(i => i.size > 8 * 1024 * 1024)) {
       // 8MB limit
-      toast({
-        title: "Error",
-        description: "File size must be less than 8MB",
-        variant: "destructive",
-      })
-      return
+      toast.error("File size must be less than 8MB");
+      return;
     }
 
     try {
@@ -59,7 +54,6 @@ export default function CreatePage() {
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
         const url = await uploadFile(file)
-        console.log("Upload image success -----", url);
         let res = {
           name: file.name,
           size: file.size,
@@ -70,13 +64,7 @@ export default function CreatePage() {
       }
       setSelectedFile(attachments)
     } catch (uploadError) {
-      console.error("Error uploading image:", uploadError);
-      toast({
-        title: "Error",
-        description: "Failed to upload image. Please try again.",
-        variant: "destructive",
-      })
-      return;
+      toast.error("Failed to upload image. Please try again.")
     }
   }
 
@@ -84,20 +72,12 @@ export default function CreatePage() {
     e.preventDefault()
 
     if (!content.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter some content",
-        variant: "destructive",
-      })
-      return
+      toast.error("Please enter some content");
+      return;
     }
 
     if (isOriginal && !licenseType) {
-      toast({
-        title: "Error",
-        description: "Please select a license for your Original Content",
-        variant: "destructive",
-      })
+      toast.error("Please select a license for your Original Content")
       return
     }
 
@@ -142,7 +122,6 @@ export default function CreatePage() {
         return attributes;
       }
 
-      console.log('xxx metadata----', selectedFile, attributes)
       //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
@@ -169,19 +148,11 @@ export default function CreatePage() {
       const { uri } = await storageClient.uploadAsJson(metadata);
       await post(client, { contentUri: uri });
 
-      toast({
-        title: "Success",
-        description: "Your post has been created successfully!",
-      })
+      toast.success("Your post has been created successfully!")
 
       router.push("/");
     } catch (error) {
-      console.log('xxxx errrr', error)
-      toast({
-        title: "Error",
-        description: "Failed to create post. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to create post. Please try again.")
     } finally {
       setIsSubmitting(false)
     }

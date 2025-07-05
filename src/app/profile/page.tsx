@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import Header from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -13,12 +12,11 @@ import { usePosts } from "@lens-protocol/react";
 import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
-import { useToast } from "@/hooks/use-toast";
 import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { toast } from "sonner"
 
 export default function ProfilePage() {
-  const { toast } = useToast()
   const { currentProfile } = useLensAuthStore();
   const { checkWalletConnection } = useWalletCheck();
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -74,20 +72,11 @@ export default function ProfilePage() {
     try {
       // Update the post like status locally
       // Note: In a real app, you would call the API here
-      toast({
-        title: "Success",
-        description: "Post liked successfully",
-      })
+      toast.success("Post liked successfully")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to like post",
-        variant: "destructive",
-      })
+      toast.error("Failed to like post")
     }
   }
-
-  // console.log("Get post -----", data)
 
   return (
     <TooltipProvider>

@@ -7,12 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 import { fetchPosts } from "@lens-protocol/client/actions"
 import { Post as LensPost, AnyPost } from "@lens-protocol/client"
 import { resolveUrl } from "@/utils/resolve-url"
 import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { toast } from "sonner"
 
 interface Post {
   id: string
@@ -40,7 +40,6 @@ interface Post {
 }
 
 export function Feed() {
-  const { toast } = useToast()
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -364,16 +363,9 @@ export function Feed() {
         ),
       )
 
-      toast({
-        title: "Success",
-        description: "Post liked successfully",
-      })
+      toast.success("Post liked successfully")
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to like post",
-        variant: "destructive",
-      })
+      toast.error("Failed to like post")
     }
   }
 
@@ -387,16 +379,9 @@ export function Feed() {
         posts.map((post) => (post.author.handle === handle ? { ...post, isFollowing: !post.isFollowing } : post)),
       )
 
-      toast({
-        title: "Success",
-        description: `Successfully ${posts.find((p) => p.author.handle === handle)?.isFollowing ? "unfollowed" : "followed"} user`,
-      })
+      toast.success(`Successfully ${posts.find((p) => p.author.handle === handle)?.isFollowing ? "unfollowed" : "followed"} user`)
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to follow/unfollow user",
-        variant: "destructive",
-      })
+      toast.error("Failed to follow/unfollow user")
     }
   }
 

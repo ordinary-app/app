@@ -58,6 +58,17 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
       return;
     }
 
+    if (!name) {
+      toast.error("Display name can not be empty.");
+      return;
+    }
+
+    if (!bio) {
+      toast.error("Bio can not be empty.");
+      return;
+    }
+   
+
     setIsLoading(true);
     
     try {
