@@ -45,7 +45,7 @@ export default function Header() {
     { href: '/create', label: 'Create' },
   ]
 
-  // console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect)
+  //console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect)
   const handleDisconnect = async () => {
     disconnectWallet();
     await sessionClient?.logout();
