@@ -1,10 +1,16 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, Users, Globe, Zap, Heart } from "lucide-react"
 import Link from "next/link"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { ConnectKitButton } from "connectkit"
 
 export default function WhatIsChipPage() {
+  const { isConnected } = useWalletCheck();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-harbor-50/30">
       <main className="py-12 px-4 sm:px-6 lg:px-8">
@@ -31,16 +37,26 @@ export default function WhatIsChipPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="chip-button text-white font-semibold">
-                <Link href="/create">立即获得薯条证明 🍟</Link>
-              </Button>
+              {isConnected ? (
+                <Button asChild size="lg" className="chip-button text-white font-semibold">
+                  <Link href="/create">发布作品并获得证明</Link>
+                </Button>
+              ) : (
+                <ConnectKitButton.Custom>
+                  {({ show }) => (
+                    <Button size="lg" className="chip-button text-white font-semibold" onClick={show}>
+                      连接钱包发布作品
+                    </Button>
+                  )}
+                </ConnectKitButton.Custom>
+              )}
               <Button
                 asChild
                 variant="outline"
                 size="lg"
                 className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-transparent"
               >
-                <Link href="/feed">查看已认证作品 🌊</Link>
+                <Link href="/feed">探索作品 🌊</Link>
               </Button>
             </div>
           </div>
@@ -248,7 +264,7 @@ export default function WhatIsChipPage() {
           <div className="mb-20">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 CHIPDOCK？</h2>
-              <p className="text-lg text-neutral-600">我们致力于为创作者提供最好的原创保护服务</p>
+              <p className="text-lg text-neutral-600">我们致力于为创作者社区提供最佳的创作与社交体验</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -268,7 +284,7 @@ export default function WhatIsChipPage() {
                 <CardContent className="relative z-10">
                   <p className="text-neutral-700 leading-relaxed">
                     CHIPDOCK
-                    是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
+                    未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
                 </CardContent>
               </Card>
@@ -351,17 +367,35 @@ export default function WhatIsChipPage() {
               <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                >
-                  <Link href="/create" className="flex items-center space-x-2">
-                    <span>立即创作</span>
-                    <div className="text-xl">🍟</div>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </Button>
+                {isConnected ? (
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <Link href="/feed" className="flex items-center space-x-2">
+                      <span>立即加入</span>
+                      <div className="text-xl">🍟</div>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Link>
+                  </Button>
+                ) : (
+                  <ConnectKitButton.Custom>
+                    {({ show }) => (
+                      <Button
+                        size="lg"
+                        className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                        onClick={show}
+                      >
+                        <span className="flex items-center space-x-2">
+                          <span>连接钱包加入</span>
+                          <div className="text-xl">🍟</div>
+                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                        </span>
+                      </Button>
+                    )}
+                  </ConnectKitButton.Custom>
+                )}
 
                 <Button
                   asChild
@@ -369,7 +403,7 @@ export default function WhatIsChipPage() {
                   size="lg"
                   className="border-2 border-white text-white hover:bg-white hover:text-harbor-600 bg-transparent px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
-                  <Link href="/discover" className="flex items-center space-x-2">
+                  <Link href="/feed" className="flex items-center space-x-2">
                     <span>浏览社区</span>
                     <div className="text-xl">🌊</div>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

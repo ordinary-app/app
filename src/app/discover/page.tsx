@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Search, TrendingUp, Users, Hash } from "lucide-react"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
 
 export default function DiscoverPage() {
   const [searchQuery, setSearchQuery] = useState("")
+  const { checkWalletConnection } = useWalletCheck();
 
   const trendingTopics = [
     { tag: "web3", posts: 1234 },
@@ -130,7 +132,11 @@ export default function DiscoverPage() {
                         <p className="text-xs text-gray-500 truncate">{profile.bio}</p>
                         <p className="text-xs text-gray-400">{profile.followers.toLocaleString()} followers</p>
                       </div>
-                      <Button size="sm" variant="outline">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => checkWalletConnection("关注用户")}
+                      >
                         Follow
                       </Button>
                     </div>

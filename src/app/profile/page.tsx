@@ -15,10 +15,12 @@ import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useToast } from "@/hooks/use-toast";
 import { useLensAuthStore } from "@/stores/auth-store"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
 
 export default function ProfilePage() {
   const { toast } = useToast()
   const { currentProfile } = useLensAuthStore();
+  const { checkWalletConnection } = useWalletCheck();
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [stats, setStats] = useState({
     posts: 12,
@@ -65,6 +67,10 @@ export default function ProfilePage() {
   }, [data, loading, currentProfile])
 
   const handleLike = async (_postId: string) => {
+    if (!checkWalletConnection("点赞")) {
+      return;
+    }
+    
     try {
       // Update the post like status locally
       // Note: In a real app, you would call the API here
@@ -144,7 +150,15 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <Button className="self-start" onClick={() => setIsEditOpen(true)}>
+                <Button 
+                  className="self-start" 
+                  onClick={() => {
+                    if (!checkWalletConnection("编辑个人资料")) {
+                      return;
+                    }
+                    setIsEditOpen(true);
+                  }}
+                >
                   <Edit className="h-4 w-4 mr-2" />
                   Edit Profile
                 </Button>

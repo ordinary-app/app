@@ -40,6 +40,7 @@ export default function AuthManager() {
     if (!sessionClient) return;
     let timer: NodeJS.Timeout;
     async function checkSession() {
+      if (!sessionClient) return;
       const result = await currentSession(sessionClient);
       if (result.isErr()) {
         setSessionClient(null);
