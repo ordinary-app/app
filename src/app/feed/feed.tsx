@@ -12,6 +12,7 @@ import { fetchPosts } from "@lens-protocol/client/actions"
 import { Post as LensPost, AnyPost } from "@lens-protocol/client"
 import { resolveUrl } from "@/utils/resolve-url"
 import { useLensAuthStore } from "@/stores/auth-store"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
 
 interface Post {
   id: string
@@ -49,6 +50,7 @@ export function Feed() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const lastPostIdRef = useRef<string | null>(null)
   const { client } = useLensAuthStore();
+  const { checkWalletConnection } = useWalletCheck();
 
   //调用 Lens 获取原始数据
   useEffect(() => {
@@ -345,6 +347,10 @@ export function Feed() {
   }
 
   const handleLike = async (postId: string) => {
+    if (!checkWalletConnection("点赞")) {
+      return;
+    }
+    
     try {
       setPosts(
         posts.map((post) =>
@@ -372,6 +378,10 @@ export function Feed() {
   }
 
   const handleFollow = async (handle: string) => {
+    if (!checkWalletConnection("关注用户")) {
+      return;
+    }
+    
     try {
       setPosts(
         posts.map((post) => (post.author.handle === handle ? { ...post, isFollowing: !post.isFollowing } : post)),
@@ -435,7 +445,7 @@ export function Feed() {
       
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Latest Fanworks</h1>
-        <p className="text-gray-600">Discover amazing fanworks from our community</p>
+        <p className="text-gray-600">Discover amazing fanworks on global feed</p>
         
         {/* 第一条帖子上方的信息栏 */}
         {posts.length > 0 && (

@@ -1,9 +1,16 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import Image from "next/image"
+import { Span } from "next/dist/trace"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { ConnectKitButton } from "connectkit"
 
 export function IntroSection() {
+  const { isConnected } = useWalletCheck();
+
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background Elements */}
@@ -51,22 +58,19 @@ export function IntroSection() {
           {/* Content */} 
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-relaxed">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-loose">
                 <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
                   CHIPDOCK
                 </span>
                 <br />              
                 <span className="text-3xl text-harbor-600 leading-relaxed">薯条码头：为爱发电的去中心化创作港口</span>
                 <br />
-                <br />
-                <p className="text-3xl text-neutral-700">A Safe Harbor for Fanworks Creation</p>
+                <span className="text-3xl text-neutral-700">A SAFE HARBOR FOR FANDOM</span>
               </h1>
 
-
-
               <p className="text-lg text-neutral-600 max-w-2xl">
-                A noncommercial and nonprofit decentralized social platform for fanworks powered by open-source
-                blockchain protocol. Protecting freedom of creativity and publishing rights for fan creators.
+                Chipdock is a nonprofit decentralized social platform for fanworks powered by open-source
+                blockchain protocol. Protecting freedom of creativity and publishing rights for fan art creators.
               </p>
             </div>
 
@@ -111,9 +115,19 @@ export function IntroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="harbor-button text-white font-semibold">
-                <Link href="/create">Start Creating</Link>
-              </Button>
+              {isConnected ? (
+                <Button asChild size="lg" className="harbor-button text-white font-semibold">
+                  <Link href="/feed">Start Here</Link>
+                </Button>
+              ) : (
+                <ConnectKitButton.Custom>
+                  {({ show }) => (
+                    <Button size="lg" className="harbor-button text-white font-semibold" onClick={show}>
+                      Start Here
+                    </Button>
+                  )}
+                </ConnectKitButton.Custom>
+              )}
 
               <Button
                 asChild
@@ -121,7 +135,7 @@ export function IntroSection() {
                 size="lg"
                 className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white"
               >
-                <Link href="/discover">Explore Community 🌊</Link>
+                <Link href="/feed">Explore 🕊️</Link>
               </Button>
             </div>
           </div>

@@ -1,11 +1,17 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Shield, Users, Zap, Globe, Heart, Coins, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { ChipsSection } from "@/components/home/chips-section"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { ConnectKitButton } from "connectkit"
 
 export function DetailSection() {
+  const { isConnected } = useWalletCheck();
+
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background */}
@@ -13,13 +19,13 @@ export function DetailSection() {
 
       {/* Floating Harbor Elements */}
       <div className="absolute top-20 left-10 opacity-8 float-animation">
-        <div className="text-8xl">🌊</div>
+        <div className="text-8xl"></div>
       </div>
       <div className="absolute top-40 right-20 opacity-8 anchor-animation">
-        <div className="text-6xl">⚓</div>
+        <div className="text-6xl"></div>
       </div>
       <div className="absolute bottom-40 left-20 opacity-8 wave-animation" style={{ animationDelay: "1s" }}>
-        <div className="text-7xl">🌊</div>
+        <div className="text-7xl">⚓</div>
       </div>
       <div className="absolute bottom-20 right-10 opacity-8 anchor-animation" style={{ animationDelay: "2s" }}>
         <div className="text-5xl"></div>
@@ -29,13 +35,13 @@ export function DetailSection() {
         {/* Project Vision */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-harbor-500">🌊</div>
+            <div className="text-harbor-500">🚢</div>
             <span className="text-harbor-700 font-medium">Building the Future</span>
-            <div className="text-harbor-500">⚓</div>
+            <div className="text-harbor-500">🚢</div>
           </div>
 
           <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
-            <span className="block">创作的</span>
+            <span className="block">上传与分享作品的</span>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               安全港湾
             </span>
@@ -46,15 +52,15 @@ export function DetailSection() {
               A noncommercial and nonprofit decentralized social platform for fanworks
             </p>
             <p className="text-lg text-neutral-600 leading-relaxed">
-              Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fan
-              creators 🚢
+              Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fan art
+              creators 🌊
             </p>
           </div>
 
           {/* Animated Harbor Divider */}
           <div className="flex items-center justify-center mt-12 mb-8">
             <div className="h-px bg-gradient-to-r from-transparent via-harbor-300 to-transparent w-32"></div>
-            <div className="mx-4 text-2xl animate-wave">🌊</div>
+            <div className="mx-4 text-2xl animate-wave">⚓</div>
             <div className="h-px bg-gradient-to-r from-transparent via-harbor-300 to-transparent w-32"></div>
           </div>
         </div>
@@ -166,7 +172,7 @@ export function DetailSection() {
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                公平的价值交换机制，让优质创作获得应有的回报和认可，建立可持续的创作生态。
+                公平的稳定代币匿名交换机制，让优质创作获得应有的回报和认可，建立可持续的创作生态。
               </p>
             </CardContent>
           </Card>
@@ -188,7 +194,7 @@ export function DetailSection() {
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                连接全球的同人创作者，打破地域限制，构建无国界的创作社区，让文化交流更加自由。
+                轻松连接全球的同人创作者，打破地域限制，构建无国界的创作社区，让文化交流更加自由。
               </p>
             </CardContent>
           </Card>
@@ -222,11 +228,11 @@ export function DetailSection() {
               <div className="group text-center p-8 bg-white border border-success-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🌳</div>
                 <h4 className="font-bold text-neutral-900 mb-3 text-lg">Grove Storage</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">分布式内容存储，确保数据永久保存</p>
+                <p className="text-sm text-neutral-600 leading-relaxed">分布式内容存储，确保数据长期保存</p>
               </div>
 
               <div className="group text-center p-8 bg-white border border-warning-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🪙</div>
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🏠</div>
                 <h4 className="font-bold text-neutral-900 mb-3 text-lg">Family Wallet</h4>
                 <p className="text-sm text-neutral-600 leading-relaxed">安全便捷的钱包连接体验</p>
               </div>
@@ -303,7 +309,7 @@ export function DetailSection() {
                   <ul className="space-y-3 text-left">
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>互动机制上线</span>
+                      <span>互动功能机制</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
@@ -373,17 +379,31 @@ export function DetailSection() {
             <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            {isConnected ? (
               <Button
                 asChild
                 size="lg"
                 className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                <Link href="/create" className="flex items-center space-x-2">
+                <Link href="/feed" className="flex items-center space-x-2">
                   <span>立即加入</span>
                   <div className="text-xl">🍟</div>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>
+              ) : (
+                <ConnectKitButton.Custom>
+                  {({ show }) => (
+                    <Button size="lg" 
+                    className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    onClick={show}>
+                      <span>立即加入</span>
+                      <div className="text-xl">🍟</div>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Button>
+                  )}
+                </ConnectKitButton.Custom>
+              )}
 
               <Button
                 asChild
@@ -391,7 +411,7 @@ export function DetailSection() {
                 size="lg"
                 className="border-2 border-white text-white hover:bg-white hover:text-harbor-600 bg-transparent px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                <Link href="/discover" className="flex items-center space-x-2">
+                <Link href="/feed" className="flex items-center space-x-2">
                   <span>探索社区</span>
                   <div className="text-xl">🌊</div>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

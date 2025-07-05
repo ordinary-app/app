@@ -45,11 +45,10 @@ export default function Header() {
   }, [isConnected, address, currentProfile, setProfileSelectModalOpen]);
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/what-is-chip', label: 'What is Chip' },
-    { href: '/feed', label: 'Feed' },
-    { href: '/discover', label: 'Discover' },
-    { href: '/create', label: 'Create' },
+    { href: '/', label: 'HOME' },
+    { href: '/what-is-chip', label: 'CHIPS' },
+    { href: '/feed', label: 'FEED' },
+    { href: '/discover', label: 'SEARCH' },
   ]
 
   //console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect, currentProfile, sessionClient)
@@ -72,28 +71,31 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          {
-            currentProfile ? (
-              <nav className="hidden md:flex items-center space-x-6">
-                {navItems.map(({ href, label }) => {
-                  const isActive = pathname === href
-                  return (
-                    <Link
-                      key={href}
-                      href={href}
-                      className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
-                        isActive ? 'text-harbor-600' : ''
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  )
-                })}
-              </nav>
-            ) : null
-          }
+          <nav className="hidden md:flex items-center space-x-6">
+            {navItems.map(({ href, label }) => {
+              const isActive = pathname === href
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
+                    isActive ? 'text-harbor-600' : ''
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
+          </nav>
           {/* User Actions */}
           <div className="flex items-center space-x-4">
+            {/* Create Button - 只在用户登录时显示 */}
+            {currentProfile && (
+              <Button asChild variant="default" size="sm" className="harbor-button text-white">
+                <Link href="/create">Post</Link>
+              </Button>
+            )}
+            
             {currentProfile ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -174,23 +176,19 @@ export default function Header() {
             )}
 
             {/* Mobile menu button */}
-            {
-              currentProfile ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden text-gray-600 hover:text-gray-800"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                  {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </Button>
-              ) : null
-            }
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-gray-600 hover:text-gray-800"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && currentProfile && (
+        {isMobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-sm">
             <nav className="flex flex-col space-y-2 p-4">
               <Link
@@ -198,28 +196,30 @@ export default function Header() {
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                What is Chip 🍟
+                CHIPS 🍟
               </Link>
               <Link
                 href="/feed"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Community Feed 🌊
+                FEED 
               </Link>
-              <Link
-                href="/create"
-                className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Create ⚓
-              </Link>
+              {currentProfile && (
+                <Link
+                  href="/create"
+                  className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Post 
+                </Link>
+              )}
               <Link
                 href="/discover"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Discover 🍟
+                SEARCH 
               </Link>
               {/* {!currentProfile && (
                 <ConnectKitButton.Custom>

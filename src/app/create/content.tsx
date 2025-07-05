@@ -20,6 +20,7 @@ import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
 import { useReconnectWallet } from "@/hooks/use-reconnect-wallet"
+import { useWalletCheck } from "@/hooks/use-wallet-check"
 
 interface AttachmentProps {
   name: string;
@@ -47,6 +48,7 @@ export default function CreatePage() {
   const publicClient = usePublicClient();
   const { address, isConnected } = useAccount();
   const reconnectWallet = useReconnectWallet();
+  const { checkWalletConnection } = useWalletCheck();
 
 
   // console.log('xxxx wallet', address, isConnected, client, currentProfile)
@@ -92,6 +94,10 @@ export default function CreatePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!checkWalletConnection("发布内容")) {
+      return;
+    }
 
     if (!content.trim()) {
       toast({
@@ -188,14 +194,14 @@ export default function CreatePage() {
 
         if (!address) throw new Error("No wallet connected");
         
-        const { request } = await publicClient?.simulateContract({
+        const result = await publicClient?.simulateContract({
           address: contractAddress,
           abi,
           functionName: 'safeMint', 
           args: [address, uri], 
           account: address,
         });
-        const txHash = await walletClient.writeContract(request);
+        const txHash = await walletClient.writeContract(result.request);
        
         // console.log('xxxxx ressssss', txHash)
         toast({
@@ -217,7 +223,7 @@ export default function CreatePage() {
       //TODO: error太长会展示不全
       toast({
         title: "Error",
-        description: error?.message ?? "Failed to create post. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to create post. Please try again.",
         variant: "destructive",
       })
     } finally {

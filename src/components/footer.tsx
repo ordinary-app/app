@@ -12,7 +12,7 @@ export function Footer() {
               <span className="font-bold text-xl">CHIPDOCK</span>
             </div>
             <p className="text-gray-400 text-sm">
-              A safe harbor for decentralized fan creation, protecting freedom of creativity and publishing rights for fan creators.
+              A safe harbor for decentralized fan creation, protecting freedom of creativity and publishing rights for fan art creators.
             </p>
             <div className="flex space-x-4 text-2xl">
               <span>🕊️</span>
