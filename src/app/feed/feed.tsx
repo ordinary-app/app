@@ -458,7 +458,7 @@ export function Feed() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Avatar>
-                  <AvatarImage src={post.author.avatar || "/placeholder.svg"} />
+                  <AvatarImage src={post.author.avatar || "/gull.jpg"} />
                   <AvatarFallback>{post.author.displayName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
