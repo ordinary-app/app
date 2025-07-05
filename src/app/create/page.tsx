@@ -189,7 +189,7 @@ export default function CreatePage() {
           address: contractAddress,
           abi,
           functionName: 'safeMint', 
-          args: [uri], 
+          args: [address, uri], 
           account: address,
         });
         const txHash = await walletClient.writeContract(request);

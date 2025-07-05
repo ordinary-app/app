@@ -1,3 +1,5 @@
+"use client";
+
 import { AnyClient, never } from "@lens-protocol/client";
 import { canCreateUsername, createAccountWithUsername, fetchAccount } from "@lens-protocol/client/actions";
 import { handleOperationWith } from "@lens-protocol/client/viem";

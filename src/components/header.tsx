@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, Settings, LogOut, Menu, X } from "lucide-react"
-import { useAccount, useDisconnect } from "wagmi"
+import { useAccount, useConnect, useDisconnect } from "wagmi"
 import { usePathname, useRouter } from "next/navigation"
 import { useLensAuthStore } from "@/stores/auth-store"
 import { ConnectKitButton } from "connectkit"
@@ -20,14 +20,15 @@ import { useProfileSelectStore } from "@/stores/profile-select-store"
 import { UserAvatar } from "@/components/user/user-avatar"
 
 
-export function Header() {
+export default function Header() {
   const { disconnect: disconnectWallet } = useDisconnect();
   const { currentProfile, setCurrentProfile, sessionClient, setSessionClient } = useLensAuthStore();
   const router = useRouter()
-  const { address, isConnected, isConnecting } = useAccount();
+  const { address, isConnected, isConnecting, status } = useAccount();
   const { setProfileSelectModalOpen } = useProfileSelectStore();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // const connect = useConnect()
 
   useEffect(() => {
     // handle wagmi wallet connect error
@@ -44,7 +45,7 @@ export function Header() {
     { href: '/create', label: 'Create' },
   ]
 
-  // console.log('xxxx wallet---', pathname, isConnecting, isConnected, address, currentProfile, sessionClient)
+  // console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect)
   const handleDisconnect = async () => {
     disconnectWallet();
     await sessionClient?.logout();

@@ -9,8 +9,10 @@ import { useLensAuthStore } from "@/stores/auth-store";
 
 const queryClient = new QueryClient();
 
-export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
+const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const { client } = useLensAuthStore();
+  
+  if (!client) return null;
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -21,3 +23,5 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     </WagmiProvider>
   );
 };
+
+export default Web3Provider;

@@ -1,3 +1,5 @@
+"use client";
+
 import { Account, evmAddress } from "@lens-protocol/client";
 import { fetchAccountsAvailable } from "@lens-protocol/client/actions";
 import { Loader2, Plus } from "lucide-react";

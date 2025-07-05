@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { fetchMeDetails, currentSession } from "@lens-protocol/client/actions";
 
-export function AuthManager() {
+export default function AuthManager() {
   const {
     client,
     sessionClient,
