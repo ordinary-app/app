@@ -1,3 +1,5 @@
+"use client";
+
 import { getDefaultConfig } from 'connectkit';
 import { createConfig } from 'wagmi';
 import { lensTestnet, sepolia } from 'wagmi/chains';

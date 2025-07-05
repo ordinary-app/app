@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Header } from "@/components/header"
+import Header from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -85,9 +85,6 @@ export default function ProfilePage() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
@@ -330,7 +327,6 @@ export default function ProfilePage() {
         open={isEditOpen} 
         onClose={() => setIsEditOpen(false)} 
       />
-      </div>
     </TooltipProvider>
   )
 }

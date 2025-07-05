@@ -9,6 +9,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+    config.module.rules.push({
+      test: /HeartbeatWorker\.js$/,
+      type: 'javascript/auto',
+    });
+    return config;
+  },
 }
 
 export default nextConfig
