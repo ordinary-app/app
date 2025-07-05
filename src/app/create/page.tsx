@@ -290,15 +290,15 @@ export default function CreatePage() {
                     <p className="text-xs text-gray-600">Enables you to specific a license.</p>
                   </div>
                   <Switch 
-                  id="original-toggle" 
-                  checked={isOriginal} 
-                  onCheckedChange={(checked) => {
-                      setIsOriginal(checked);
-                      if (!checked) {
-                        setLicenseType(null);
-                      }
-                    }}
-                  className="data-[state=checked]:bg-yellow-300"
+                    id="original-toggle" 
+                    checked={isOriginal} 
+                    onCheckedChange={(checked) => {
+                        setIsOriginal(checked);
+                        if (!checked) {
+                          setLicenseType(null);
+                        }
+                      }}
+                    className="data-[state=checked]:bg-primary"
                   />
                 </div>
 

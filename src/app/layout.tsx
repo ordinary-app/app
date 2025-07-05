@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { Web3Provider } from "@/app/Web3Provider"
 import { GlobalModals } from "@/components/global-modals"
-import { AuthManager } from "@/components/auth-manager"
+import { AuthManager } from "@/components/auth/auth-manager"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
