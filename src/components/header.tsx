@@ -37,6 +37,7 @@ export function Header() {
   }, [address, isConnected, isConnecting]);
 
   const navItems = [
+    { href: '/', label: 'Home' },
     { href: '/what-is-chip', label: 'What is Chip' },
     { href: '/feed', label: 'Feed' },
     { href: '/discover', label: 'Discover' },
@@ -205,7 +206,7 @@ export function Header() {
               >
                 Discover 🍟
               </Link>
-              {!currentProfile && (
+              {/* {!currentProfile && (
                 <ConnectKitButton.Custom>
                   {({ show }) => (
                     <Button
@@ -218,7 +219,7 @@ export function Header() {
                     </Button>
                   )}
                 </ConnectKitButton.Custom>
-              )}
+              )} */}
             </nav>
           </div>
         )}
