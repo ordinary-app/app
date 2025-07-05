@@ -41,7 +41,7 @@ export function DetailSection() {
           </div>
 
           <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
-            <span className="block">上传与分享作品的</span>
+            <p className="mb-4">上传与分享作品的</p>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               安全港湾
             </span>
