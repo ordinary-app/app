@@ -40,9 +40,9 @@ export function DetailSection() {
             <div className="text-harbor-500">🚢</div>
           </div>
 
-          <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-bold text-neutral-900 mb-8 leading-10">
             <span className="block">上传与分享作品的</span>
-            <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
+            <span className="block mt-4 bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               安全港湾
             </span>
           </h2>

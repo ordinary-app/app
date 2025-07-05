@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
+import { TokenIdDisplay } from "@/components/token-id-display"
 import { fetchPosts } from "@lens-protocol/client/actions"
 import { Post as LensPost, AnyPost } from "@lens-protocol/client"
 import { resolveUrl } from "@/utils/resolve-url"
@@ -24,6 +25,7 @@ interface Post {
   }
   isOriginal: boolean
   gatewayUrl?: string
+  contentUri?: string
   likes: number
   comments: number
   isLiked: boolean
@@ -194,6 +196,7 @@ export function Feed() {
           },
           isOriginal,
           gatewayUrl: undefined,
+          contentUri: lensPost.contentUri,
           likes: stats?.upvotes || 0,
           comments: stats?.comments || 0,
           isLiked: false,
@@ -464,39 +467,7 @@ export function Feed() {
                 <div>
                   <div className="flex items-center space-x-2">
                     <h3 className="font-semibold">{post.author.displayName}</h3>
-                    {post.isOriginal && (
-                      <Tooltip delayDuration={300}>
-                        <TooltipTrigger asChild>
-                          <button 
-                            className="relative focus:outline-none"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onTouchStart={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                          <Badge
-                            variant="secondary"
-                            className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
-                          >
-                            Original
-                          </Badge>
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          className="z-[9999] border border-yellow-200 rounded-md text-xs font-medium text-neutral-800 px-3 py-1 shadow-md"
-                          sideOffset={3}
-                          side="right"
-                          style={{
-                            background: 'linear-gradient(135deg, #fdf6e3, #f5deb3)', // 柔和渐变嘻嘻^^
-                          }}
-                        >
-                          薯条 token id = 1
-                        </TooltipContent>
-                      </Tooltip>
-                    )}
+                    <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
                   </div>
                   <p className="text-sm text-gray-500">@{post.author.handle}</p>
                   <p className="text-xs text-gray-400">{post.timestamp}</p>
