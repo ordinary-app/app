@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useWalletClient } from "wagmi";
 import { Button } from "../ui/button";
@@ -18,6 +18,7 @@ import { account as accountMetadataBuilder } from "@lens-protocol/metadata";
 import { storageClient } from "@/lib/storage-client";
 import { handleOperationWith } from "@lens-protocol/client/viem";
 import { useLensAuthStore } from "@/stores/auth-store";
+import { useReconnectWallet } from "@/hooks/use-reconnect-wallet";
 
 interface ProfileEditProps {
   open: boolean;
@@ -26,12 +27,20 @@ interface ProfileEditProps {
 
 export function ProfileEdit({ open, onClose }: ProfileEditProps) {
   const { data: walletClient } = useWalletClient();
-  const { currentProfile, sessionClient: client } = useLensAuthStore();
+  const { currentProfile, sessionClient: client, setCurrentProfile } = useLensAuthStore();
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState<string>("");
-  const [name, setName] = useState(currentProfile?.metadata?.name || "");
-  const [bio, setBio] = useState(currentProfile?.metadata?.bio || "");
+  const [name, setName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const reconnectWallet = useReconnectWallet();
+
+  useEffect(() => {
+    if (!currentProfile) return;
+    setName(currentProfile?.metadata?.name ?? "")
+    setBio(currentProfile?.metadata?.bio ?? "")
+    setProfilePictureUrl(currentProfile?.metadata?.picture ?? "")
+  }, [currentProfile])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,7 +54,7 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!walletClient) {
-      toast.error("Please connect your wallet");
+      reconnectWallet();
       return;
     }
 
@@ -62,7 +71,7 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
       const metadata = accountMetadataBuilder({
         name: name || currentProfile?.username?.localName || "",
         bio: bio || currentProfile?.metadata?.bio || "",
-        picture: pictureUri || undefined,
+        picture: pictureUri,
       });
 
       
@@ -79,8 +88,21 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
       const result = await setAccountMetadata(client, {
         metadataUri: uri(metadataUri),
       }).andThen(handleOperationWith(walletClient));
-
+    
       if (result.isOk()) {
+        setCurrentProfile({
+          ...currentProfile,
+          metadata: {
+            ...currentProfile.metadata,
+            name,
+            bio,
+            picture: pictureUri,
+          },
+          username: {
+            ...currentProfile.username,
+            localName: name,
+          }
+        })
         toast.success("Profile updated successfully!");
         onClose();
       } else {
@@ -130,7 +152,7 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
                   onChange={handleFileSelect}
                   disabled={isLoading}
                 />
-                {profilePictureUrl && (
+                {profilePictureUrl && (profilePictureUrl !== currentProfile?.metadata?.picture) && (
                   <Button
                     type="button"
                     variant="outline"
