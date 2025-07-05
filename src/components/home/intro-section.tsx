@@ -59,13 +59,13 @@ export function IntroSection() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-loose">
-                <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
+                <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
                   CHIPDOCK
                 </span>
                 <br />              
-                <span className="text-3xl text-harbor-600 leading-relaxed">薯条码头：为爱发电的去中心化创作港口</span>
+                <span className="text-4xl text-harbor-600 leading-[2.5] whitespace-nowrap">薯条码头：为爱发电的去中心化创作港口</span>
                 <br />
-                <span className="text-3xl text-neutral-700">A SAFE HARBOR FOR FANDOM</span>
+                <span className="text-2xl text-neutral-600">A SAFE HARBOR FOR FANDOM</span>
               </h1>
 
               <p className="text-lg text-neutral-600 max-w-2xl">
@@ -114,7 +114,7 @@ export function IntroSection() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-8">
               {isConnected ? (
                 <Button asChild size="lg" className="harbor-button text-white font-semibold">
                   <Link href="/feed">Start Here</Link>

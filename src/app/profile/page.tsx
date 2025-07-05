@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine } from "lucide-react"
+import { TokenIdDisplay } from "@/components/token-id-display"
 import { usePosts } from "@lens-protocol/react";
 import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
@@ -181,39 +182,7 @@ export default function ProfilePage() {
                             <div>
                               <div className="flex items-center space-x-2">
                                 <h3 className="font-semibold">{post.author.displayName}</h3>
-                                {post.isOriginal && (
-                                  <Tooltip delayDuration={300}>
-                                    <TooltipTrigger asChild>
-                                      <button 
-                                        className="relative focus:outline-none"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                        }}
-                                        onTouchStart={(e) => {
-                                          e.stopPropagation();
-                                        }}
-                                      >
-                                      <Badge
-                                        variant="secondary"
-                                        className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
-                                      >
-                                        Original
-                                      </Badge>
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent
-                                      className="z-[9999] border border-yellow-200 rounded-md text-xs font-medium text-neutral-800 px-3 py-1 shadow-md"
-                                      sideOffset={3}
-                                      side="right"
-                                      style={{
-                                        background: 'linear-gradient(135deg, #fdf6e3, #f5deb3)', // 柔和渐变
-                                      }}
-                                    >
-                                      薯条 token id = 1
-                                    </TooltipContent>
-                                  </Tooltip>
-                                )}
+                                <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
                               </div>
                               <p className="text-sm text-gray-500">@{post.author.handle}</p>
                               <p className="text-xs text-gray-400">{post.timestamp}</p>
@@ -291,7 +260,10 @@ export default function ProfilePage() {
                         key={post.id}
                         className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"
                       >
-                        <p className="text-gray-800 mb-2">{post.content}</p>
+                        <div className="flex items-start justify-between mb-2">
+                          <p className="text-gray-800 flex-1">{post.content}</p>
+                          <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
+                        </div>
                         <div className="flex items-start justify-between text-sm">
                           <span className="text-orange-600 break-all flex-1 mr-2">Grove Storage: {post.contentUri || 'len://...'}</span>
                           <span className="text-gray-500 flex-shrink-0">{post.timestamp}</span>
