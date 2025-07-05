@@ -4,8 +4,8 @@ import { Account } from "@lens-protocol/client";
 import { User2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { resolveUrl } from "@/utils/resolve-url";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-//TODO: check user avatar url
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
 export const UserAvatar = ({
   account,
   loading,

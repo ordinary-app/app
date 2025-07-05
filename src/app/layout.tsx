@@ -5,8 +5,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import { Toaster as SonnerToaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner"
 import { Footer } from "@/components/footer"
 import dynamic from 'next/dynamic';
 
@@ -40,7 +39,6 @@ export default function RootLayout({
             </main>
             <Footer />
             <Toaster />
-            <SonnerToaster />
           </Web3Provider>
         </ThemeProvider>
       </body>

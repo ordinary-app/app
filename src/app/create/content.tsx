@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { useToast } from "@/hooks/use-toast"
 import { Upload, ImageIcon, FileText, Loader2 } from "lucide-react"
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
@@ -21,6 +20,8 @@ import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
 import { useReconnectWallet } from "@/hooks/use-reconnect-wallet"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { toast } from "sonner"
+import copy from "copy-to-clipboard";
 
 interface AttachmentProps {
   name: string;
@@ -41,7 +42,6 @@ export default function CreatePage() {
   const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
   const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
   const router = useRouter()
-  const { toast } = useToast()
   const { sessionClient: client, currentProfile } = useLensAuthStore();
   const { contractAddress, explorerUrl } = useAppConfigStore();
   const { data: walletClient } = useWalletClient();
@@ -50,19 +50,12 @@ export default function CreatePage() {
   const reconnectWallet = useReconnectWallet();
   const { checkWalletConnection } = useWalletCheck();
 
-
-  // console.log('xxxx wallet', address, isConnected, client, currentProfile)
-
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList = event.target.files!
     if (Array.from(fileList).some(i => i.size > 8 * 1024 * 1024)) {
       // 8MB limit
-      toast({
-        title: "Error",
-        description: "File size must be less than 8MB",
-        variant: "destructive",
-      })
-      return
+      toast.error("File size must be less than 8MB")
+      return;
     }
 
     try {
@@ -71,7 +64,6 @@ export default function CreatePage() {
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
         const url = await uploadFile(file)
-        // console.log("Upload image success -----", url);
         let res = {
           name: file.name,
           size: file.size,
@@ -82,12 +74,7 @@ export default function CreatePage() {
       }
       setSelectedFile(attachments)
     } catch (uploadError) {
-      console.error("Error uploading image:", uploadError);
-      toast({
-        title: "Error",
-        description: "Failed to upload image. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to upload image. Please try again.")
       return;
     }
   }
@@ -100,20 +87,12 @@ export default function CreatePage() {
     }
 
     if (!content.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter some content",
-        variant: "destructive",
-      })
+      toast.error("Please enter some content")
       return
     }
 
     if (isOriginal && !licenseType) {
-      toast({
-        title: "Error",
-        description: "Please select a license for your Original Content",
-        variant: "destructive",
-      })
+      toast.error("Please select a license for your Original Content")
       return
     }
 
@@ -162,8 +141,6 @@ export default function CreatePage() {
         return attributes;
       }
 
-      // console.log('xxx metadata----', selectedFile, attributes)
-
       //Create Metadata
       if (!selectedFile) {
         metadata = textOnly({
@@ -203,29 +180,22 @@ export default function CreatePage() {
         });
         const txHash = await walletClient.writeContract(result.request);
        
-        // console.log('xxxxx ressssss', txHash)
-        toast({
-          title: "Chips +1",
-          description: `View on explorer: ${explorerUrl}${txHash}`
+        toast.message("Chips +1", {
+          description: `View on explorer: ${explorerUrl}${txHash}`,
+            action: {
+              label: 'copy',
+              onClick: () => copy(`${explorerUrl}${txHash}`)
+            },
         })
       }
  
       await post(client, { contentUri: uri });
       
-      toast({
-        title: "Success",
-        description: "Your post has been created successfully!",
-      })
+      toast.success("Your post has been created successfully!")
 
       router.push("/");
     } catch (error) {
-      console.log('xxxx errrr', error)
-      //TODO: error太长会展示不全
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create post. Please try again.",
-        variant: "destructive",
-      })
+      toast.error(error instanceof Error ? error.message : "Failed to create post. Please try again.")
     } finally {
       setIsSubmitting(false)
     }

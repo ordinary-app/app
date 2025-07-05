@@ -27,21 +27,21 @@ export default function DiscoverPage() {
       displayName: "Vitalik Buterin",
       bio: "Ethereum co-founder",
       followers: 125000,
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/gull.jpg?height=40&width=40",
     },
     {
       handle: "stani.lens",
       displayName: "Stani Kulechov",
       bio: "Founder of Lens Protocol",
       followers: 89000,
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/gull.jpg?height=40&width=40",
     },
     {
       handle: "developer.lens",
       displayName: "Sarah Dev",
       bio: "Full-stack developer building on Web3",
       followers: 12500,
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "/gull.jpg?height=40&width=40",
     },
   ]
 
@@ -123,7 +123,7 @@ export default function DiscoverPage() {
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <Avatar>
-                        <AvatarImage src={profile.avatar || "/placeholder.svg"} />
+                        <AvatarImage src={profile.avatar || "/gull.jpg"} />
                         <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
