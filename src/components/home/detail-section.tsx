@@ -35,7 +35,7 @@ export function DetailSection() {
           </div>
 
           <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
-            <span className="block">去中心化创作的</span>
+            <span className="block">创作的</span>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               安全港湾
             </span>
@@ -201,7 +201,7 @@ export function DetailSection() {
           <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             <div className="text-lg">🗺️</div>
-            <span className="text-harbor-700 font-medium">Dapp Achitecture</span>
+            <span className="text-harbor-700 font-medium">Dapp Architecture</span>
           </div>
           <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">技术架构</h2>
               <p className="text-lg text-neutral-600">基于最新Web3技术栈构建的现代化平台</p>
@@ -303,19 +303,19 @@ export function DetailSection() {
                   <ul className="space-y-3 text-left">
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>私信系统</span>
+                      <span>互动机制上线</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>群组功能</span>
+                      <span>实时通知推送</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>实时通知</span>
+                      <span>标签管理探索</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>协作工具</span>
+                      <span>热度排序功能</span>
                     </li>
                   </ul>
                 </CardContent>
@@ -336,15 +336,15 @@ export function DetailSection() {
                   <ul className="space-y-3 text-left">
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>NFT 市场</span>
+                      <span>代币打赏系统</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>创作者激励</span>
+                      <span>数据保护机制</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>治理代币</span>
+                      <span>社区自治功能</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
@@ -379,7 +379,7 @@ export function DetailSection() {
                 className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 <Link href="/create" className="flex items-center space-x-2">
-                  <span>开始创作</span>
+                  <span>立即加入</span>
                   <div className="text-xl">🍟</div>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
