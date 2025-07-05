@@ -180,7 +180,7 @@ export default function CreatePage() {
         });
         const txHash = await walletClient.writeContract(result.request);
        
-        toast.message("Chips +1", {
+        toast.success("Chips +1", {
           description: `View on explorer: ${explorerUrl}${txHash}`,
             action: {
               label: 'copy',
@@ -245,8 +245,8 @@ export default function CreatePage() {
                       {selectedFile ? (
                         selectedFile.map(file => (
                           <div className="flex space-x-2 items-center" key={file.name}>
-                            <ImageIcon className="h-8 w-8 text-green-600" />
-                            <span className="text-sm font-medium">{file.name}</span>
+                            <ImageIcon className="h-8 w-8 text-green-600 shrink-0" />
+                            <span className="text-sm font-medium truncate">{file.name}</span>
                           </div>
                         ))
                       ) : (

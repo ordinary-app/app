@@ -126,7 +126,7 @@ export default function Header() {
                   <DropdownMenuItem asChild>
                     <Link href="/settings" className="text-gray-700 hover:text-gray-900">
                       <Settings className="mr-2 h-4 w-4" />
-                      Settings
+                      Settings (developing)
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-gray-200" />

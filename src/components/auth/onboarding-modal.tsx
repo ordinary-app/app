@@ -237,6 +237,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
         return;
       }
 
+      toast.dismiss(authToast);
       toast.success("Account created successfully!");
 
       await onSuccess();
