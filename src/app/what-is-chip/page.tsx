@@ -348,7 +348,7 @@ export default function WhatIsChipPage() {
             <div className="relative z-10">
               <h3 className="text-4xl sm:text-5xl font-bold mb-6">开始使用薯条证明</h3>
               <p className="text-xl sm:text-2xl mb-4 opacity-90">保护您的原创作品，加入去中心化创作社区</p>
-              <p className="text-lg mb-12 opacity-80">让每一份创作都能在区块链上留下永恒的印记 🚢✨</p>
+              <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button

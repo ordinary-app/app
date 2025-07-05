@@ -185,6 +185,9 @@ export default function CreatePage() {
       
       // mint NFT for original conent
       if (isOriginal) {
+
+        if (!address) throw new Error("No wallet connected");
+        
         const { request } = await publicClient?.simulateContract({
           address: contractAddress,
           abi,
@@ -274,7 +277,7 @@ export default function CreatePage() {
                         <div className="space-y-2">
                           <Upload className="h-8 w-8 mx-auto text-gray-400" />
                           <p className="text-sm text-gray-600">Click to upload an image</p>
-                          <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                          <p className="text-xs text-gray-500">PNG, JPG up to 8MB</p>
                         </div>
                       )}
                     </label>
@@ -287,7 +290,7 @@ export default function CreatePage() {
                     <Label htmlFor="original-toggle" className="text-sm font-medium">
                       Mark as Original Content
                     </Label>
-                    <p className="text-xs text-gray-600">Enables you to specific a license.</p>
+                    <p className="text-xs text-gray-600">Enables you to specific a license. (🍟 in testing)</p>
                   </div>
                   <Switch 
                     id="original-toggle" 

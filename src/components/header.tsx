@@ -37,6 +37,13 @@ export default function Header() {
     }
   }, [address, isConnected, isConnecting]);
 
+  // Auto-open profile select modal when wallet is connected but no profile is selected
+  useEffect(() => {
+    if (isConnected && address && !currentProfile) {
+      setProfileSelectModalOpen(true);
+    }
+  }, [isConnected, address, currentProfile, setProfileSelectModalOpen]);
+
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/what-is-chip', label: 'What is Chip' },
@@ -146,7 +153,7 @@ export default function Header() {
                         <span>Select Profile</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={disconnectWallet}>
+                    <DropdownMenuItem onClick={() => disconnectWallet()}>
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Log out</span>
                     </DropdownMenuItem>

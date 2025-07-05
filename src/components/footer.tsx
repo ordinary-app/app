@@ -12,7 +12,7 @@ export function Footer() {
               <span className="font-bold text-xl">CHIPDOCK</span>
             </div>
             <p className="text-gray-400 text-sm">
-              A safe harbor for decentralized fan creation, protecting creative freedom in the Web3 era.
+              A safe harbor for decentralized fan creation, protecting freedom of creativity and publishing rights for fan creators.
             </p>
             <div className="flex space-x-4 text-2xl">
               <span>🕊️</span>
@@ -90,7 +90,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 ChipDock. Built with ❤️ for the decentralized creative community.
+            © 2025 ChipDock. Built with ❤️ for the decentralized non-commercial fanart community.
           </p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <span className="text-gray-400 text-sm">Powered by</span>
