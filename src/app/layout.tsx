@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -14,10 +16,10 @@ const AuthManager = dynamic(() => import('../components/auth/auth-manager'), { s
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  title: "ChipDock",
-  description: "A modern web application for interacting with the Lens Protocol",
-}
+// export const metadata: Metadata = {
+//   title: "ChipDock",
+//   description: "A modern web application for interacting with the Lens Protocol",
+// }
 
 export default function RootLayout({
   children,

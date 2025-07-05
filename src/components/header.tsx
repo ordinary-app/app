@@ -45,13 +45,12 @@ export default function Header() {
     { href: '/create', label: 'Create' },
   ]
 
-  //console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect)
+  //console.log('xxxx wallet---', isConnecting, isConnected, status, address, connect, currentProfile, sessionClient)
   const handleDisconnect = async () => {
     disconnectWallet();
     await sessionClient?.logout();
     setCurrentProfile(null);
     setSessionClient(null);
-    router.push("/");
   };
 
   return (
@@ -66,22 +65,26 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map(({ href, label }) => {
-              const isActive = pathname === href
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
-                    isActive ? 'text-harbor-600' : ''
-                  }`}
-                >
-                  {label}
-                </Link>
-              )
-            })}
-          </nav>
+          {
+            currentProfile ? (
+              <nav className="hidden md:flex items-center space-x-6">
+                {navItems.map(({ href, label }) => {
+                  const isActive = pathname === href
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
+                        isActive ? 'text-harbor-600' : ''
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  )
+                })}
+              </nav>
+            ) : null
+          }
           {/* User Actions */}
           <div className="flex items-center space-x-4">
             {currentProfile ? (
@@ -164,19 +167,23 @@ export default function Header() {
             )}
 
             {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden text-gray-600 hover:text-gray-800"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            {
+              currentProfile ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="md:hidden text-gray-600 hover:text-gray-800"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                  {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </Button>
+              ) : null
+            }
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen && currentProfile && (
           <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-sm">
             <nav className="flex flex-col space-y-2 p-4">
               <Link

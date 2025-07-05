@@ -14,7 +14,7 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
   const { address: walletAddress } = useAccount();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { signMessageAsync } = useSignMessage();
-  const { client, setCurrentProfile } = useLensAuthStore();
+  const { client, setCurrentProfile, setSessionClient } = useLensAuthStore();
   const setProfileSelectModalOpen = useProfileSelectStore((state) => state.setProfileSelectModalOpen);
 
   const login = async () => {
@@ -34,6 +34,8 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
       if (authenticated.isErr()) {
         throw new Error(`Failed to get authenticated client: ${authenticated.error.message}`);
       }
+
+      setSessionClient(authenticated.value)
      
       const credentials = await authenticated.value.getCredentials();
       if (credentials.isErr()) {
