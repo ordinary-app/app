@@ -14,15 +14,6 @@ import { Loading } from "@/components/loading"
 
 export default function HomePage() {
   const { currentProfile, loading } = useLensAuthStore();
-  const { address, isConnected, isConnecting } = useAccount();
-  const { disconnect } = useDisconnect();
-
-  useEffect(() => {
-    // handle wagmi wallet connect error
-    if (address && !isConnected && isConnecting) {
-      disconnect();
-    }
-  }, [address, isConnected, isConnecting]);
 
 
   if (loading) {

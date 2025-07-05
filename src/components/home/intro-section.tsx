@@ -29,7 +29,7 @@ export function IntroSection() {
 
          {/* Meme Image with Harbor Theme */}
           <div className="relative">
-            <div className="relative bg-white rounded-2xl shadow-xl p-6 transform rotate-0 hover:rotate-0 transition-transform duration-300 border border-harbor-200">
+            <div className="relative flex justify-center bg-white rounded-2xl shadow-xl p-6 transform rotate-0 hover:rotate-1 transition-transform duration-300 border border-harbor-200">
               <Image
                 src="/meme.png"
                 alt="Seagulls at the dock - ChipDock meme"

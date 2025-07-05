@@ -1,17 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, Settings, LogOut, Menu, X } from "lucide-react"
-import { useDisconnect } from "wagmi"
-import { useRouter } from "next/navigation"
+import { useAccount, useDisconnect } from "wagmi"
+import { usePathname, useRouter } from "next/navigation"
 import { useLensAuthStore } from "@/stores/auth-store"
 import { ConnectKitButton } from "connectkit"
-import { Edit, Users, Shield, Heart, Coins, UserCheck } from "lucide-react"
-import { Feed } from "@/app/feed/feed"
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,13 +16,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useProfileSelectStore } from "@/stores/profile-select-store"
+import { UserAvatar } from "@/components/user/user-avatar"
 
 
 export function Header() {
   const { disconnect: disconnectWallet } = useDisconnect();
   const { currentProfile, setCurrentProfile, sessionClient, setSessionClient } = useLensAuthStore();
   const router = useRouter()
+  const { address, isConnected, isConnecting } = useAccount();
+  const { setProfileSelectModalOpen } = useProfileSelectStore();
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  useEffect(() => {
+    // handle wagmi wallet connect error
+    if (address && !isConnected && isConnecting) {
+      disconnectWallet();
+    }
+  }, [address, isConnected, isConnecting]);
+
+  const navItems = [
+    { href: '/what-is-chip', label: 'What is Chip' },
+    { href: '/feed', label: 'Feed' },
+    { href: '/discover', label: 'Discover' },
+    { href: '/create', label: 'Create' },
+  ]
+
+  // console.log('xxxx wallet---', pathname, isConnecting, isConnected, address, currentProfile, sessionClient)
   const handleDisconnect = async () => {
     disconnectWallet();
     await sessionClient?.logout();
@@ -33,7 +51,6 @@ export function Header() {
     setSessionClient(null);
     router.push("/");
   };
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
@@ -48,20 +65,21 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/what-is-chip" className="text-gray-600 hover:text-gray-800 transition-colors font-medium">
-              What is Chip
-            </Link>
-            <Link href="/feed" className="text-gray-600 hover:text-gray-800 transition-colors font-medium">
-              Feed
-            </Link>
-            <Link href="/discover" className="text-gray-600 hover:text-gray-800 transition-colors font-medium">
-              Discover
-            </Link>
-            <Link href="/create" className="text-gray-600 hover:text-gray-800 transition-colors font-medium">
-              Create
-            </Link>
+            {navItems.map(({ href, label }) => {
+              const isActive = pathname === href
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 ${
+                    isActive ? 'text-harbor-600' : ''
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
           </nav>
-
           {/* User Actions */}
           <div className="flex items-center space-x-4">
             {currentProfile ? (
@@ -106,13 +124,41 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <ConnectKitButton.Custom>
-                {({ show }) => (
-                  <Button onClick={show} className="hidden md:inline-flex">
-                    Connect Wallet
-                  </Button>
-                )}
-              </ConnectKitButton.Custom>
+              isConnected ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-full shrink-0">
+                      <UserAvatar />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48" align="end" forceMount>
+                    <DropdownMenuItem 
+                      onClick={() =>{
+                        setProfileSelectModalOpen(true)
+                      }}
+                    >
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Select Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={disconnectWallet}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <ConnectKitButton.Custom>
+                  {({ show }) => {
+                      return (
+                        <Button onClick={show}>
+                          Connect Wallet
+                        </Button>
+                      );
+                    // }
+                  }}
+                </ConnectKitButton.Custom>
+              ) 
             )}
 
             {/* Mobile menu button */}

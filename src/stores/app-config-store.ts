@@ -6,6 +6,6 @@ type AppConfigState = {
 };
 
 export const useAppConfigStore = create<AppConfigState>((set) => ({
-  contractAddress: "0xdaEC15eFfE7c76F3221cB367bC49519a6E5C28B2",
+  contractAddress: "0x13036d898B64663A669f9eBb707805c57F8B1b56",
   explorerUrl: "https://sepolia.etherscan.io/tx/",
 }));
