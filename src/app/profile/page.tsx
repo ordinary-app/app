@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine } from "lucide-react"
+import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine, CopyIcon } from "lucide-react"
 import { TokenIdDisplay } from "@/components/token-id-display"
 import { usePosts } from "@lens-protocol/react";
 import dayjs from 'dayjs';
@@ -16,6 +16,7 @@ import { resolveUrl } from "@/utils/resolve-url";
 import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
 import { toast } from "sonner"
+import copy from "copy-to-clipboard"
 
 export default function ProfilePage() {
   const { currentProfile } = useLensAuthStore();
@@ -265,7 +266,18 @@ export default function ProfilePage() {
                           <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
                         </div>
                         <div className="flex items-start justify-between text-sm">
-                          <span className="text-orange-600 break-all flex-1 mr-2">Grove Storage: {post.contentUri || 'len://...'}</span>
+                          <span className="text-orange-600 break-all flex-1 mr-2">
+                            Grove Storage: {post.contentUri || 'len://...'}
+                            { post.contentUri ? (
+                              <CopyIcon
+                                className="cursor-pointer inline-block ml-2 w-4 h-4" 
+                                onClick={() => {
+                                  copy(resolveUrl(post.contentUri))
+                                  toast('Copy success!')
+                                }} 
+                              />
+                            ) : null }
+                          </span>
                           <span className="text-gray-500 flex-shrink-0">{post.timestamp}</span>
                         </div>
                       </div>
