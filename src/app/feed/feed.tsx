@@ -390,7 +390,7 @@ export function Feed() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-3xl mx-auto">
         {[1, 2, 3].map((i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader className="space-y-4">
@@ -416,7 +416,7 @@ export function Feed() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-3xl mx-auto space-y-6">
       {/* 新帖子提示 */}
       {newPostsAvailable && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
