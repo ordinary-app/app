@@ -9,11 +9,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmark, Star, RefreshCw, ChevronUp } from "lucide-react"
 import { TokenIdDisplay } from "@/components/token-id-display"
 import { fetchPosts } from "@lens-protocol/client/actions"
-import { Post as LensPost, AnyPost } from "@lens-protocol/client"
+import { Post as LensPost, AnyPost, Cursor, PageSize } from "@lens-protocol/client"
 import { resolveUrl } from "@/utils/resolve-url"
 import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
 import { toast } from "sonner"
+import { FollowButton } from "@/components/follow-button"
 
 interface Post {
   id: string
@@ -48,6 +49,9 @@ export function Feed() {
   const [refreshing, setRefreshing] = useState(false)
   const [newPostsAvailable, setNewPostsAvailable] = useState(false)
   const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date())
+  const [currentCursor, setCurrentCursor] = useState<string | null>(null)
+  const [hasMore, setHasMore] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const lastPostIdRef = useRef<string | null>(null)
   const { client } = useLensAuthStore();
@@ -55,6 +59,7 @@ export function Feed() {
 
   //调用 Lens 获取原始数据
   useEffect(() => {
+    if (!client) return; // 等待 client 初始化
     loadPostsFromLens()
     
     // 设置定时刷新（每45秒检查一次新内容）
@@ -79,17 +84,22 @@ export function Feed() {
       }
       window.removeEventListener('focus', handleFocus)
     }
-  }, [])
+  }, [client])
 
-  const loadPostsFromLens = useCallback(async (isRefresh = false) => {
+  const loadPostsFromLens = useCallback(async (isRefresh = false, cursor: string | null = null) => {
     try {
       if (isRefresh) {
         setRefreshing(true)
+      } else if (cursor) {
+        setLoadingMore(true)
       } else {
         setLoading(true)
       }
       setError(null)
-      
+      type Request = {
+        cursor?: Cursor | null;
+        pageSize?: PageSize | null;
+      };
       const result = await fetchPosts(client, {
         filter: {
           feeds: [
@@ -98,6 +108,8 @@ export function Feed() {
             },
           ],
         },
+        pageSize: PageSize.Fifty,
+        cursor: cursor || undefined
       })
       
       if (result.isErr()) {
@@ -106,14 +118,38 @@ export function Feed() {
         return
       }
       
-      const { items } = result.value
+      const { items, pageInfo } = result.value;
+      
+      // 检查返回的items是否为空
+      if (items.length === 0 && !cursor) {
+        setPosts([]);
+        setHasMore(false);
+        return;
+      }
+      
       const transformedPosts = transformLensPostsToLocal(items)
       
       if (transformedPosts.length > 0) {
         lastPostIdRef.current = transformedPosts[0].id
+      } else if (cursor) {
+        // 如果加载更多但没有转换后的帖子，说明没有更多数据
+        setHasMore(false);
+        return;
       }
       
-      setPosts(transformedPosts)
+      // 更新游标和是否有更多数据的状态
+      setCurrentCursor(pageInfo.next)
+      setHasMore(!!pageInfo.next)
+      
+      // 根据是否是刷新或加载更多来更新帖子列表
+      if (isRefresh) {
+        setPosts(transformedPosts)
+      } else if (cursor) {
+        setPosts(prevPosts => [...prevPosts, ...transformedPosts])
+      } else {
+        setPosts(transformedPosts)
+      }
+      
       setLastRefreshTime(new Date())
       setNewPostsAvailable(false)
       
@@ -123,8 +159,9 @@ export function Feed() {
     } finally {
       setLoading(false)
       setRefreshing(false)
+      setLoadingMore(false)
     }
-  }, [])
+  }, [client])
   
   const checkForNewPosts = useCallback(async () => {
     try {
@@ -159,6 +196,12 @@ export function Feed() {
     loadPostsFromLens(true)
   }, [loadPostsFromLens])
   
+  const handleLoadMore = useCallback(() => {
+    if (currentCursor && hasMore && !loadingMore) {
+      loadPostsFromLens(false, currentCursor)
+    }
+  }, [currentCursor, hasMore, loadingMore, loadPostsFromLens])
+  
   const handleLoadNewPosts = useCallback((e?: React.MouseEvent) => {
     e?.preventDefault()
     setNewPostsAvailable(false)
@@ -169,30 +212,23 @@ export function Feed() {
 
   //数据转换函数
   const transformLensPostsToLocal = (anyPosts: readonly AnyPost[]): Post[] => {
-    return anyPosts
-      .filter((anyPost): anyPost is LensPost => anyPost.__typename === 'Post')
-      .map((lensPost) => {
-        const content = extractContentFromMetadata(lensPost.metadata)
-        const author = lensPost.author
-        const stats = lensPost.stats
-        
+    return anyPosts.map((lensPost: any) => {
+        let content = extractContentFromMetadata(lensPost.metadata);
+        const author = lensPost.author || {};
+        const stats = lensPost.stats || {};
         // Get media if available
         const media = extractMedia(lensPost.metadata)
-        
         // Get attachments
         const attachments = extractAttachments(lensPost.metadata)
-        
         // Check if post has license to determine if it's original
         const isOriginal = checkIfOriginal(lensPost.metadata)
-        
         return {
-          id: lensPost.id,
+          id: lensPost.id || lensPost.pubId || Math.random().toString(),
           content,
           author: {
             handle: author.username?.localName || "unknown",
             displayName: author.metadata?.name || author.username?.localName || "Unknown User",
             avatar: author.metadata?.picture ? resolveUrl(author.metadata?.picture) : undefined,
-            //依然是从URI中读一下头像
           },
           isOriginal,
           gatewayUrl: undefined,
@@ -372,22 +408,6 @@ export function Feed() {
     }
   }
 
-  const handleFollow = async (handle: string) => {
-    if (!checkWalletConnection("关注用户")) {
-      return;
-    }
-    
-    try {
-      setPosts(
-        posts.map((post) => (post.author.handle === handle ? { ...post, isFollowing: !post.isFollowing } : post)),
-      )
-
-      toast.success(`Successfully ${posts.find((p) => p.author.handle === handle)?.isFollowing ? "unfollowed" : "followed"} user`)
-    } catch (error) {
-      toast.error("Failed to follow/unfollow user")
-    }
-  }
-
   if (loading) {
     return (
       <div className="space-y-6 max-w-3xl mx-auto">
@@ -417,12 +437,16 @@ export function Feed() {
   return (
     <TooltipProvider>
       <div className="max-w-3xl mx-auto space-y-6">
+      {/* 错误信息显示 */}
+      {error && (
+        <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">{error}</div>
+      )}
       {/* 新帖子提示 */}
       {newPostsAvailable && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
           <Button 
             onClick={handleLoadNewPosts}
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg animate-bounce"
+            className="bg-harbor-600 hover:bg-harbor-700 text-white shadow-lg animate-bounce"
             size="sm"
           >
             <ChevronUp className="h-4 w-4 mr-1" />
@@ -430,11 +454,9 @@ export function Feed() {
           </Button>
         </div>
       )}
-      
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Latest</h1>
         <p className="text-gray-600">on global feed</p>
-        
         {/* 第一条帖子上方的信息栏 */}
         {posts.length > 0 && (
           <div className="flex justify-center items-center gap-4 mt-4 text-sm">
@@ -446,7 +468,7 @@ export function Feed() {
               size="sm"
               onClick={handleRefresh}
               disabled={refreshing}
-              className="flex items-center gap-2 h-10"
+              className="flex items-center h-9"
             >
               <RefreshCw className={`h-3 w-3 ${refreshing ? 'animate-spin' : ''}`} />
               {refreshing ? 'Refreshing...' : 'Refresh'}
@@ -454,7 +476,10 @@ export function Feed() {
           </div>
         )}
       </div>
-
+      {/* 无内容时提示 */}
+      {posts.length === 0 && !loading && !error && (
+        <div className="text-center text-gray-400 py-12">暂无内容</div>
+      )}
       {posts.map((post) => (
         <Card key={post.id} className="overflow-hidden">
           <CardHeader>
@@ -474,24 +499,17 @@ export function Feed() {
                 </div>
               </div>
 
-              <Button
-                variant={post.isFollowing ? "outline" : "default"}
-                size="sm"
-                onClick={() => handleFollow(post.author.handle)}
-                className="ml-auto"
-              >
-                {post.isFollowing ? (
-                  <>
-                    <UserMinus className="h-4 w-4 mr-1" />
-                    Unfollow
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="h-4 w-4 mr-1" />
-                    Follow
-                  </>
-                )}
-              </Button>
+              <FollowButton
+                isFollowing={post.isFollowing}
+                handle={post.author.handle}
+                onToggle={() => {
+                  setPosts(
+                    posts.map((p) =>
+                      p.author.handle === post.author.handle ? { ...p, isFollowing: !p.isFollowing } : p
+                    )
+                  );
+                }}
+              />
             </div>
           </CardHeader>
 
@@ -546,8 +564,25 @@ export function Feed() {
             </div>
           </CardContent>
         </Card>
-      ))}
+        ))}
+
+        {/* 加载更多按钮 */}
+        {hasMore && (
+          <div className="flex justify-center mt-6 mb-12">
+            <Button
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              className="harbor-button text-white"
+            >
+              {loadingMore ? (
+                <>Loading...</>
+              ) : (
+                <>Load More</>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </TooltipProvider>
-  )
+  );
 }
