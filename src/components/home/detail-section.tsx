@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Shield, Users, Zap, Globe, Heart, Coins, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { ChipsSection } from "@/components/home/chips-section"
+import { CHIPSSection } from "@/components/home/chips-section"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
 
@@ -15,7 +15,7 @@ export function DetailSection() {
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/50 via-white to-harbor-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
 
       {/* Floating Harbor Elements */}
       <div className="absolute top-20 left-10 opacity-8 float-animation">
@@ -25,7 +25,7 @@ export function DetailSection() {
         <div className="text-6xl"></div>
       </div>
       <div className="absolute bottom-40 left-20 opacity-8 wave-animation" style={{ animationDelay: "1s" }}>
-        <div className="text-7xl">⚓</div>
+        <div className="text-7xl"></div>
       </div>
       <div className="absolute bottom-20 right-10 opacity-8 anchor-animation" style={{ animationDelay: "2s" }}>
         <div className="text-5xl"></div>
@@ -119,7 +119,7 @@ export function DetailSection() {
                   <Users className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">分散自治</CardTitle>
+                  <CardTitle className="text-neutral-900 text-xl">去中心化</CardTitle>
                   <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
                     (011) Decentralized
                   </Badge>
@@ -246,8 +246,8 @@ export function DetailSection() {
           </div>
         </div>
 
-        {/* ChipsSection */}
-        <ChipsSection />
+        {/* CHIPSSection */}
+        <CHIPSSection />
 
         {/* Roadmap */}
         <div className="text-center mb-20">
@@ -367,14 +367,14 @@ export function DetailSection() {
         <div className="relative text-center bg-harbor-gradient rounded-3xl p-16 text-white overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="absolute top-10 left-10 opacity-20 float-animation">
-            <div className="text-8xl">🌊</div>
+            <div className="text-8xl"></div>
           </div>
           <div className="absolute bottom-10 right-10 opacity-20 anchor-animation">
-            <div className="text-6xl">⚓</div>
+            <div className="text-6xl"></div>
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 CHIPDOCK 社区</h3>
+            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 mato 社区</h3>
             <p className="text-xl sm:text-2xl mb-4 opacity-90">与全球创作者一起，在去中心化的港口自由创作</p>
             <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
 

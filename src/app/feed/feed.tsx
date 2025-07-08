@@ -432,8 +432,8 @@ export function Feed() {
       )}
       
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Latest Fanworks</h1>
-        <p className="text-gray-600">Discover amazing fanworks on global feed</p>
+        <h1 className="text-3xl font-bold mb-2">Latest</h1>
+        <p className="text-gray-600">on global feed</p>
         
         {/* 第一条帖子上方的信息栏 */}
         {posts.length > 0 && (

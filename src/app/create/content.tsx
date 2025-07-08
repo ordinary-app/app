@@ -180,7 +180,7 @@ export default function CreatePage() {
         });
         const txHash = await walletClient.writeContract(result.request);
        
-        toast.success("Chips +1", {
+        toast.success("CHIPS +1", {
           description: `View on explorer: ${explorerUrl}${txHash}`,
             action: {
               label: 'copy',
