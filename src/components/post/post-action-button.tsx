@@ -33,7 +33,8 @@ export type ActionButtonProps = {
 };
 
 const formatNumber = (num: number): string => {
-  if (num === 0 || !num) return "";
+  if (num === 0) return "0";
+  if (!num) return "";
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
   }
@@ -100,15 +101,15 @@ export const ActionButton = ({
     >
       <Icon
         size={18}
-        strokeWidth={1.5}
+        strokeWidth={2}
         className="transition-all duration-200"
         style={{
           color: currentColor,
           fill: iconFill,
         }}
       />
-      {!hideCount && formattedCount && (
-        <span className="text-xs font-medium ml-1 min-w-fit">
+      {!(label === "Bookmark" || label === "Share") && formattedCount && (
+        <span className="text-xs font-bold ml-1 min-w-fit">
           {formattedCount}
         </span>
       )}
