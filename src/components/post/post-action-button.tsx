@@ -59,7 +59,6 @@ export const ActionButton = ({
   size = "sm",
   variant = "ghost",
 }: ActionButtonProps) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const showLoginActions = !isUserLoggedIn;
@@ -80,32 +79,23 @@ export const ActionButton = ({
     }
   };
 
-  const iconColor = isDisabled
-    ? "rgb(156, 163, 175)" // gray-400
-    : isActive
-      ? strokeColor
-      : isHovered
-        ? strokeColor
-        : "rgb(107, 114, 128)"; // gray-500
+  const baseGray = "#4B5563"; // tailwind gray-600
+  const currentColor = isActive ? strokeColor : baseGray;
 
   const iconFill = isActive ? fillColor : undefined;
 
   const MainButton = (
     <Button
-      variant={variant}
-      size={size}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      variant="ghost"
+      size="sm"
       onClick={handleClick}
       disabled={isDisabled}
       className={cn(
-        "flex items-center gap-1 transition-all duration-200 text-foreground hover:bg-transparent relative p-2 h-auto min-w-fit",
-        isActive && "text-current",
+        "flex items-center",
         className
       )}
       style={{
-        color: iconColor,
-        backgroundColor: isActive ? `${strokeColor}15` : undefined,
+        color: currentColor,
       }}
     >
       <Icon
@@ -113,7 +103,7 @@ export const ActionButton = ({
         strokeWidth={1.5}
         className="transition-all duration-200"
         style={{
-          color: iconColor,
+          color: currentColor,
           fill: iconFill,
         }}
       />

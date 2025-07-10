@@ -8,7 +8,7 @@ import { ActionButton } from "./post-action-button";
 export const PostActionsBar = ({ post }: { post: Post }) => {
   const { likeButton, commentButton, bookmarkButton, shareButton } = usePostActionsButtons({ post });
 
-  const rightButtons = [likeButton, commentButton];
+  const rightButtons = [commentButton, likeButton];
   const leftButtons = [bookmarkButton, shareButton];
 
   return (
