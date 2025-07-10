@@ -31,19 +31,18 @@ export function LandingSection() {
       </div>
 
       
-      <div className="relative w-full max-w-7xl mx-auto">
+      <div className="relative w-full max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 items-center">
-          
           {/* Content */}
           <div className="col-span-12 lg:col-span-7 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-center lg:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-left">
                 <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
                   mato
                 </span>
                 <br />
                 <span className="text-4xl text-harbor-600 leading-tight">
-                  薯条码头<br className="block sm:hidden" />: 为爱发电的自由创作港
+                  薯条码头:<br className="block sm:hidden" />为爱发电的自由创作港
                 </span>
                 <br />
                 <span className="text-2xl text-neutral-600">
@@ -51,7 +50,7 @@ export function LandingSection() {
                 </span>
               </h1>
 
-              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-center lg:text-left">
+              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline">
                 mato is a nonprofit decentralized social platform for fanworks powered by open-source
                 blockchain protocol. Protecting freedom of creativity and publishing rights for fan art creators.
               </p>
@@ -140,6 +139,7 @@ export function LandingSection() {
             </div>
             </Link>
           </div>
+          
           
           
         </div>

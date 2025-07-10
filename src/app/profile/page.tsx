@@ -9,14 +9,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine, CopyIcon } from "lucide-react"
 import { TokenIdDisplay } from "@/components/token-id-display"
-import { usePosts } from "@lens-protocol/react";
-import dayjs from 'dayjs';
+//import { usePosts } from "@lens-protocol/react";
+//import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard"
+import { PostList } from "@/components/post/post-list";
+import { useFeed } from "@/hooks/use-feed";
 
 export default function ProfilePage() {
   const { currentProfile } = useLensAuthStore();
@@ -28,57 +30,16 @@ export default function ProfilePage() {
     following: 297,
     Scores: 2890,
   })
-  const { data, loading, error } = usePosts({
-    filter: {
-      authors: [currentProfile?.address], // the author's EVM address
-    },
-  });
 
-  // 检查是否为原创内容（基于license属性）
-  const checkIfOriginal = (metadata: any): boolean => {
-    if (!metadata?.attributes) return false
-    
-    // 查找license属性
-    const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license")
-    return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== ""
-  }
+  // Memoize the profile address to prevent unnecessary re-renders
+  const profileAddress = useMemo(() => currentProfile?.address, [currentProfile?.address]);
 
-  const userPosts = useMemo(() => {
-    if (loading) return [];
-    const posts = data?.items ?? [];
-    return posts
-      .filter((post: any) => post.__typename === 'Post')
-      .map((post: any) => ({
-        id: post.id,
-        content: post.metadata?.content || "No content available",
-        author: {
-          handle: currentProfile?.username?.localName || "unknown",
-          displayName: currentProfile?.metadata?.name || currentProfile?.username?.localName || "Unknown User",
-          avatar: currentProfile?.metadata?.picture ? resolveUrl(currentProfile?.metadata?.picture) : undefined,
-        },
-        isOriginal: checkIfOriginal(post.metadata),
-        likes: post.stats?.upvotes || 0,
-        comments: post.stats?.comments || 0,
-        isLiked: false,
-        timestamp: dayjs(post.timestamp).format("MMM D YYYY | HH:mm"),
-        attachments: post.metadata?.attachments ?? [],
-        contentUri: post.contentUri,
-      }))
-  }, [data, loading, currentProfile])
-
-  const handleLike = async (_postId: string) => {
-    if (!checkWalletConnection("点赞")) {
-      return;
-    }
-    
-    try {
-      // Update the post like status locally
-      // Note: In a real app, you would call the API here
-      toast.success("Post liked successfully")
-    } catch (error) {
-      toast.error("Failed to like post")
-    }
-  }
+  // 用 useFeed 获取 profile 帖子
+  const {
+    posts: userPosts,
+    loading,
+    error,
+  } = useFeed({ type: "profile", profileAddress });
 
   return (
     <TooltipProvider>
@@ -167,81 +128,12 @@ export default function ProfilePage() {
             </TabsList>
 
             <TabsContent value="posts" className="space-y-6">
-              {
-                loading ? (
-                  <Loader2 className="animate-spin mx-auto" />
-                ) : (
-                  userPosts.length > 0 ? userPosts.map((post: any) => (
-                    <Card key={post.id} className="overflow-hidden">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <Avatar>
-                              <AvatarImage src={post.author.avatar || "/gull.jpg"} />
-                              <AvatarFallback>{post.author.displayName.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="flex items-center space-x-2">
-                                <h3 className="font-semibold">{post.author.displayName}</h3>
-                                <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
-                              </div>
-                              <p className="text-sm text-gray-500">@{post.author.handle}</p>
-                              <p className="text-xs text-gray-400">{post.timestamp}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-800 mb-4">{post.content}</p>
-                        {
-                          post.attachments.length > 0 && (
-                            <div className="grid grid-cols-2 gap-2 mb-4">
-                              {
-                                post.attachments.map((p: any, index: number) => (
-                                  <div key={index} className="border-[1px] border-[#a9b2bc] dark:border-[#708090] relative h-full w-full overflow-hidden rounded-lg object-cover max-h-[500px]">
-                                    <img loading="lazy" alt="attachment" className="h-full w-full object-cover" src={p.item} />
-                                  </div>
-                                ))
-                              }
-                            </div>
-                          )
-                        }
-                        <div className="flex items-center justify-between pt-4 border-t">
-                          <div className="flex items-center space-x-6">
-                            <Button variant="ghost" size="sm" className="text-gray-600">
-                              <Bookmark className="h-4 w-4 mr-1" />
-                              Bookmark
-                            </Button>
-    
-                            <Button variant="ghost" size="sm" className="text-gray-600">
-                              <Share className="h-4 w-4 mr-1" />
-                              Share
-                            </Button>
-                          </div>
-    
-                          <div className="flex items-center space-x-4">
-                            <Button variant="ghost" size="sm" className="text-gray-600">
-                              <MessageCircle className="h-4 w-4 mr-1" />
-                              {post.comments}
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleLike(post.id)}
-                              className={post.isLiked ? "text-red-600" : "text-gray-600"}
-                            >
-                              <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? "fill-current" : ""}`} />
-                              {post.likes}
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )) : (
-                    <div>no posts</div>
-                  )
-                )
-              }
+              <PostList
+                posts={userPosts || []}
+                loading={loading}
+                renderMode="list"
+                emptyText="no posts"
+              />
             </TabsContent>
 
             <TabsContent value="original">
@@ -254,9 +146,9 @@ export default function ProfilePage() {
                   <CardDescription>Your original content permanently stored on Grove Storage</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {userPosts
-                    .filter((post) => post.isOriginal)
-                    .map((post) => (
+                  {(userPosts || [])
+                    .filter((post: any) => post.isOriginal)
+                    .map((post: any) => (
                       <div
                         key={post.id}
                         className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"

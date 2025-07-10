@@ -178,6 +178,7 @@ export default function CreatePage() {
           args: [address, uri], 
           account: address,
         });
+        if (!result) return;
         const txHash = await walletClient.writeContract(result.request);
        
         toast.success("CHIPS +1", {

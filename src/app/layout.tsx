@@ -7,6 +7,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { Footer } from "@/components/footer"
+import { PostActionsProvider } from "@/components/post/post-actions-context"
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(() => import('../components/header'), { ssr: false });
@@ -31,14 +32,16 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Web3Provider>
-            <AuthManager />
-            <GlobalModals />
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
+            <PostActionsProvider>
+              <AuthManager />
+              <GlobalModals />
+              <Header />
+              <main>
+                {children}
+              </main>
+              <Footer />
+              <Toaster />
+            </PostActionsProvider>
           </Web3Provider>
         </ThemeProvider>
       </body>
