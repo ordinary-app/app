@@ -1,15 +1,12 @@
 import React from "react";
 import Masonry from "react-layout-masonry";
-import { EnhancedPost } from "@/utils/post-transformer";
+import { Post } from "@lens-protocol/client";
 import { PostCard } from "@/components/post/post-card";
 import { useFeedContext } from "@/contexts/feed-context";
 import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
 
-// Export the EnhancedPost type for compatibility
-export type Post = EnhancedPost;
-
 interface PostListProps {
-  posts: EnhancedPost[];
+  posts: Post[];
   loading?: boolean;
   emptyText?: string;
   showToggle?: boolean;
@@ -37,11 +34,6 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
   if (!posts.length) {
     return (
       <div className="w-full">
-        {showToggle && (
-          <div className="flex justify-center items-center mb-6">
-            <FeedViewToggle />
-          </div>
-        )}
         <div className="text-center py-8 text-gray-400">{emptyText || "暂无内容"}</div>
       </div>
     );

@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { PageSize } from "@lens-protocol/client";
+import { PageSize, Post } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { EnhancedPost, transformLensPostsToEnhanced } from "@/utils/post-transformer";
 
 type FeedType = "global" | "profile" | "custom";
 
@@ -28,7 +27,7 @@ export function useFeed(options: useFeedOptions = {}) {
   } = useSharedPostActions();
   
   // Feed state
-  const [posts, setPosts] = useState<EnhancedPost[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -87,15 +86,15 @@ export function useFeed(options: useFeedOptions = {}) {
         return;
       }
       
-      const transformedPosts = transformLensPostsToEnhanced(items);
+      const filteredPosts = items.filter(item => item.__typename === 'Post') as Post[];
       
       // Initialize post states for actions
-      transformedPosts.forEach(post => {
-        initPostState(post as any);
+      filteredPosts.forEach(post => {
+        initPostState(post);
       });
       
-      if (transformedPosts.length > 0) {
-        lastPostIdRef.current = transformedPosts[0].id;
+      if (filteredPosts.length > 0) {
+        lastPostIdRef.current = filteredPosts[0].id;
       } else if (cursor) {
         setHasMore(false);
         return;
@@ -105,12 +104,12 @@ export function useFeed(options: useFeedOptions = {}) {
       setHasMore(!!pageInfo.next);
       
       if (isRefresh) {
-        setPosts(transformedPosts);
+        setPosts(filteredPosts);
         setLastRefreshTime(new Date());
       } else if (cursor) {
-        setPosts(prev => [...prev, ...transformedPosts]);
+        setPosts(prev => [...prev, ...filteredPosts]);
       } else {
-        setPosts(transformedPosts);
+        setPosts(filteredPosts);
         setLastRefreshTime(new Date());
       }
       
@@ -135,8 +134,8 @@ export function useFeed(options: useFeedOptions = {}) {
       if (result.isErr()) return;
       
       const { items } = result.value;
-      const transformedPosts = transformLensPostsToEnhanced(items);
-      if (transformedPosts.length > 0 && transformedPosts[0].id !== lastPostIdRef.current) {
+      const filteredPosts = items.filter(item => item.__typename === 'Post') as Post[];
+      if (filteredPosts.length > 0 && filteredPosts[0].id !== lastPostIdRef.current) {
         setNewPostsAvailable(true);
       }
     } catch {}

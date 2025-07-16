@@ -147,33 +147,43 @@ export default function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                   {(userPosts || [])
-                    .filter((post: any) => post.isOriginal)
-                    .map((post: any) => (
-                      <div
-                        key={post.id}
-                        className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <p className="text-gray-800 flex-1">{post.content}</p>
-                          <TokenIdDisplay uri={post.contentUri} isOriginal={post.isOriginal} />
+                    .filter((post: any) => {
+                      // Check if post is original based on license attribute
+                      const metadata = post.metadata;
+                      if (!metadata?.attributes) return false;
+                      const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
+                      return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "";
+                    })
+                    .map((post: any) => {
+                      const content = post.metadata?.content || "No content available";
+                      const timestamp = new Date(post.timestamp).toLocaleDateString();
+                      return (
+                        <div
+                          key={post.id}
+                          className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <p className="text-gray-800 flex-1">{content}</p>
+                            <TokenIdDisplay uri={post.contentUri} isOriginal={true} />
+                          </div>
+                          <div className="flex items-start justify-between text-sm">
+                            <span className="text-orange-600 break-all flex-1 mr-2">
+                              Grove Storage: {post.contentUri || 'len://...'}
+                              { post.contentUri ? (
+                                <CopyIcon
+                                  className="cursor-pointer inline-block ml-2 w-4 h-4" 
+                                  onClick={() => {
+                                    copy(resolveUrl(post.contentUri))
+                                    toast('Copy success!')
+                                  }} 
+                                />
+                              ) : null }
+                            </span>
+                            <span className="text-gray-500 flex-shrink-0">{timestamp}</span>
+                          </div>
                         </div>
-                        <div className="flex items-start justify-between text-sm">
-                          <span className="text-orange-600 break-all flex-1 mr-2">
-                            Grove Storage: {post.contentUri || 'len://...'}
-                            { post.contentUri ? (
-                              <CopyIcon
-                                className="cursor-pointer inline-block ml-2 w-4 h-4" 
-                                onClick={() => {
-                                  copy(resolveUrl(post.contentUri))
-                                  toast('Copy success!')
-                                }} 
-                              />
-                            ) : null }
-                          </span>
-                          <span className="text-gray-500 flex-shrink-0">{post.timestamp}</span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                 </CardContent>
             </Card>
             </TabsContent>

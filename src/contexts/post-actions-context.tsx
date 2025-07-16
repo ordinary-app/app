@@ -107,7 +107,9 @@ export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
           newStates.set(post.id, {
             post: post,
             stats: { ...post.stats },
-            operations: post.operations ? convertToBooleanOperations(post.operations) : { ...defaultOperations },
+            operations: post.operations ? convertToBooleanOperations(post.operations) : { 
+              ...defaultOperations
+            },
             isCommentSheetOpen: false,
             isCollectSheetOpen: false,
             initialCommentUrlSynced: false,

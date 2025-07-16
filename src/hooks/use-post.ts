@@ -4,7 +4,6 @@ import { fetchPost, fetchPostReferences } from "@lens-protocol/client/actions";
 import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { EnhancedPost, transformLensPostToEnhanced } from "@/utils/post-transformer";
 
 interface UsePostOptions {
   postId: string;
@@ -14,7 +13,7 @@ interface UsePostOptions {
 
 interface UsePostReturn {
   // Post data
-  post: EnhancedPost | null;
+  post: Post | null;
   comments: any[];
   
   // Loading states
@@ -66,9 +65,7 @@ export function usePost(options: UsePostOptions): UsePostReturn {
   } = useSharedPostActions();
   
   // Post state
-  const [post, setPost] = useState<EnhancedPost | null>(
-    initialPost ? transformLensPostToEnhanced(initialPost) : null
-  );
+  const [post, setPost] = useState<Post | null>(initialPost || null);
   const [loading, setLoading] = useState(!initialPost && autoFetch);
   const [error, setError] = useState<string | null>(null);
   
@@ -111,12 +108,10 @@ export function usePost(options: UsePostOptions): UsePostReturn {
         return;
       }
       
-      // Transform and set post
-      const enhancedPost = transformLensPostToEnhanced(lensPost as Post);
-      setPost(enhancedPost);
-      
-      // Initialize post state for actions
-      initPostState(lensPost as Post);
+      // Set post and initialize state for actions
+      const lensPostTyped = lensPost as Post;
+      setPost(lensPostTyped);
+      initPostState(lensPostTyped);
       
     } catch (err) {
       setError("Failed to fetch post");

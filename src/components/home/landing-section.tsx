@@ -7,9 +7,11 @@ import Image from "next/image"
 import { Span } from "next/dist/trace"
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
+import React, { useState } from "react"
 
 export function LandingSection() {
   const { isConnected } = useWalletCheck();
+  const [rotate, setRotate] = useState(false);
 
   return (
     <section className="relative sm:py-20 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white max-auto mx-auto">
@@ -32,9 +34,10 @@ export function LandingSection() {
 
       
       <div className="relative w-full max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-8 items-center">
+
           {/* Content */}
-          <div className="col-span-12 lg:col-span-7 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
+          <div className="col-1 lg:col-1 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-left">
                 <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
@@ -122,22 +125,28 @@ export function LandingSection() {
             </div>
           </div>
           {/* Meme Image with Harbor Theme */}
-          <div className="relative col-span-12 lg:col-span-5 w-full max-w-full sm:max-w-md sm:mx-auto mb-8">
-            <Link href="/feed">
-            <div className="relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform rotate-0 hover:rotate-1 transition-transform duration-300 border border-harbor-200">
+          <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
+            <div
+              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${rotate ? ' rotate-1' : ''}`}
+            >
               <Image
                 src="/meme-en.png"
                 alt="Seagulls at the dock - meme"
-                width={480}
-                height={480}
+                width={800}
+                height={800}
                 className="rounded-lg w-full h-auto max-w-full"
                 priority
               />
-              <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-xs font-medium shadow-lg">
+              <Link href="/feed">
+              <div
+                className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
+                onMouseEnter={() => setRotate(true)}
+                onMouseLeave={() => setRotate(false)}
+              >
                 去码头整点薯条! 》》
               </div>
+              </Link>
             </div>
-            </Link>
           </div>
           
           

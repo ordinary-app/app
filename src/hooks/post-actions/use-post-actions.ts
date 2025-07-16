@@ -8,13 +8,6 @@ import { useLensAuthStore } from "@/stores/auth-store";
 import { toast } from "sonner";
 import { resolveUrl } from "@/utils/resolve-url";
 
-type FeedType = "global" | "profile" | "custom";
-interface UsePostActionsOptions {
-  type?: FeedType;
-  profileAddress?: string;
-  customFilter?: any;
-}
-
 // For single post actions
 export const usePostActions = (post: Post) => {
   const router = useRouter();
@@ -33,25 +26,13 @@ export const usePostActions = (post: Post) => {
   
   const sharedState = getPostState(post.id);
 
-  const defaultOperations = {
-    hasUpvoted: false,
-    hasBookmarked: false,
-    hasReposted: false,
-    hasQuoted: false,
-    canComment: false,
-    canRepost: false,
-    canQuote: false,
-    canBookmark: false,
-    canCollect: false,
-    canDelete: false,
-    canTip: false,
-  };
-
   const { stats, operations, isCommentSheetOpen, isCollectSheetOpen } = useMemo(
-    () => ({
-      stats: sharedState?.stats ?? post.stats,
-      // Prioritize sharedState operations over post.operations
-      operations: sharedState?.operations ?? (post.operations ? {
+    () => {
+      
+      return {
+        stats: sharedState?.stats ?? post.stats,
+        // Use shared state operations if available, otherwise use post operations
+        operations: sharedState?.operations ?? (post.operations ? {
         hasUpvoted: post.operations.hasUpvoted,
         hasBookmarked: post.operations.hasBookmarked,
         hasReposted: post.operations.hasReposted?.optimistic ?? false,
@@ -63,11 +44,25 @@ export const usePostActions = (post: Post) => {
         canCollect: post.operations.canSimpleCollect?.__typename === "SimpleCollectValidationPassed",
         canTip: post.operations.canTip ?? false,
         canDelete: post.operations.canDelete?.__typename === "PostOperationValidationPassed",
-      } : defaultOperations),
+      } : {
+        // Fallback to false if no operations available
+        hasUpvoted: false,
+        hasBookmarked: false,
+        hasReposted: false,
+        hasQuoted: false,
+        canComment: false,
+        canRepost: false,
+        canQuote: false,
+        canBookmark: false,
+        canCollect: false,
+        canDelete: false,
+        canTip: false,
+      }),
       isCommentSheetOpen: sharedState?.isCommentSheetOpen ?? false,
       isCollectSheetOpen: sharedState?.isCollectSheetOpen ?? false,
-    }),
-    [sharedState, post.stats, post.operations, defaultOperations],
+    };
+  },
+    [sharedState, post.stats, post.operations, post]
   );
 
   const isCommentOpenParam = useMemo(
