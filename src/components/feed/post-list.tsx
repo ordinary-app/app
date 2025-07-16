@@ -1,4 +1,5 @@
 import React from "react";
+import Masonry from "react-layout-masonry";
 import { EnhancedPost } from "@/utils/post-transformer";
 import { PostCard } from "@/components/post/post-card";
 import { useFeedContext } from "@/contexts/feed-context";
@@ -11,21 +12,20 @@ interface PostListProps {
   posts: EnhancedPost[];
   loading?: boolean;
   emptyText?: string;
-  renderMode?: "list" | "masonry";
   showToggle?: boolean;
+  skeletonCount?: number;
 }
 
-export function PostList({ posts, loading, emptyText, renderMode, showToggle = true }: PostListProps) 
+export function PostList({ posts, loading, emptyText, showToggle = true, skeletonCount = 6 }: PostListProps) 
 {
   const { viewMode } = useFeedContext();
-  const mode = renderMode || viewMode;
+  const safeItems = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];
   
   if (loading) {
     return (
       <div className="w-full">
         {showToggle && (
           <div className="flex justify-center items-center mb-6">
-            <div></div>
             <FeedViewToggle />
           </div>
         )}
@@ -39,7 +39,6 @@ export function PostList({ posts, loading, emptyText, renderMode, showToggle = t
       <div className="w-full">
         {showToggle && (
           <div className="flex justify-center items-center mb-6">
-            <div></div>
             <FeedViewToggle />
           </div>
         )}
@@ -47,31 +46,51 @@ export function PostList({ posts, loading, emptyText, renderMode, showToggle = t
       </div>
     );
   }
-  if (mode === "masonry") {
-    // 瀑布流布局
+  if (viewMode === "masonry") {
+    // 瀑布流布局=======暂时不能用，貌似 Masonry 和react18不兼容
     return (
       <div className="w-full">
         {showToggle && (
           <div className="flex justify-center items-center mb-6 px-4">
-            <div></div>
             <FeedViewToggle />
           </div>
         )}
         <div className="w-full px-4">
-          <div className="masonry-columns">
-            {posts.map((post, index) => (
+          <Masonry columns={{ 350: 1, 640: 2, 1024: 3 }} gap={32}>
+            {loading &&
+              safeItems.length === 0 &&
+              Array.from({ length: skeletonCount }, (_, i) => (
+                <div key={`skeleton-${i}`} style={{ contain: "layout style" }}>
+                  <div className="bg-gray-200 rounded-lg p-4 h-40 animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-20 bg-gray-300 rounded"></div>
+                  </div>
+                </div>
+              ))}
+
+            {safeItems.map((post, index) => (
               <div
-                key={post.id}
-                className="masonry-item animate-fade-in"
-                style={{ 
-                  contain: "layout style",
-                  animationDelay: `${index * 0.1}s`
-                }}
+                key={post?.id || `item-${index}`}
+                style={{ contain: "layout style" }}
+                className="animate-fade-in"
               >
                 <PostCard post={post} />
               </div>
             ))}
-          </div>
+
+            {loading &&
+              safeItems.length > 0 &&
+              Array.from({ length: Math.min(3, skeletonCount) }, (_, i) => (
+                <div key={`loading-skeleton-${i}`} style={{ contain: "layout style" }}>
+                  <div className="bg-gray-200 rounded-lg p-4 h-40 animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-20 bg-gray-300 rounded"></div>
+                  </div>
+                </div>
+              ))}
+          </Masonry>
         </div>
       </div>
     );
@@ -81,15 +100,14 @@ export function PostList({ posts, loading, emptyText, renderMode, showToggle = t
     <div className="w-full">
       {showToggle && (
         <div className="flex justify-center items-center mb-6">
-          <div></div>
           <FeedViewToggle />
         </div>
       )}
       <div className="flex flex-col gap-4 items-center">
-        {posts.map((post, index) => (
+        {safeItems.map((post, index) => (
           <div
-            key={post.id}
-            className="w-full animate-fade-in"
+            key={post?.id || `item-${index}`}
+            className="w-full"
             style={{ 
               contain: "layout style",
               animationDelay: `${index * 0.1}s`
@@ -99,6 +117,20 @@ export function PostList({ posts, loading, emptyText, renderMode, showToggle = t
           </div>
         ))}
       </div>
+      
+      {loading && safeItems.length > 0 && (
+        <div className="mt-6">
+          {Array.from({ length: Math.min(3, skeletonCount) }).map((_, i) => (
+            <div key={`skeleton-${i}`} className="animate-pulse mb-4">
+              <div className="bg-gray-200 rounded-lg p-4 h-40">
+                <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                <div className="h-20 bg-gray-300 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -131,8 +131,8 @@ export default function ProfilePage() {
               <PostList
                 posts={userPosts || []}
                 loading={loading}
-                renderMode="list"
                 emptyText="no posts"
+                skeletonCount={6}
               />
             </TabsContent>
 

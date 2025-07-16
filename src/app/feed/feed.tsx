@@ -77,8 +77,8 @@ export function Feed() {
         <PostList
           posts={posts || []}
           loading={loading}
-          renderMode="list"
           emptyText="No More"
+          skeletonCount={6}
         />
         {/* 加载更多按钮 */}
         {hasMore && (
