@@ -20,7 +20,7 @@ const AuthManager = dynamic(() => import('../components/auth/auth-manager'), { s
 const inter = Inter({ subsets: ["latin"] })
 
 // export const metadata: Metadata = {
-//   title: "mato",
+//   title: "Ordinary",
 //   description: "A modern web application for interacting with the Lens Protocol",
 // }
 

@@ -38,7 +38,7 @@ export function LandingSection() {
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-left">
                 <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
-                  mato
+                  Ordinary
                 </span>
                 <br />
                 <span className="text-4xl text-harbor-600 leading-tight">
@@ -46,13 +46,13 @@ export function LandingSection() {
                 </span>
                 <br />
                 <span className="text-2xl text-neutral-600">
-                  A SAFE HARBOR FOR FANDOM
+                  A SAFE HARBOR FOR FANDOMS
                 </span>
               </h1>
 
               <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline">
-                mato is a nonprofit decentralized social platform for fanworks powered by open-source
-                blockchain protocol. Protecting freedom of creativity and publishing rights for fan art creators.
+                Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source
+                blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.
               </p>
             </div>
 
@@ -127,7 +127,7 @@ export function LandingSection() {
             <div className="relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform rotate-0 hover:rotate-1 transition-transform duration-300 border border-harbor-200">
               <Image
                 src="/meme-en.png"
-                alt="Seagulls at the dock - mato meme"
+                alt="Seagulls at the dock - meme"
                 width={480}
                 height={480}
                 className="rounded-lg w-full h-auto max-w-full"

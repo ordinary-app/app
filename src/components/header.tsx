@@ -67,7 +67,7 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <div className="text-2xl"></div>
             <div className="font-bold text-xl bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent"
-            >mato</div>
+            >Ordinary</div>
           </Link>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">

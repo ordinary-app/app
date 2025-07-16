@@ -9,10 +9,10 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="text-2xl">⚓</div>
-              <span className="font-bold text-xl">mato</span>
+              <span className="font-bold text-xl">Ordinary</span>
             </div>
             <p className="text-gray-400 text-sm">
-              A safe harbor for decentralized fan creation, protecting freedom of creativity and publishing rights for fan art creators.
+              A safe harbor for fandoms, protecting freedom of creativity and publishing rights for fanart creators.
             </p>
             <div className="flex space-x-4 text-2xl">
               <span>🕊️</span>
@@ -90,7 +90,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 mato. Built with ❤️ for the decentralized non-commercial fanart community.
+            © 2025 Ordinary. Built with ❤️ for the decentralized fanart networks.
           </p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <span className="text-gray-400 text-sm">Powered by</span>

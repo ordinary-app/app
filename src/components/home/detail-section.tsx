@@ -49,10 +49,10 @@ export function DetailSection() {
 
           <div className="max-w-4xl mx-auto space-y-4">
             <p className="text-2xl text-neutral-700 leading-relaxed">
-              A noncommercial and nonprofit decentralized social platform for fanworks
+              A nonprofit decentralized social platform for fanworks
             </p>
             <p className="text-lg text-neutral-600 leading-relaxed">
-              Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fan art
+              Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart
               creators 🌊
             </p>
           </div>
@@ -374,7 +374,7 @@ export function DetailSection() {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 mato 社区</h3>
+            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 Ordinary 社区</h3>
             <p className="text-xl sm:text-2xl mb-4 opacity-90">与全球创作者一起，在去中心化的港口自由创作</p>
             <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
 

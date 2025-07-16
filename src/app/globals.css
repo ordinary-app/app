@@ -149,7 +149,7 @@ body {
   }
 }
 
-/* mato Harbor Theme Custom Styles */
+/* Ordinary Harbor Theme Custom Styles */
 @layer components {
   .harbor-gradient {
     @apply bg-harbor-gradient;
@@ -167,7 +167,7 @@ body {
     @apply bg-harbor-gradient hover:shadow-lg hover:shadow-harbor-500/25 transition-all duration-300;
   }
 
-  /* mato Chip Theme Custom Styles */
+  /* Ordinary Chip Theme Custom Styles */
   .chip-gradient {
     @apply bg-chip-gradient;
   }

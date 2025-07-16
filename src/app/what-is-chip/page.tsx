@@ -68,7 +68,7 @@ export default function WhatIsChipPage() {
                 <h2 className="text-3xl font-bold text-neutral-900 mb-6">薯条证明是什么？</h2>
                 <div className="space-y-4 text-lg text-neutral-700 leading-relaxed">
                   <p>
-                    薯条证明（CHIPS）是 mato
+                    薯条证明（CHIPS）是 Ordinary
                     平台独有的原创作品认证系统。当创作者发布原创内容时，可以选择为作品申请薯条证明。
                   </p>
                   <p>
@@ -260,10 +260,10 @@ export default function WhatIsChipPage() {
             </div>
           </div>
 
-          {/* Why mato */}
+          {/* Why Ordinary */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 mato？</h2>
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 Ordinary？</h2>
               <p className="text-lg text-neutral-600">我们致力于为创作者社区提供最佳的创作与社交体验</p>
             </div>
 
@@ -283,7 +283,7 @@ export default function WhatIsChipPage() {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <p className="text-neutral-700 leading-relaxed">
-                    mato
+                    Ordinary
                     未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
                 </CardContent>
