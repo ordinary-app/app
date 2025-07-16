@@ -3,7 +3,7 @@ import { addReaction, bookmarkPost, undoBookmarkPost, undoReaction } from "@lens
 import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
-import { useSharedPostActions } from "@/components/post/post-actions-context";
+import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { toast } from "sonner";
 import { resolveUrl } from "@/utils/resolve-url";
@@ -29,7 +29,7 @@ export const usePostActions = (post: Post) => {
 
   useEffect(() => {
     initPostState(post);
-  }, [post.id]); // Only depend on post.id to avoid infinite loops
+  }, [post, initPostState]); // Only depend on post.id to avoid infinite loops
   
   const sharedState = getPostState(post.id);
 

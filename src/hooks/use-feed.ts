@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Post, PageSize, AnyPost } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useAuthenticatedUser } from "@lens-protocol/react";
-import { useSharedPostActions } from "@/components/post/post-actions-context";
+import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { resolveUrl } from "@/utils/resolve-url";
 
