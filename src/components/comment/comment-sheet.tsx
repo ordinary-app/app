@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { useComments } from "@/hooks/post-actions/use-comments";
+import { usePost } from "@/hooks/use-post";
 import { useLensAuthStore } from "@/stores/auth-store";
 //import { GraphicHand2 } from "../icons/custom-icons";
 //import { CommentReplyArea } from "./comment-reply-area";
@@ -32,7 +32,7 @@ export const CommentSheet = ({
   const isOpen = forcedOpen !== undefined ? forcedOpen : isUrlOpen;
   const commentId = searchParams.get("comment");
   const containerRef = useRef<HTMLDivElement>(null);
-  const { comments, loading, hasMore, fetchComments, refresh, nextCursor, setComments } = useComments(post.id);
+  const { comments, commentsLoading: loading, hasMoreComments: hasMore, loadMoreComments, refreshComments: refresh, commentsPageInfo, setComments } = usePost({ postId: post.id });
   const [isViewingNested, setIsViewingNested] = useState(false);
   const { sessionClient } = useLensAuthStore();
 
@@ -76,9 +76,9 @@ export const CommentSheet = ({
 
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
     if (scrollHeight - scrollTop <= clientHeight * 1.5) {
-      fetchComments(nextCursor);
+      loadMoreComments();
     }
-  }, [loading, hasMore, fetchComments, nextCursor]);
+  }, [loading, hasMore, loadMoreComments]);
 
   useEffect(() => {
     const container = containerRef.current;

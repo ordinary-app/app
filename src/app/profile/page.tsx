@@ -17,7 +17,7 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard"
-import { PostList } from "@/components/post/post-list";
+import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
 
 export default function ProfilePage() {

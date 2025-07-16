@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Post, PageSize, AnyPost } from "@lens-protocol/client";
+import { PageSize } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { resolveUrl } from "@/utils/resolve-url";
+import { EnhancedPost, transformLensPostsToEnhanced } from "@/utils/post-transformer";
 
 type FeedType = "global" | "profile" | "custom";
 
@@ -12,45 +12,11 @@ interface useFeedOptions {
   type?: FeedType;
   profileAddress?: string;
   customFilter?: any;
-  singlePost?: Post; // For single post actions
 }
 
-// Enhanced Post interface that matches post-list.tsx requirements
-export interface EnhancedPost extends Omit
-<Post, 'author' | 'timestamp' | 'id' |'gatewayUrl'|'contentUri'|'media'|'attachments'> {
-  id: string;
-  content: string;
-  author: {
-    handle: string;
-    displayName: string;
-    avatar?: string;
-    username?: { localName: string };
-    metadata?: { name?: string; picture?: string };
-    address?: string;
-    operations?: {
-      isFollowedByMe: boolean;
-      isFollowingMe: boolean;
-    };
-  };
-  isOriginal: boolean;
-  gatewayUrl?: string
-  contentUri?: string;
-  likes: number;
-  comments: number;
-  isLiked: boolean;
-  timestamp: string;
-  media?: {
-    type: "image" | "text"
-    url?: string
-  }
-  attachments: Array<{
-    item: string
-    type: string
-  }>;
-}
 
 export function useFeed(options: useFeedOptions = {}) {
-  const { type = "global", profileAddress, customFilter, singlePost } = options;
+  const { type = "global", profileAddress, customFilter } = options;
   
   // Auth and client
   const { client, sessionClient, currentProfile } = useLensAuthStore();
@@ -58,7 +24,6 @@ export function useFeed(options: useFeedOptions = {}) {
   
   // Post actions context
   const { 
-    getPostState, 
     initPostState
   } = useSharedPostActions();
   
@@ -91,89 +56,7 @@ export function useFeed(options: useFeedOptions = {}) {
     return { feeds: [{ globalFeed: true }] };
   }, [type, profileAddress, customFilter]);
 
-  const transformLensPostsToEnhanced = useCallback((anyPosts: readonly AnyPost[]): EnhancedPost[] => {
-    return anyPosts
-      .filter((lensPost: any) => lensPost.__typename === 'Post')
-      .map((lensPost: any) => {
-        const content = extractContentFromMetadata(lensPost.metadata);
-        const author = lensPost.author || {};
-        const stats = lensPost.stats || {};
-        const attachments = extractAttachments(lensPost.metadata);
-        const operations = lensPost.operations;
-        
-        return {
-          ...lensPost,
-          content,
-          author: {
-            handle: author.username?.localName || "unknown",
-            displayName: author.metadata?.name || author.username?.localName || "Unknown User",
-            avatar: author.metadata?.picture ? resolveUrl(author.metadata?.picture) : undefined,
-            username: author.username,
-            metadata: author.metadata,
-            address: author.address,
-            operations: author.operations,
-          },
-          isOriginal: checkIfOriginal(lensPost.metadata),
-          likes: stats?.upvotes || 0,
-          comments: stats?.comments || 0,
-          isLiked: operations?.hasUpvoted || false,
-          timestamp: formatTimestamp(lensPost.timestamp),
-          attachments,
-        };
-      });
-  }, []);
 
-  const extractContentFromMetadata = (metadata: any): string => {
-    if (!metadata) return "No content available";
-    switch (metadata.__typename) {
-      case 'TextOnlyMetadata':
-      case 'ArticleMetadata':
-      case 'ImageMetadata':
-      case 'VideoMetadata':
-      case 'AudioMetadata':
-        return metadata.content || "No content available";
-      default:
-        return "No content available";
-    }
-  };
-
-  const extractAttachments = (metadata: any): Array<{ item: string; type: string }> => {
-    if (!metadata) return [];
-    const attachments: Array<{ item: string; type: string }> = [];
-    if (metadata.__typename === 'ImageMetadata' || metadata.__typename === 'ArticleMetadata') {
-      if (metadata.attachments && Array.isArray(metadata.attachments)) {
-        metadata.attachments.forEach((att: any) => {
-          if (att.item && att.type) {
-            attachments.push({ item: att.item, type: att.type });
-          }
-        });
-      }
-    }
-    if (metadata.__typename === 'ImageMetadata' && metadata.image) {
-      const imageUrl = metadata.image.optimized?.uri || metadata.image.raw?.uri;
-      if (imageUrl) {
-        attachments.unshift({ item: imageUrl, type: metadata.image.type || 'image/jpeg' });
-      }
-    }
-    return attachments;
-  };
-
-  const checkIfOriginal = (metadata: any): boolean => {
-    if (!metadata?.attributes) return false;
-    const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
-    return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "";
-  };
-
-  const formatTimestamp = (timestamp: string): string => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(hours / 24);
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    return "Just now";
-  };
 
   // Feed operations
   const loadPostsFromLens = useCallback(async (isRefresh = false, cursor: string | null = null) => {
@@ -239,7 +122,7 @@ export function useFeed(options: useFeedOptions = {}) {
       setRefreshing(false);
       setLoadingMore(false);
     }
-  }, [client, getFilter, transformLensPostsToEnhanced, initPostState]);
+  }, [client, getFilter, initPostState]);
 
   const checkForNewPosts = useCallback(async () => {
     // Client should always be available for public posts
@@ -257,7 +140,7 @@ export function useFeed(options: useFeedOptions = {}) {
         setNewPostsAvailable(true);
       }
     } catch {}
-  }, [client, getFilter, transformLensPostsToEnhanced]);
+  }, [client, getFilter]);
 
   const handleRefresh = useCallback((e?: React.MouseEvent) => {
     e?.preventDefault();
@@ -277,9 +160,8 @@ export function useFeed(options: useFeedOptions = {}) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [loadPostsFromLens]);
 
-  // Initialize for feed only (singlePost is handled separately)
+  // Initialize feed
   useEffect(() => {
-    if (singlePost) return; // Early return for single post - no initialization needed
     
     // Client should always be available for public posts
     if (!client) return;
@@ -309,36 +191,9 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, singlePost, type, profileAddress, customFilter]);
+  }, [client, type, profileAddress, customFilter]);
 
-  // For single post actions - return minimal interface, actual actions handled by components
-  if (singlePost) {
-    const postState = getPostState(singlePost.id);
-    return {
-      // Single post state
-      stats: postState?.stats ?? singlePost.stats,
-      operations: postState?.operations ?? {
-        hasUpvoted: false,
-        hasBookmarked: false,
-        hasReposted: false,
-        hasQuoted: false,
-        canComment: false,
-        canRepost: false,
-        canQuote: false,
-        canBookmark: false,
-        canCollect: false,
-        canDelete: false,
-        canTip: false,
-      },
-      isCommentSheetOpen: postState?.isCommentSheetOpen ?? false,
-      isCollectSheetOpen: postState?.isCollectSheetOpen ?? false,
-      
-      // State
-      isLoggedIn,
-    };
-  }
-
-  // For feed
+  // Feed interface
   return {
     // Feed state
     posts,

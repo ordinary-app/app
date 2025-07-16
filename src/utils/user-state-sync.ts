@@ -1,4 +1,4 @@
-import { EnhancedPost } from "@/hooks/use-feed";
+import { EnhancedPost } from "@/utils/post-transformer";
 import { fetchFollowing } from "@lens-protocol/client/actions";
 
 /**

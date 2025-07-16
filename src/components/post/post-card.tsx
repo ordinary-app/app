@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TokenIdDisplay } from "@/components/token-id-display";
-import { EnhancedPost } from "@/hooks/use-feed";
+import { EnhancedPost } from "@/utils/post-transformer";
 import { PostActionsBar } from "./post-actions-bar";
 
 interface PostCardProps {

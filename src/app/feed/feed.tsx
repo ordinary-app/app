@@ -14,7 +14,7 @@ import { Heart, MessageCircle, Share, UserPlus, UserMinus, ExternalLink, Bookmar
 //import { useLensAuthStore } from "@/stores/auth-store"
 //import { useWalletCheck } from "@/hooks/use-wallet-check"
 //import { toast } from "sonner"
-import { PostList } from "@/components/post/post-list"
+import { PostList } from "@/components/feed/post-list"
 import { useFeed } from "@/hooks/use-feed";
 
 export function Feed() {
