@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import Image from "next/image"
 import { Span } from "next/dist/trace"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
 
 export function LandingSection() {

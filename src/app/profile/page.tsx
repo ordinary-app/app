@@ -14,7 +14,7 @@ import { TokenIdDisplay } from "@/components/token-id-display"
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useLensAuthStore } from "@/stores/auth-store"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard"
 import { PostList } from "@/components/post/post-list";

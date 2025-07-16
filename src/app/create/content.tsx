@@ -18,8 +18,8 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
-import { useReconnectWallet } from "@/hooks/use-reconnect-wallet"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 

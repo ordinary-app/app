@@ -6,7 +6,7 @@ import { useWalletClient } from "wagmi";
 import { follow, unfollow } from "@lens-protocol/client/actions";
 import { handleOperationWith } from "@lens-protocol/client/viem";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { useReconnectWallet } from "@/hooks/use-reconnect-wallet";
+import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet";
 
 interface FollowingStateOptions {
   onFollowChange?: (address: string, isFollowing: boolean) => void;

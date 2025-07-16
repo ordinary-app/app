@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAccount, useSignMessage, useWalletClient } from "wagmi";
-import { useReconnectWallet } from "@/hooks/use-reconnect-wallet";
+import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet";
 import { storageClient } from "@/lib/storage-client";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";

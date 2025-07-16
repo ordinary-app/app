@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Shield, Users, Zap, Globe, Heart, Coins, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { CHIPSSection } from "@/components/home/chips-section"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
 
 export function DetailSection() {

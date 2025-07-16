@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, Users, Globe, Zap, Heart } from "lucide-react"
 import Link from "next/link"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
 
 export default function WhatIsChipPage() {
