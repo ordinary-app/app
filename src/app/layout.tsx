@@ -7,7 +7,10 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { Footer } from "@/components/footer"
+import { PostActionsProvider } from "@/contexts/post-actions-context"
+import { FeedProvider } from "@/contexts/feed-context"
 import dynamic from 'next/dynamic';
+import { ActionBarProvider } from "@/contexts/action-bar-context";
 
 const Header = dynamic(() => import('../components/header'), { ssr: false });
 const Web3Provider = dynamic(() => import('./Web3Provider'), { ssr: false });
@@ -17,7 +20,7 @@ const AuthManager = dynamic(() => import('../components/auth/auth-manager'), { s
 const inter = Inter({ subsets: ["latin"] })
 
 // export const metadata: Metadata = {
-//   title: "ChipDock",
+//   title: "Ordinary",
 //   description: "A modern web application for interacting with the Lens Protocol",
 // }
 
@@ -31,14 +34,20 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Web3Provider>
-            <AuthManager />
-            <GlobalModals />
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
+            <PostActionsProvider>
+              <ActionBarProvider>
+                <FeedProvider>
+                  <AuthManager />
+                  <GlobalModals />
+                  <Header />
+                  <main>
+                    {children}
+                  </main>
+                  <Footer />
+                  <Toaster />
+                </FeedProvider>
+              </ActionBarProvider>
+            </PostActionsProvider>
           </Web3Provider>
         </ThemeProvider>
       </body>

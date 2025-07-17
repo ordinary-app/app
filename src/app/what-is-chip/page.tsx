@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, Users, Globe, Zap, Heart } from "lucide-react"
 import Link from "next/link"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { ConnectKitButton } from "connectkit"
 
 export default function WhatIsChipPage() {
@@ -19,7 +19,7 @@ export default function WhatIsChipPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
               <div className="text-2xl"></div>
-              <span className="text-chip-700 font-medium text-lg">Chip Certificate</span>
+              <span className="text-chip-700 font-medium text-lg">CHIPS</span>
               <div className="text-2xl"></div>
             </div>
 
@@ -32,7 +32,7 @@ export default function WhatIsChipPage() {
             </h1>
 
             <p className="text-xl text-neutral-700 max-w-4xl mx-auto leading-relaxed mb-8">
-              Chip Certificate (薯条证明)
+              CHIPS (薯条证明)
               是基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明，保护创作者的知识产权和创作权益。
             </p>
 
@@ -61,14 +61,14 @@ export default function WhatIsChipPage() {
             </div>
           </div>
 
-          {/* What is Chip Certificate */}
+          {/* What is CHIPS */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
             <div className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-neutral-900 mb-6">薯条证明是什么？</h2>
                 <div className="space-y-4 text-lg text-neutral-700 leading-relaxed">
                   <p>
-                    薯条证明（Chip Certificate）是 CHIPDOCK
+                    薯条证明（CHIPS）是 Ordinary
                     平台独有的原创作品认证系统。当创作者发布原创内容时，可以选择为作品申请薯条证明。
                   </p>
                   <p>
@@ -99,7 +99,7 @@ export default function WhatIsChipPage() {
                       <div className="text-3xl">🍟</div>
                       <div>
                         <CardTitle className="text-2xl">薯条证明</CardTitle>
-                        <p className="text-harbor-100 text-sm">Chip Certificate</p>
+                        <p className="text-harbor-100 text-sm">CHIPS</p>
                       </div>
                     </div>
                     <Badge className="bg-white/20 text-white border-white/30 text-sm px-3 py-1">
@@ -260,10 +260,10 @@ export default function WhatIsChipPage() {
             </div>
           </div>
 
-          {/* Why ChipDock */}
+          {/* Why Ordinary */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 CHIPDOCK？</h2>
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 Ordinary？</h2>
               <p className="text-lg text-neutral-600">我们致力于为创作者社区提供最佳的创作与社交体验</p>
             </div>
 
@@ -283,7 +283,7 @@ export default function WhatIsChipPage() {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <p className="text-neutral-700 leading-relaxed">
-                    CHIPDOCK
+                    Ordinary
                     未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
                 </CardContent>

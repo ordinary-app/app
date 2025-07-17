@@ -10,6 +10,51 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Masonry layout styles */
+  .masonry-columns {
+    column-count: 1;
+    column-gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .masonry-columns {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-columns {
+      column-count: 3;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .masonry-columns {
+      column-count: 4;
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Fade-in animation */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
 }
 
 @layer base {
@@ -149,7 +194,7 @@ body {
   }
 }
 
-/* ChipDock Harbor Theme Custom Styles */
+/* Ordinary Harbor Theme Custom Styles */
 @layer components {
   .harbor-gradient {
     @apply bg-harbor-gradient;
@@ -167,7 +212,7 @@ body {
     @apply bg-harbor-gradient hover:shadow-lg hover:shadow-harbor-500/25 transition-all duration-300;
   }
 
-  /* ChipDock Chip Theme Custom Styles */
+  /* Ordinary Chip Theme Custom Styles */
   .chip-gradient {
     @apply bg-chip-gradient;
   }

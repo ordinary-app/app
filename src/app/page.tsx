@@ -8,7 +8,7 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useAccount, useDisconnect } from "wagmi"
 import { useEffect } from "react"
 import { Suspense } from "react"
-import { IntroSection } from "@/components/home/intro-section"
+import { LandingSection } from "@/components/home/landing-section"
 import { DetailSection } from "@/components/home/detail-section"
 import { Loading } from "@/components/loading"
 
@@ -27,7 +27,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <main>
-        <IntroSection />
+        <LandingSection />
         <Suspense fallback={<Loading />}>
           <DetailSection />
         </Suspense>

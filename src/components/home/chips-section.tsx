@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
-export function ChipsSection() {
+export function CHIPSSection() {
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-harbor-50/30">
       {/* Background Elements */}
@@ -20,7 +20,7 @@ export function ChipsSection() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             <div className="text-harbor-500">🔒</div>
-            <span className="text-chip-600 font-bold">Chip Certificate</span>
+            <span className="text-chip-600 font-bold">CHIPS</span>
             <div className="text-harbor-500">🔒</div>
           </div>
 
@@ -87,7 +87,7 @@ export function ChipsSection() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div className="text-2xl">🍟</div>
-                    <CardTitle className="text-xl">Chip Certificate</CardTitle>
+                    <CardTitle className="text-xl">CHIPS</CardTitle>
                   </div>
                   <Badge className="bg-white/20 text-white border-white/30">Verified</Badge>
                 </div>

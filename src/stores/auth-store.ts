@@ -18,6 +18,7 @@ export const useLensAuthStore = create<LensAuthState>((set) => ({
   client: PublicClient.create({
     environment: testnet,
     storage: typeof window !== "undefined" ? window.localStorage : undefined,
+    //apiKey: process.env.NEXT_PUBLIC_LENS_API_KEY,
   }),
   sessionClient: null,
   currentProfile: null,

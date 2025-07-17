@@ -12,12 +12,20 @@ const queryClient = new QueryClient();
 const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const { client } = useLensAuthStore();
   
-  if (!client) return null;
+  // Always render the provider structure, even when client is null
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <ConnectKitProvider>
-          <LensProvider client={client}>{children}</LensProvider>
+          {client ? (
+            <LensProvider client={client}>
+              {children}
+            </LensProvider>
+          ) : (
+            <div>
+              {children}
+            </div>
+          )}
         </ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

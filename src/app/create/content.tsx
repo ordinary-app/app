@@ -18,8 +18,8 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
-import { useReconnectWallet } from "@/hooks/use-reconnect-wallet"
-import { useWalletCheck } from "@/hooks/use-wallet-check"
+import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet"
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
@@ -178,9 +178,10 @@ export default function CreatePage() {
           args: [address, uri], 
           account: address,
         });
+        if (!result) return;
         const txHash = await walletClient.writeContract(result.request);
        
-        toast.success("Chips +1", {
+        toast.success("CHIPS +1", {
           description: `View on explorer: ${explorerUrl}${txHash}`,
             action: {
               label: 'copy',

@@ -10,7 +10,7 @@ const isLocalhost = window.location.hostname === 'localhost' ||
 
 export const config = createConfig(
   getDefaultConfig({
-    appName: 'ChipDock',
+    appName: 'Ordinary',
     chains: [sepolia],
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     ...(!isLocalhost && {

@@ -1,3 +1,11 @@
+## 📚 相关架构文档
+
+[Feed 架构说明（zh）](./docs/FEED_ARCHITECTURE_CN.md)  
+
+[Post Actions 架构说明（en）](./docs/POST_ACTIONS_ARCHITECTURE.md)
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
