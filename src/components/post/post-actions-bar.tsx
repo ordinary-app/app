@@ -2,10 +2,12 @@
 
 import { Post } from "@lens-protocol/client";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useActionBar } from "@/contexts/action-bar-context";
 import { usePostActionsButtons } from "@/hooks/post-actions/use-post-actions-buttons";
 import { ActionButton } from "./post-action-button";
 
 export const PostActionsBar = ({ post }: { post: Post }) => {
+  const { actionBarRef } = useActionBar();
   const { likeButton, commentButton, bookmarkButton, shareButton } = usePostActionsButtons({ post });
 
   const rightButtons = [likeButton, commentButton];
@@ -13,7 +15,7 @@ export const PostActionsBar = ({ post }: { post: Post }) => {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex items-center justify-between w-full pt-2 pb-1 border-t border-gray-100">
+      <div ref={actionBarRef} className="flex items-center justify-between w-full pt-2 pb-1 border-t border-gray-100">
         {/* Left side - Interactive buttons */}
         <div className="flex items-center gap-2 sm:gap-4">
           {leftButtons.map((button) => (
@@ -28,7 +30,6 @@ export const PostActionsBar = ({ post }: { post: Post }) => {
               isActive={button.isActive}
               isUserLoggedIn={button.isUserLoggedIn}
               isDisabled={button.isDisabled}
-              size="sm"
             />
           ))}
         </div>
@@ -49,7 +50,6 @@ export const PostActionsBar = ({ post }: { post: Post }) => {
               isDisabled={button.isDisabled}
               dropdownItems={button.dropdownItems}
               hideCount={button.hideCount}
-              size="sm"
             />
           ))}
         </div>

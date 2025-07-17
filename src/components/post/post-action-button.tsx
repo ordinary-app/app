@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+export type DropdownItem = {
+  icon: any;
+  label: string;
+  onClick: () => void;
+};
+
 export type ActionButtonProps = {
   icon: any;
   label: string;
@@ -18,19 +24,28 @@ export type ActionButtonProps = {
   strokeColor: string;
   fillColor: string;
   isActive?: boolean;
-  onClick?: () => Promise<any> | undefined;
+  onClick?: () => Promise<any> | undefined | undefined;
+  renderPopover?: (trigger: ReactElement) => ReactElement;
   isDisabled?: boolean;
   isUserLoggedIn?: boolean;
-  dropdownItems?: {
-    icon: any;
-    label: string;
-    onClick: () => void;
-  }[];
+  dropdownItems?: DropdownItem[];
   hideCount?: boolean;
   className?: string;
-  size?: "sm" | "default" | "lg";
-  variant?: "ghost" | "outline" | "secondary";
+  showChevron?: boolean;
+  fillOnHover?: boolean;
+  fillOnClick?: boolean;
 };
+
+const TooltipWrapper = ({ children, label }: { children: React.ReactNode; label: string }) => (
+  <TooltipProvider delayDuration={300}>
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent side="bottom" className="bg-foreground text-background text-xs">
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 const formatNumber = (num: number): string => {
   if (num === 0) return "0";
@@ -52,15 +67,17 @@ export const ActionButton = ({
   fillColor,
   isActive = false,
   onClick,
+  renderPopover,
   isDisabled = false,
   isUserLoggedIn,
   dropdownItems,
   hideCount = false,
   className,
-  size = "sm",
-  variant = "ghost",
+  showChevron = false,
+  fillOnClick = true,
 }: ActionButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const showLoginActions = !isUserLoggedIn;
   const formattedCount = formatNumber(initialCount);
@@ -81,9 +98,45 @@ export const ActionButton = ({
   };
 
   const baseGray = "#4B5563"; // tailwind gray-600
-  const currentColor = isActive ? strokeColor : baseGray;
+  let iconStyleColor: string | undefined;
+  let iconStyleFill: string | undefined;
+  let iconOpacityStyle: number | undefined;
+  let buttonBgStyle: string | undefined;
+  let divCursorStyle: string | undefined;
+  let divOpacityClass: string | undefined;
 
-  const iconFill = isActive ? fillColor : undefined;
+  if (showLoginActions) {
+    iconStyleColor = isHovered ? strokeColor : baseGray;
+    iconStyleFill = undefined;
+    iconOpacityStyle = 1;
+    buttonBgStyle = undefined;
+    divCursorStyle = "cursor-pointer";
+    divOpacityClass = "";
+  } else {
+    iconStyleColor = isDisabled
+      ? baseGray
+      : isActive
+        ? strokeColor
+        : isHovered
+          ? strokeColor
+          : baseGray;
+    iconStyleFill = isDisabled ? undefined : isActive && fillOnClick ? fillColor : undefined;
+    iconOpacityStyle = isDisabled ? 0.5 : 1;
+    buttonBgStyle = isActive ? `${strokeColor}10` : undefined;
+    divCursorStyle = isDisabled ? "cursor-not-allowed" : "cursor-pointer";
+    divOpacityClass = isDisabled ? "opacity-70" : "";
+  }
+
+  const iconProps = {
+    size: 18,
+    strokeWidth: 2,
+    className: "transition-all duration-200",
+    style: {
+      color: iconStyleColor,
+      fill: iconStyleFill,
+      opacity: iconOpacityStyle,
+    },
+  };
 
   const MainButton = (
     <Button
@@ -96,24 +149,26 @@ export const ActionButton = ({
         className
       )}
       style={{
-        color: currentColor,
+        color: iconStyleColor,
+        backgroundColor: buttonBgStyle,
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <Icon
-        size={18}
-        strokeWidth={2}
-        className="transition-all duration-200"
-        style={{
-          color: currentColor,
-          fill: iconFill,
-        }}
-      />
+      <Icon {...iconProps} />
       {!(label === "Bookmark" || label === "Share") && formattedCount && (
         <span className="text-xs font-bold ml-1 min-w-fit">
           {formattedCount}
         </span>
       )}
     </Button>
+  );
+
+  const divWrapperClassName = cn(
+    "group flex items-center",
+    divCursorStyle,
+    divOpacityClass,
+    className
   );
 
   const TooltipWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -131,7 +186,12 @@ export const ActionButton = ({
     return (
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <div>
+          <div
+            className={divWrapperClassName}
+            style={{ backgroundColor: buttonBgStyle }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <TooltipWrapper>{MainButton}</TooltipWrapper>
           </div>
         </DropdownMenuTrigger>
@@ -151,5 +211,14 @@ export const ActionButton = ({
     );
   }
 
-  return <TooltipWrapper>{MainButton}</TooltipWrapper>;
+  return (
+    <div
+      className={divWrapperClassName}
+      style={{ backgroundColor: buttonBgStyle }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <TooltipWrapper>{MainButton}</TooltipWrapper>
+    </div>
+  );
 };

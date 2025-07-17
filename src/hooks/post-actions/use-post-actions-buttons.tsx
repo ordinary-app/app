@@ -2,10 +2,11 @@
 
 import { Post } from "@lens-protocol/client";
 import { Heart, MessageCircle, Bookmark, Share2 } from "lucide-react";
+import React, { JSXElementConstructor, ReactElement } from "react";
 import { usePostActions } from "@/hooks/post-actions/use-post-actions";
 
-export type ActionButtonConfig = {
-  icon: any;
+type ActionButtonConfig = {
+  icon:any;
   label: string;
   initialCount: number;
   strokeColor: string;
@@ -13,24 +14,33 @@ export type ActionButtonConfig = {
   isActive?: boolean;
   shouldIncrementOnClick: boolean;
   onClick?: () => Promise<any> | undefined;
+  renderPopover?: (
+    trigger: ReactElement<any, string | JSXElementConstructor<any>>,
+  ) => ReactElement<any, string | JSXElementConstructor<any>>;
   isDisabled?: boolean;
-  hideCount?: boolean;
-  isUserLoggedIn?: boolean;
   dropdownItems?: {
     icon: any;
     label: string;
     onClick: () => void;
   }[];
+  hideCount?: boolean;
+  isUserLoggedIn?: boolean;
+  onConnectWallet?: () => void;
+  onSelectProfile?: () => void;
 };
 
-export type PostActionButtons = {
+type PostActionButtons = {
   likeButton: ActionButtonConfig;
   commentButton: ActionButtonConfig;
   bookmarkButton: ActionButtonConfig;
   shareButton: ActionButtonConfig;
 };
 
-export const usePostActionsButtons = ({ post }: { post: Post }): PostActionButtons => {
+export const usePostActionsButtons = ({
+  post,
+}: {
+  post: Post;
+}): PostActionButtons => {
   const {
     handleComment,
     handleBookmark,
@@ -41,12 +51,12 @@ export const usePostActionsButtons = ({ post }: { post: Post }): PostActionButto
     isLoggedIn,
   } = usePostActions(post);
 
-  const likes = stats?.upvotes || 0;
-  const comments = stats?.comments || 0;
-  const bookmarks = stats?.bookmarks || 0;
+  const likes = stats.upvotes;
+  const comments = stats.comments;
+  const bookmarks = stats.bookmarks;
 
-  const hasUpvoted = operations?.hasUpvoted || false;
-  const hasBookmarked = operations?.hasBookmarked || false;
+  const hasUpvoted = operations?.hasUpvoted;
+  const hasBookmarked = operations?.hasBookmarked;
 
   const buttons: PostActionButtons = {
     likeButton: {
