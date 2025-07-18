@@ -65,7 +65,7 @@ export function LandingSection() {
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">(001)</span>
-                    <span className="text-sm font-medium text-neutral-700">抗审查 Anti-Censorship</span>
+                    <span className="text-sm font-medium text-neutral-700">抗审查<br/>Anti-Censorship</span>
                   </div>
                 </CardContent>
               </Card>
@@ -74,7 +74,7 @@ export function LandingSection() {
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-success-600">(010)</span>
-                    <span className="text-sm font-medium text-neutral-700">尊重原创 Respect Originality</span>
+                    <span className="text-sm font-medium text-neutral-700">尊重原创<br/>Respect Originality</span>
                   </div>
                 </CardContent>
               </Card>
@@ -83,7 +83,7 @@ export function LandingSection() {
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-warning-500">(011)</span>
-                    <span className="text-sm font-medium text-neutral-700">去中心化 Decentralized</span>
+                    <span className="text-sm font-medium text-neutral-700">去中心化<br/>Decentralized</span>
                   </div>
                 </CardContent>
               </Card>
@@ -92,7 +92,7 @@ export function LandingSection() {
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-warning-600">(100)</span>
-                    <span className="text-sm font-medium text-neutral-700">为爱发电 Create with Love</span>
+                    <span className="text-sm font-medium text-neutral-700">为爱发电<br/>Powered by Love</span>
                   </div>
                 </CardContent>
               </Card>

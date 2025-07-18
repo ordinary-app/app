@@ -13,7 +13,7 @@ interface PostListProps {
   skeletonCount?: number;
 }
 
-export function PostList({ posts, loading, emptyText, showToggle = true, skeletonCount = 6 }: PostListProps) 
+export function PostList({ posts, loading, emptyText, showToggle = false, skeletonCount = 6 }: PostListProps) 
 {
   const { viewMode } = useFeedContext();
   const safeItems = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];

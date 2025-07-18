@@ -28,7 +28,7 @@ export function Footer() {
               <li>(1) 抗审查 Anti-Censorship</li>
               <li>(2) 尊重原创 Respect Originality</li>
               <li>(3) 去中心化 Decentralized</li>
-              <li>(4) 为爱发电 Create with Love</li>
+              <li>(4) 为爱发电 Powered by Love</li>
               <li>(5) 有偿交换 Fair Exchange</li>
             </ul>
           </div>

@@ -143,7 +143,7 @@ export function DetailSection() {
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">为爱发电</CardTitle>
                   <Badge variant="outline" className="text-warning-600 border-warning-300 mt-2">
-                    (100) Create with Love
+                    (100) Powered by Love
                   </Badge>
                 </div>
               </div>
