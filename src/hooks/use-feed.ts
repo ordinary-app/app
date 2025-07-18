@@ -18,9 +18,9 @@ export function useFeed(options: useFeedOptions = {}) {
   const { type = "global", profileAddress, customFilter } = options;
   
   // Auth and client
-  const { client, sessionClient, currentProfile } = useLensAuthStore();
+  const { client, sessionClient } = useLensAuthStore();
   const { data: authenticatedUser, loading: authLoading } = useAuthenticatedUser();
-  
+
   // Post actions context
   const { 
     initPostState
@@ -68,7 +68,7 @@ export function useFeed(options: useFeedOptions = {}) {
       else setLoading(true);
       setError(null);
       
-      const result = await fetchPosts(client, {
+      const result = await fetchPosts(sessionClient || client, {
         filter: getFilter(),
         pageSize: PageSize.Fifty,
         cursor: cursor || undefined,
@@ -87,7 +87,7 @@ export function useFeed(options: useFeedOptions = {}) {
       }
       
       const filteredPosts = items.filter(item => item.__typename === 'Post') as Post[];
-      
+
       // Initialize post states for actions
       filteredPosts.forEach(post => {
         initPostState(post);
@@ -121,14 +121,14 @@ export function useFeed(options: useFeedOptions = {}) {
       setRefreshing(false);
       setLoadingMore(false);
     }
-  }, [client, getFilter, initPostState]);
+  }, [client, sessionClient, getFilter, initPostState]);
 
   const checkForNewPosts = useCallback(async () => {
     // Client should always be available for public posts
     if (!client) return;
-    
+
     try {
-      const result = await fetchPosts(client, {
+      const result = await fetchPosts(sessionClient || client, {
         filter: getFilter(),
       });
       if (result.isErr()) return;
@@ -139,7 +139,7 @@ export function useFeed(options: useFeedOptions = {}) {
         setNewPostsAvailable(true);
       }
     } catch {}
-  }, [client, getFilter]);
+  }, [client, sessionClient, getFilter]);
 
   const handleRefresh = useCallback((e?: React.MouseEvent) => {
     e?.preventDefault();
