@@ -1,5 +1,30 @@
 "use client"
 
+import {
+  Upload, 
+  ImageIcon, 
+  FileText, 
+  Loader2,
+  Settings, 
+  Shield,
+  Star,
+  Brain,
+  Globe,
+  Users,
+  Hash,
+  AlertTriangle,
+  Heart,
+  //Lock,
+  //UserCheck,
+  //UserPlus,
+  //MessageSquare,
+  Ban,
+  Scale,
+  Copyright,
+  Award,
+  //Eye,
+  //BookOpen,
+} from "lucide-react"
 import type React from "react"
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,7 +32,6 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Upload, ImageIcon, FileText, Loader2 } from "lucide-react"
 import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
 import { useRouter } from "next/navigation"
@@ -23,6 +47,12 @@ import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
+import { Toast } from "@/components/editer/Toast"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { UnifiedEditor } from "@/components/editer/UnifiedEditor"
+import { ToggleButton } from "@/components/editer/ToggleButton"
+import { ImageUpload } from "@/components/editer/ImageUpload"
+
 interface AttachmentProps {
   name: string;
   size: number;
@@ -30,17 +60,108 @@ interface AttachmentProps {
   url?: string;
 }
 
+interface UploadedImage {
+  id: string
+  name: string
+  size: number
+  type: string
+  url?: string
+  file: File
+}
+
+interface Tag {
+  name: string
+}
+
+const RATING_OPTIONS = [
+  {
+    value: "general-rate",
+    label: "全年龄",
+    description: "适合所有年龄段的内容",
+    icon: <Star className="h-4 w-4 text-green-500" />,
+  },
+  {
+    value: "teen-rate",
+    label: "青少年级",
+    description: "可能不适合13岁以下的内容",
+    icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
+  },
+  {
+    value: "mature-rate",
+    label: "成人级",
+    description: "包含暴力、色情等内容",
+    icon: <Shield className="h-4 w-4 text-orange-500" />,
+  },
+  {
+    value: "explicit-rate",
+    label: "限制级",
+    description: "包含严重露骨的暴力、色情等内容",
+    icon: <Ban className="h-4 w-4 text-red-500" />,
+  },
+]
+
+const WARNING_OPTIONS = [
+  {
+    value: "none-warning",
+    label: "无内容预警",
+    icon: <Shield className="h-4 w-4 text-gray-400" />,
+  },
+  {
+    value: "ai-warning",
+    label: "AI生成内容预警",
+    icon: <Brain className="h-4 w-4 text-red-500" />,
+  },
+  {
+    value: "violence-warning",
+    label: "暴力描述预警",
+    icon: <AlertTriangle className="h-4 w-4 text-red-500" />,
+  },
+  {
+    value: "death-warning",
+    label: "主角死亡预警",
+    icon: <Heart className="h-4 w-4 text-red-600" />,
+  },
+  {
+    value: "noncon-warning",
+    label: "强制/非自愿预警",
+    icon: <Ban className="h-4 w-4 text-red-700" />,
+  },
+  {
+    value: "underage-warning",
+    label: "未成年性行为预警",
+    icon: <Shield className="h-4 w-4 text-red-700" />,
+  },
+]
+
+const CATEGORY_OPTIONS = [
+  { value: "none-relationship", label: "综合", icon: <Globe className="h-4 w-4 text-zinc-800" /> },
+  { value: "gl", label: "GL", icon: <Heart className="h-4 w-4 text-red-500" /> },
+  { value: "gb", label: "GB", icon: <Heart className="h-4 w-4 text-red-500" /> },  
+  { value: "bl", label: "BL", icon: <Heart className="h-4 w-4 text-red-500" /> },
+  { value: "gen-relationship", label: "无CP", icon: <Hash className="h-4 w-4 text-blue-500" /> },
+  { value: "multi-relationship", label: "多元", icon: <Users className="h-4 w-4 text-gray-500" /> },
+]
+
 export default function CreatePage() {
   const [content, setContent] = useState("")
-  const [isOriginal, setIsOriginal] = useState(false)
   const [selectedFile, setSelectedFile] = useState<AttachmentProps[] | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [licenseType, setLicenseType] = useState<'creative-commons' | 'token-bound-nft' | null>(null)
-  const [ccLicense, setCcLicense] = useState("CC BY-NC")
-  const [tbnlCommercial, setTbnlCommercial] = useState<'C' | 'NC'>('NC')
-  const [tbnlDerivatives, setTbnlDerivatives] = useState<'D' | 'DT' | 'DTSA' | 'ND'>('D')
-  const [tbnlPublicLicense, setTbnlPublicLicense] = useState<'PL' | 'NPL'>('NPL')
-  const [tbnlAuthority, setTbnlAuthority] = useState<'Ledger' | 'Legal'>('Legal')
+
+  const [title, setTitle] = useState("")
+  const [images, setImages] = useState<UploadedImage[]>([])
+  const [tags, setTags] = useState<Tag[]>([])
+  const [selectedRating, setSelectedRating] = useState("")
+  const [selectedWarnings, setSelectedWarnings] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [showTagSheet, setShowTagSheet] = useState(false)
+  const [showLicenseSheet, setShowLicenseSheet] = useState(false)
+  const [isEditorExpanded, setIsEditorExpanded] = useState(false)
+  //const [addToCollection, setAddToCollection] = useState(false)//将作品加入合集功能
+  //const [language, setLanguage] = useState("zh-CN")
+  //const [privacy, setPrivacy] = useState("public")
+  //const [commentPermission, setCommentPermission] = useState("all")
+
+  // auth
   const router = useRouter()
   const { sessionClient: client, currentProfile } = useLensAuthStore();
   const { contractAddress, explorerUrl } = useAppConfigStore();
@@ -49,6 +170,18 @@ export default function CreatePage() {
   const { address, isConnected } = useAccount();
   const reconnectWallet = useReconnectWallet();
   const { checkWalletConnection } = useWalletCheck();
+
+  // Toast state
+  const [showDevelopmentToast, setShowDevelopmentToast] = useState(false)
+
+  // License states
+  const [isOriginal, setIsOriginal] = useState(false)
+  const [licenseType, setLicenseType] = useState<"token-bound-nft" | "creative-commons" | null>(null)
+  const [tbnlCommercial, setTbnlCommercial] = useState<"C" | "NC">("NC")
+  const [tbnlDerivatives, setTbnlDerivatives] = useState<"D" | "DT" | "DTSA" | "ND">("D")
+  const [tbnlPublicLicense, setTbnlPublicLicense] = useState<"PL" | "NPL">("NPL")
+  const [tbnlAuthority, setTbnlAuthority] = useState<"Ledger" | "Legal">("Legal")
+  const [ccLicense, setCcLicense] = useState("CC BY-NC")
 
   const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList: FileList = event.target.files!
@@ -82,9 +215,29 @@ export default function CreatePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!checkWalletConnection("发布内容")) {
-      return;
+    if (!title.trim()) {
+      toast.error("请输入标题")
+      return
     }
+
+    if (!selectedRating) {
+      toast.error("请选择作品分类")
+      return
+    }
+
+    if (!setSelectedWarnings) {
+      toast.error("请选择作品分类")
+      return
+    }
+    
+    if (!setSelectedCategories) {
+      toast.error("请选择作品分类")
+      return
+    }
+
+    //if (!checkWalletConnection("发布内容")) {
+    //  return;
+    //}
 
     if (!content.trim()) {
       toast.error("Please enter some content")
@@ -92,7 +245,7 @@ export default function CreatePage() {
     }
 
     if (isOriginal && !licenseType) {
-      toast.error("Please select a license for your Original Content")
+      toast.error("Please select a license for your license Type !")
       return
     }
 
@@ -167,7 +320,7 @@ export default function CreatePage() {
       const { uri } = await storageClient.uploadAsJson(metadata);
       
       // mint NFT for original conent
-      if (isOriginal) {
+      if (isOriginal && licenseType=="token-bound-nft") {
 
         if (!address) throw new Error("No wallet connected");
         
@@ -202,33 +355,564 @@ export default function CreatePage() {
     }
   }
 
+  //用于提示《功能施工中》的组件
+  const handleShowDevelopmentToast = () => {
+    setShowDevelopmentToast(true)
+  }
+
+  const handleCloseToast = () => {
+    setShowDevelopmentToast(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="container mx-auto px-4 py-8">
+      {/* Development Toast */}
+      <Toast
+        show={showDevelopmentToast}
+        message="功能开发中"
+        description="加入合集功能正在开发中，敬请期待！"
+        type="warning"
+        duration={1000}
+        onClose={handleCloseToast}
+      />
+
+      <main className="container mx-auto px-4 py-3 pb-4">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900">
                 <FileText className="h-5 w-5" />
-                <span>Create New Post</span>
+                <span>Upload New Work</span>
               </CardTitle>
             </CardHeader>
 
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Content Input */}
-                <div className="space-y-2">
-                  <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
-                    placeholder="What's on your mind? Share your thoughts, ideas, or stories..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="min-h-[120px] resize-none"
-                    maxLength={500}
+                
+                {/* Unified Editor */}
+                <div className="space-y-4">
+                  <UnifiedEditor
+                    title={title}
+                    onTitleChange={setTitle}
+                    content={content}
+                    onContentChange={setContent}
+                    tags={tags}
+                    onTagsChange={setTags}
+                    isExpanded={isEditorExpanded}
+                    onExpandedChange={setIsEditorExpanded}
                   />
-                  <div className="text-right text-sm text-gray-500">{content.length}/500</div>
                 </div>
+
+                {/* Image Upload Section */}
+                <div>
+                  <ImageUpload images={images} onImagesChange={setImages} maxImages={12} required={false} />
+                </div>
+
+                {/* Original Content Toggle */}
+                <ToggleButton
+                  label="版权声明"
+                  value={isOriginal}
+                  onValueChange={(checked) => {
+                    setIsOriginal(checked)
+                    if (!checked) {
+                      setLicenseType(null)
+                    }
+                  }}
+                  icon={<Copyright className="h-4 w-4" />}
+                  description="选择合适的许可证"
+                  variant="success"
+                />
+                {/* License Selection Sheet - Only show when marked as original */}
+                {isOriginal && (
+                  <Sheet open={showLicenseSheet} onOpenChange={setShowLicenseSheet}>
+                    <SheetTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full h-14 rounded-xl 
+                        bg-gradient-to-r from-green-50 to-blue-50 
+                        border-spacing-2 border-transparent
+                      hover:border-green-300 transition-all 
+                        duration-200"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg">
+                            <Scale className="h-4 w-4 text-zinc-600" />
+                          </div>
+                          <span className="font-medium text-zinc-700">
+                            {licenseType
+                              ? `已选择: ${licenseType === "token-bound-nft" ? "Token Bound NFT" : "Creative Commons"}`
+                              : "选择许可证"}
+                          </span>
+                        </div>
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[90vh] bg-white px-0 mx-0">
+                      <SheetHeader className="border-b border-gray-100 pb-4 mx-4">
+                        <SheetTitle className="text-xl font-semibold text-gray-800 text-center">选择许可证</SheetTitle>
+                      </SheetHeader>
+
+                      <div className="mt-4 space-y-4 overflow-y-auto max-h-[calc(90vh-180px)] ml-0 px-4">
+                        {/* License Type Selection */}
+                        <Card className="border-2 border-zinc-100 bg-zinc-50/30">
+                          <CardContent className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="p-1.5 bg-zinc-100 rounded-lg">
+                                <Award className="h-4 w-4 text-zinc-600" />
+                              </div>
+                              <h3 className="text-base font-semibold text-zinc-800">许可证类型</h3>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <button
+                                type="button"
+                                onClick={() => setLicenseType("token-bound-nft")}
+                                className={`
+                                  p-4 rounded-lg border-2 transition-all duration-200 text-left
+                                  ${
+                                    licenseType === "token-bound-nft"
+                                      ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
+                                  }
+                                `}
+                              >
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
+                                  <span className="font-semibold text-sm">Token Bound NFT License</span>
+                                </div>
+                                <p className="text-xs text-gray-600">基于区块链的许可证(CHIPS测试中🍟)</p>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => setLicenseType("creative-commons")}
+                                className={`
+                                  p-4 rounded-lg border-2 transition-all duration-200 text-left
+                                  ${
+                                    licenseType === "creative-commons"
+                                      ? "bg-blue-100 border-blue-300 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                                  }
+                                `}
+                              >
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+                                  <span className="font-semibold text-sm">Creative Commons License</span>
+                                </div>
+                                <p className="text-xs text-gray-600">标准知识共享许可证</p>
+                              </button>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Token Bound NFT License Options */}
+                        {licenseType === "token-bound-nft" && (
+                          <div className=
+                            " pb-2 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
+                            {/* Commercial Usage */}
+                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
+                              <CardContent className="p-4">
+                                <h4 className="font-medium text-sm mb-3">商业使用</h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlCommercial("NC")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlCommercial === "NC"
+                                          ? "bg-green-100 border-green-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-green-200 hover:bg-green-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">非商业 (默认)</span>
+                                    <p className="text-xs text-gray-600 mt-1">不允许商业使用</p>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlCommercial("C")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlCommercial === "C"
+                                          ? "bg-orange-100 border-orange-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-orange-200 hover:bg-orange-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">商业</span>
+                                    <p className="text-xs text-gray-600 mt-1">允许商业使用</p>
+                                  </button>
+                                </div>
+                              </CardContent>
+                            </Card>
+
+                            {/* Derivatives */}
+                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
+                              <CardContent className="p-4">
+                                <h4 className="font-medium text-sm mb-3">衍生作品</h4>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {[
+                                    { value: "D", label: "衍生作品 (默认)", desc: "允许创建衍生作品" },
+                                    { value: "DT", label: "衍生作品-NFT", desc: "衍生作品必须是NFT" },
+                                    { value: "DTSA", label: "衍生作品-NFT-相同许可", desc: "衍生作品必须使用相同许可" },
+                                    { value: "ND", label: "禁止衍生", desc: "不允许衍生作品" },
+                                  ].map((option) => (
+                                    <button
+                                      key={option.value}
+                                      type="button"
+                                      onClick={() => setTbnlDerivatives(option.value as any)}
+                                      className={`
+                                        p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                        ${
+                                          tbnlDerivatives === option.value
+                                            ? "bg-purple-100 border-purple-300 shadow-md"
+                                            : "bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50"
+                                        }
+                                      `}
+                                    >
+                                      <span className="font-medium text-sm">{option.label}</span>
+                                      <p className="text-xs text-gray-600 mt-1">{option.desc}</p>
+                                    </button>
+                                  ))}
+                                </div>
+                              </CardContent>
+                            </Card>
+
+                            {/* Public Rights */}
+                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
+                              <CardContent className="p-4">
+                                <h4 className="font-medium text-sm mb-3">公共权利</h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlPublicLicense("NPL")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlPublicLicense === "NPL"
+                                          ? "bg-amber-100 border-amber-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-amber-200 hover:bg-amber-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">无公共许可 (默认)</span>
+                                    <p className="text-xs text-gray-600 mt-1">仅限许可证持有者</p>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlPublicLicense("PL")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlPublicLicense === "PL"
+                                          ? "bg-green-100 border-green-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-green-200 hover:bg-green-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">公共许可</span>
+                                    <p className="text-xs text-gray-600 mt-1">授予公众广泛权利</p>
+                                  </button>
+                                </div>
+                              </CardContent>
+                            </Card>
+
+                            {/* Authority */}
+                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
+                              <CardContent className="p-4">
+                                <h4 className="font-medium text-sm mb-3">权威机构</h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlAuthority("Legal")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlAuthority === "Legal"
+                                          ? "bg-purple-100 border-purple-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">法律权威 (默认)</span>
+                                    <p className="text-xs text-gray-600 mt-1">传统法律系统权威</p>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlAuthority("Ledger")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlAuthority === "Ledger"
+                                          ? "bg-indigo-100 border-indigo-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-indigo-200 hover:bg-indigo-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">账本权威</span>
+                                    <p className="text-xs text-gray-600 mt-1">区块链账本权威</p>
+                                  </button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </div>
+                        )}
+
+                        {/* Creative Commons License Options */}
+                        {licenseType === "creative-commons" && (
+                          <Card className="border-2 border-blue-100 bg-blue-50/30">
+                            <CardContent className="p-4">
+                              <h4 className="font-medium text-sm mb-3">Creative Commons 许可证选项</h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {[
+                                  { value: "CC BY", label: "CC BY", desc: "允许商业使用和衍生作品，但需要署名" },
+                                  {
+                                    value: "CC BY-NC",
+                                    label: "CC BY-NC (默认)",
+                                    desc: "不允许商业使用但允许衍生作品，需要署名",
+                                  },
+                                  {
+                                    value: "CC BY-ND",
+                                    label: "CC BY-ND",
+                                    desc: "允许商业使用但不允许衍生作品，需要署名",
+                                  },
+                                  { value: "CC0", label: "CC0", desc: "公共领域，允许商业使用和衍生作品，无需署名" },
+                                ].map((option) => (
+                                  <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => setCcLicense(option.value)}
+                                    className={`
+                                      w-full p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        ccLicense === option.value
+                                          ? "bg-blue-100 border-blue-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-blue-200 hover:bg-blue-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">{option.label}</span>
+                                    <p className="text-xs text-gray-600 mt-1">{option.desc}</p>
+                                  </button>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )}
+                      </div>
+
+                      {/* Bottom Action Buttons */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 mx-4">
+                        <div className="flex gap-3 justify-end">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setLicenseType(null)
+                            }} 
+                            className="px-6"
+                          >
+                            重置
+                          </Button>
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              setShowLicenseSheet(false)
+                              toast.success("许可证设置已保存")
+                            }}
+                            className="harbor-button px-6 bg-primary"
+                          >
+                            保存许可证
+                          </Button>
+                        </div>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                )}
+
+                {/* Enhanced Content Classification Sheet */}
+                <Sheet open={showTagSheet} onOpenChange={setShowTagSheet}>
+                  <SheetTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={`
+                        w-full h-14 rounded-2xl
+                        bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50
+                        border-spacing-2 border-transparent
+                        transition-all duration-200
+                        //hover:shadow-lg
+                        hover:border-zinc-300
+                        active:scale-95
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400
+                        group
+                      `}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg group-hover:bg-purple-50 transition-colors">
+                          <Settings className="h-5 w-5 text-zinc-700 group-hover:rotate-180 transition-transform " />
+                        </div>
+                        <span className="text-sm font-medium text-zinc-700">
+                          作品分类
+                        </span>
+                      </div>
+                    </Button>
+                  </SheetTrigger>
+
+                  <SheetContent side="bottom" className="h-[85vh] bg-white px-0 mx-0">
+                    <SheetHeader className="border-b border-gray-100 px-4">
+                      <Settings className="h-4 w-4 text-zinc-900" />
+                      <SheetTitle className="pb-3 mt-0 text-l font-semibold text-gray-800 text-center border-b border-gray-200">作品分类</SheetTitle>
+                    </SheetHeader>
+
+                    <div className="pt-7 pb-7 overflow-y-auto max-h-[calc(85vh-180px)] mx-4 grid grid-cols-1 sm:grid-cols-3 gap-x-5">
+
+                      {/* Rating Section */}
+                      <Card className="border-2 border-zinc-100 bg-zinc-50/30">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="p-1.5 bg-zinc-100 rounded-lg">
+                              <Star className="h-4 w-4 text-green-600" />
+                            </div>
+                            <h3 className="text-base font-semibold text-zinc-800">分级限制</h3>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {RATING_OPTIONS.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => setSelectedRating(option.value)}
+                                className=
+                                {`
+                                  p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                  ${
+                                    selectedRating === option.value
+                                      ? "bg-zinc-50 border-zinc-400 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
+                                  }
+                                `}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  {option.icon}
+                                  <span className="font-medium text-sm">{option.label}</span>
+                                </div>
+                                <p className="text-xs text-gray-600">{option.description}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Category Section */}
+                      <Card className="border-2 border-zinc-100 bg-zinc-50/30">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="p-1.5 bg-zinc-100 rounded-lg">
+                              <Globe className="h-4 w-4 text-sky-600" />
+                            </div>
+                            <h3 className="text-base font-semibold text-zinc-800">作品分区</h3>
+                          </div>
+                          <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
+                            {CATEGORY_OPTIONS.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => {
+                                  if (selectedCategories.includes(option.value)) {
+                                    setSelectedCategories((prev) => prev.filter((c) => c !== option.value))
+                                  } else {
+                                    setSelectedCategories((prev) => [...prev, option.value])
+                                  }
+                                }}
+                                className={`
+                                  p-3 rounded-lg border-2 transition-all duration-200 text-center
+                                  ${
+                                    selectedCategories.includes(option.value)
+                                      ? "bg-zinc-50 border-zinc-400 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
+                                  }
+                                `}
+                                >
+                                <div className="flex flex-col items-center justify-center h-full gap-1">
+                                  {option.icon}
+                                  <span className="font-medium text-sm">{option.label}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Warning Section */}
+                      <Card className="border-2 border-zinc-100 bg-zinc-50/30">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="p-1.5 bg-zinc-100 rounded-lg">
+                              <AlertTriangle className="h-4 w-4 text-orange-600" />
+                            </div>
+                            <h3 className="text-base font-semibold text-zinc-800">特殊预警</h3>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {WARNING_OPTIONS.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => {
+                                  if (selectedWarnings.includes(option.value)) {
+                                    setSelectedWarnings((prev) => prev.filter((w) => w !== option.value))
+                                  } else {
+                                    setSelectedWarnings((prev) => [...prev, option.value])
+                                  }
+                                }}
+                                className={`
+                                  p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                  ${
+                                    selectedWarnings.includes(option.value)
+                                      ? "bg-zinc-100 border-zinc-400 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
+                                  }
+                                `}
+                                >
+                                <div className="flex items-center gap-2">
+                                  {option.icon}
+                                  <span className="font-medium text-sm">{option.label}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      
+                    </div>
+
+                    {/* Bottom Action Buttons */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 mx-4">
+                      <div className="flex gap-3 justify-end">
+                        <Button type="button" variant="outline" 
+                        onClick={() => {
+                          setSelectedRating("")
+                          setSelectedWarnings([])
+                          setSelectedCategories([])
+                        }} className="px-6">
+                          重置
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setShowTagSheet(false)
+                            toast.success("分类设置已保存")
+                          }}
+                          className="harbor-button px-6 bg-primary"
+                        >
+                          保存设置
+                        </Button>
+                      </div>
+                    </div>
+
+                  </SheetContent>
+                </Sheet>
 
                 {/* Media Upload */}
                 <div className="space-y-2">
@@ -260,424 +944,6 @@ export default function CreatePage() {
                     </label>
                   </div>
                 </div>
-
-                {/* Original Content Toggle */}
-                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
-                  <div className="space-y-1">
-                    <Label htmlFor="original-toggle" className="text-sm font-medium">
-                      Mark as Original Content
-                    </Label>
-                    <p className="text-xs text-gray-600">Enables you to specific a license. (🍟 in testing)</p>
-                  </div>
-                  <Switch 
-                    id="original-toggle" 
-                    checked={isOriginal} 
-                    onCheckedChange={(checked) => {
-                        setIsOriginal(checked);
-                        if (!checked) {
-                          setLicenseType(null);
-                        }
-                      }}
-                    className="data-[state=checked]:bg-primary"
-                  />
-                </div>
-
-                {/* License Selection - Only show when marked as original */}
-                {isOriginal && (
-                  <div className="space-y-4 p-4 bg-blue-50 rounded-lg">
-                    <Label className="text-sm font-medium">Choose a License</Label>
-                    
-                    {/* License Type Selection */}
-                    <div className="flex flex-col sm:grid sm:grid-cols-2 gap-3">
-                      {/* Token Bound NFT License */}
-                      <div className="space-y-2">
-                        <label className="block cursor-pointer group">
-                          <input
-                            type="radio"
-                            name="licenseType"
-                            value="token-bound-nft"
-                            checked={licenseType === 'token-bound-nft'}
-                            onChange={() => setLicenseType('token-bound-nft')}
-                            className="sr-only"
-                          />
-                          <div className={`
-                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
-                            ${
-                              licenseType === 'token-bound-nft'
-                                ? 'border-yellow-500 bg-yellow-50 shadow-sm'
-                                : 'border-gray-200 bg-white hover:border-gray-300'
-                            }
-                          `}>
-                            <div className="flex items-start space-x-3">
-                              <div className={`
-                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
-                                ${
-                                  licenseType === 'token-bound-nft'
-                                    ? 'border-yellow-300 bg-yellow-300'
-                                    : 'border-gray-300 group-hover:border-gray-400'
-                                }
-                              `}>
-                                {licenseType === 'token-bound-nft' && (
-                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
-                                )}
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-semibold text-gray-900 text-sm mb-1">
-                                  Token Bound NFT License
-                                </div>
-                                <p className="text-xs text-gray-600 leading-relaxed">
-                                  Blockchain-based licensing
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
-                      </div>
-
-                      {/* Creative Commons License */}
-                      <div className="space-y-2">
-                        <label className="block cursor-pointer group">
-                          <input
-                            type="radio"
-                            name="licenseType"
-                            value="creative-commons"
-                            checked={licenseType === 'creative-commons'}
-                            onChange={() => setLicenseType('creative-commons')}
-                            className="sr-only"
-                          />
-                          <div className={`
-                            relative py-2 px-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md
-                            ${
-                              licenseType === 'creative-commons'
-                                ? 'border-blue-500 bg-blue-50 shadow-sm'
-                                : 'border-gray-200 bg-white hover:border-gray-300'
-                            }
-                          `}>
-                            <div className="flex items-start space-x-3">
-                              <div className={`
-                                w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 transition-colors
-                                ${
-                                  licenseType === 'creative-commons'
-                                    ? 'border-blue-500 bg-blue-500'
-                                    : 'border-gray-300 group-hover:border-gray-400'
-                                }
-                              `}>
-                                {licenseType === 'creative-commons' && (
-                                  <div className="w-full h-full rounded-full bg-white scale-[0.4]"></div>
-                                )}
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-semibold text-gray-900 text-sm mb-1">
-                                  Creative Commons License
-                                </div>
-                                <p className="text-xs text-gray-600 leading-relaxed">
-                                  Standard Creative Commons licensing
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Token Bound NFT License Options */}
-                    {licenseType === 'token-bound-nft' && (
-                      <div className="space-y-6 pl-3">
-                        {/* Commercial Usage */}
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">Commercial Usage</Label>
-                          <div className="flex space-x-4">
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-commercial"
-                                value="NC"
-                                checked={tbnlCommercial === 'NC'}
-                                onChange={(e) => setTbnlCommercial(e.target.value as 'C' | 'NC')}
-                              />
-                              <span className="text-sm">Non-Commercial (default)</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-commercial"
-                                value="C"
-                                checked={tbnlCommercial === 'C'}
-                                onChange={(e) => setTbnlCommercial(e.target.value as 'C' | 'NC')}
-                                //className="appearance-none w-3 h-3 rounded-full border border-gray-400 checked:bg-black checked:border-black"
-                              />
-                              <span className="text-sm">Commercial</span>
-                            </label>
-                          </div>
-                          {tbnlCommercial === 'C' ? (
-                            <div className="bg-orange-50 p-2 rounded border border-orange-200">
-                              <p className="text-xs text-orange-700">
-                                <strong>Commercial (C):</strong> This license allows the NFT owner to make money from the work, including selling merchandise, licensing for commercial use, and other revenue-generating activities.
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="bg-green-50 p-2 rounded border border-green-200">
-                              <p className="text-xs text-green-700">
-                                <strong>Non-Commercial (NC):</strong> This license does not permit commercial use. The work can be used for personal, educational, or non-profit purposes only.
-                              </p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Derivatives */}
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">Derivatives</Label>
-                          <div className="grid grid-cols-2 gap-2">
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-derivatives"
-                                value="D"
-                                checked={tbnlDerivatives === 'D'}
-                                onChange={(e) => setTbnlDerivatives(e.target.value as 'D' | 'DT' | 'DTSA' | 'ND')}
-                              />
-                              <span className="text-sm">Derivatives (default)</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-derivatives"
-                                value="DT"
-                                checked={tbnlDerivatives === 'DT'}
-                                onChange={(e) => setTbnlDerivatives(e.target.value as 'D' | 'DT' | 'DTSA' | 'ND')}
-                              />
-                              <span className="text-sm">Derivatives-NFT</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-derivatives"
-                                value="DTSA"
-                                checked={tbnlDerivatives === 'DTSA'}
-                                onChange={(e) => setTbnlDerivatives(e.target.value as 'D' | 'DT' | 'DTSA' | 'ND')}
-                              />
-                              <span className="text-sm">Derivatives-NFT-Share-Alike</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-derivatives"
-                                value="ND"
-                                checked={tbnlDerivatives === 'ND'}
-                                onChange={(e) => setTbnlDerivatives(e.target.value as 'D' | 'DT' | 'DTSA' | 'ND')}
-                              />
-                              <span className="text-sm">No-Derivatives</span>
-                            </label>
-                          </div>
-                          {tbnlDerivatives === 'D' && (
-                            <div className="bg-blue-50 p-2 rounded border border-blue-200">
-                              <p className="text-xs text-blue-700">
-                                <strong>Derivatives (D):</strong> Allows unrestricted creation of derivative works. Others can modify, adapt, and build upon the work in any format or medium.
-                              </p>
-                            </div>
-                          )}
-                          {tbnlDerivatives === 'DT' && (
-                            <div className="bg-purple-50 p-2 rounded border border-purple-200">
-                              <p className="text-xs text-purple-700">
-                                <strong>Derivatives-NFT (DT):</strong> Derivative works are allowed but must be minted as NFTs. This ensures blockchain-based tracking of derivative creations.
-                              </p>
-                            </div>
-                          )}
-                          {tbnlDerivatives === 'DTSA' && (
-                            <div className="bg-indigo-50 p-2 rounded border border-indigo-200">
-                              <p className="text-xs text-indigo-700">
-                                <strong>Derivatives-NFT-Share-Alike (DTSA):</strong> Derivative works must be NFTs and carry the same license terms. This ensures consistent licensing across all derivative works.
-                              </p>
-                            </div>
-                          )}
-                          {tbnlDerivatives === 'ND' && (
-                            <div className="bg-red-50 p-2 rounded border border-red-200">
-                              <p className="text-xs text-red-700">
-                                <strong>No-Derivatives (ND):</strong> Derivative works are not allowed. The work can be used as-is but cannot be modified, adapted, or built upon.
-                              </p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Public License */}
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">Public Rights</Label>
-                          <div className="flex space-x-4">
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-public-license"
-                                value="PL"
-                                checked={tbnlPublicLicense === 'PL'}
-                                onChange={(e) => setTbnlPublicLicense(e.target.value as 'PL' | 'NPL')}
-                              />
-                              <span className="text-sm">Public-License</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-public-license"
-                                value="NPL"
-                                checked={tbnlPublicLicense === 'NPL'}
-                                onChange={(e) => setTbnlPublicLicense(e.target.value as 'PL' | 'NPL')}
-                              />
-                              <span className="text-sm">No-Public-License (default)</span>
-                            </label>
-                          </div>
-                          {tbnlPublicLicense === 'PL' ? (
-                            <div className="bg-green-50 p-2 rounded border border-green-200">
-                              <p className="text-xs text-green-700">
-                                <strong>Public-License (PL):</strong> Grants broad rights to the public to reproduce the work. Anyone can use and distribute the work under the specified terms.
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="bg-amber-50 p-2 rounded border border-amber-200">
-                              <p className="text-xs text-amber-700">
-                                <strong>No-Public-License (NPL):</strong> Restricts rights to the licensee only. The general public does not have automatic rights to reproduce or distribute the work.
-                              </p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Authority */}
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">Authority</Label>
-                          <div className="flex space-x-4">
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-authority"
-                                value="Ledger"
-                                checked={tbnlAuthority === 'Ledger'}
-                                onChange={(e) => setTbnlAuthority(e.target.value as 'Ledger' | 'Legal')}
-                              />
-                              <span className="text-sm">Ledger-Authoritative</span>
-                            </label>
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name="tbnl-authority"
-                                value="Legal"
-                                checked={tbnlAuthority === 'Legal'}
-                                onChange={(e) => setTbnlAuthority(e.target.value as 'Ledger' | 'Legal')}
-                              />
-                              <span className="text-sm">Legal-Authoritative (default)</span>
-                            </label>
-                          </div>
-                          {tbnlAuthority === 'Ledger' ? (
-                            <div className="bg-indigo-50 p-2 rounded border border-indigo-200">
-                              <p className="text-xs text-indigo-700">
-                                <strong>Ledger-Authoritative (Ledger):</strong> The blockchain ledger serves as the final authority for all licensing decisions. Smart contracts automatically enforce terms without possibility of legal override.
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="bg-purple-50 p-2 rounded border border-purple-200">
-                              <p className="text-xs text-purple-700">
-                                <strong>Legal-Authoritative (Legal):</strong> Traditional legal systems retain authority over licensing disputes. Courts and legal institutions can override blockchain-based decisions when necessary.
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {/* Creative Commons License Options */}
-                    {licenseType === 'creative-commons' && (
-                      <div className="space-y-6 pl-6">
-                        <div className="flex items-start space-x-3">
-                          <input
-                            type="radio"
-                            id="cc-by"
-                            name="cc-license"
-                            value="CC BY"
-                            checked={ccLicense === "CC BY"}
-                            onChange={(e) => setCcLicense(e.target.value)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <Label htmlFor="cc-by" className="text-sm font-medium cursor-pointer">
-                              CC BY
-                            <p className="text-xs text-gray-600 mt-1">
-                              CC BY (Attribution) allows both commercial use and the creation of derivative works, but requires
-                              attribution to the original creator.
-                            </p>
-                            </Label>
-                            
-                          </div>
-                        </div>
-                        <div className="flex items-start space-x-3">
-                          <input
-                            type="radio"
-                            id="cc-by-nc"
-                            name="cc-license"
-                            value="CC BY-NC"
-                            checked={ccLicense === "CC BY-NC"}
-                            onChange={(e) => setCcLicense(e.target.value)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <Label htmlFor="cc-by-nc" className="text-sm font-medium cursor-pointer">
-                              CC BY-NC (default)
-                            <p className="text-xs text-gray-600 mt-1">
-                              CC BY-NC (Attribution-NonCommercial) does not permit commercial use but allows for the creation of derivative works.
-                              Attribution to the original creator is required.
-                            </p>
-                            </Label>
-                            
-                          </div>
-                        </div>
-
-                        <div className="flex items-start space-x-3">
-                          <input
-                            type="radio"
-                            id="cc-by-nd"
-                            name="cc-license"
-                            value="CC BY-ND"
-                            checked={ccLicense === "CC BY-ND"}
-                            onChange={(e) => setCcLicense(e.target.value)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <Label htmlFor="cc-by-nd" className="text-sm font-medium cursor-pointer">
-                              CC BY-ND
-                            <p className="text-xs text-gray-600 mt-1">
-                              CC BY-ND (Attribution-NoDerivs) permits commercial use but does not allow the creation of derivative works.
-                              Attribution to the original creator is required.
-                            </p>
-                            </Label>
-                            
-                          </div>
-                        </div>
-
-                        <div className="flex items-start space-x-3">
-                          <input
-                            type="radio"
-                            id="cc0"
-                            name="cc-license"
-                            value="CC0"
-                            checked={ccLicense === "CC0"}
-                            onChange={(e) => setCcLicense(e.target.value)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1">
-                            <Label htmlFor="cc0" className="text-sm font-medium cursor-pointer">
-                              CC0
-                            <p className="text-xs text-gray-600 mt-1">
-                              CC0 (Public Domain Dedication) permits both commercial use and the creation of derivative works, without the
-                              need for attribution.
-                            </p>
-                            </Label>
-                            
-                          </div>
-                        </div>
-
-                        
-                      </div>
-                    )}
-
-
-                  </div>
-                )}
-
                
                 <div className="flex justify-end space-x-4">
                    {/* Clear Button */}
@@ -685,10 +951,16 @@ export default function CreatePage() {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      setContent("")
                       setSelectedFile(null)
                       setIsOriginal(false)
                       setLicenseType(null)
+                      setTitle("")
+                      setContent("")
+                      setImages([])
+                      setTags([])
+                      setSelectedRating("")
+                      setSelectedWarnings([])
+                      setSelectedCategories([])
                     }}
                   >
                     Clear
