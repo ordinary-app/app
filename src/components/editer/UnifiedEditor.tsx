@@ -117,7 +117,7 @@ export function UnifiedEditor({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden">
       {/* Title Input */}
       <div className="flex items-center gap-4 px-4 py-2 border-b border-dashed">
         <textarea
@@ -129,8 +129,9 @@ export function UnifiedEditor({
           rows={1}
           maxLength={30}
         />
-        <div className="flex-shrink-0 text-xs text-muted-foreground">
-          {title.length}/30
+        <div className="flex gap-1 text-xs text-muted-foreground">
+          {title.length}/30 
+          <div className="text-destructive">*</div>
         </div>
       </div>
 
@@ -138,7 +139,7 @@ export function UnifiedEditor({
       <div className="px-4 py-2.5">
         <textarea
           ref={contentRef}
-          placeholder="分享你的想法..."
+          placeholder="分享你的想法... ..."
           value={content}
           onChange={handleContentChange}
           className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm"
@@ -329,7 +330,7 @@ export function UnifiedEditor({
               variant="ghost"
               size="sm"
               onClick={() => formatText("link")}
-              className="p-1 h-8 w-8 "
+              className="p-1 h-8 w-8 hidden sm:flex"
             >
               <Link className="h-4 w-4" />
             </Button>

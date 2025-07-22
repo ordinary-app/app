@@ -63,7 +63,7 @@ export function ToggleButton({
           {description && <p className="text-sm text-current/70 mt-1">{description}</p>}
         </div>
 
-        <div className="text-xs opacity-60">{value ? "已启用" : "未启用"}</div>
+        <div className="text-xs opacity-60">{value ? "ON" : "OFF"}</div>
       </div>
     </Button>
   )

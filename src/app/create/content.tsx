@@ -48,7 +48,7 @@ import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
 import { Toast } from "@/components/editer/Toast"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { UnifiedEditor } from "@/components/editer/UnifiedEditor"
 import { ToggleButton } from "@/components/editer/ToggleButton"
 import { ImageUpload } from "@/components/editer/ImageUpload"
@@ -422,10 +422,10 @@ export default function CreatePage() {
                   description="选择合适的许可证"
                   variant="success"
                 />
-                {/* License Selection Sheet - Only show when marked as original */}
+                {/* License Selection Dialog - Only show when marked as original */}
                 {isOriginal && (
-                  <Sheet open={showLicenseSheet} onOpenChange={setShowLicenseSheet}>
-                    <SheetTrigger asChild>
+                  <Dialog open={showLicenseSheet} onOpenChange={setShowLicenseSheet}>
+                    <DialogTrigger asChild>
                       <Button
                         type="button"
                         variant="outline"
@@ -435,7 +435,7 @@ export default function CreatePage() {
                       hover:border-green-300 transition-all 
                         duration-200"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
                           <div className="p-2 rounded-lg">
                             <Scale className="h-4 w-4 text-zinc-600" />
                           </div>
@@ -446,13 +446,16 @@ export default function CreatePage() {
                           </span>
                         </div>
                       </Button>
-                    </SheetTrigger>
-                    <SheetContent side="bottom" className="h-[90vh] bg-white px-0 mx-0">
-                      <SheetHeader className="border-b border-gray-100 pb-4 mx-4">
-                        <SheetTitle className="text-xl font-semibold text-gray-800 text-center">选择许可证</SheetTitle>
-                      </SheetHeader>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl max-h-[85vh] bg-white">
+                      <DialogHeader className="border-b border-gray-100 pb-4">
+                        <div className="flex items-center justify-center gap-2">
+                          <Scale className="h-4 w-4 text-zinc-900" />
+                          <DialogTitle className="text-l font-semibold text-gray-800 text-center">选择许可证</DialogTitle>
+                        </div>
+                      </DialogHeader>
 
-                      <div className="mt-4 space-y-4 overflow-y-auto max-h-[calc(90vh-180px)] ml-0 px-4">
+                      <div className="pt-7 pb-7 overflow-y-auto max-h-[calc(85vh-180px)] space-y-4">
                         {/* License Type Selection */}
                         <Card className="border-2 border-zinc-100 bg-zinc-50/30">
                           <CardContent className="p-4">
@@ -520,8 +523,8 @@ export default function CreatePage() {
                                       p-3 rounded-lg border-2 transition-all duration-200 text-left
                                       ${
                                         tbnlCommercial === "NC"
-                                          ? "bg-green-100 border-green-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-green-200 hover:bg-green-50"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
                                       }
                                     `}
                                   >
@@ -535,13 +538,52 @@ export default function CreatePage() {
                                       p-3 rounded-lg border-2 transition-all duration-200 text-left
                                       ${
                                         tbnlCommercial === "C"
-                                          ? "bg-orange-100 border-orange-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-orange-200 hover:bg-orange-50"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
                                       }
                                     `}
                                   >
                                     <span className="font-medium text-sm">商业</span>
                                     <p className="text-xs text-gray-600 mt-1">允许商业使用</p>
+                                  </button>
+                                </div>
+                              </CardContent>
+                            </Card>
+
+                            {/* Public Rights */}
+                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
+                              <CardContent className="p-4">
+                                <h4 className="font-medium text-sm mb-3">公用许可</h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlPublicLicense("NPL")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlPublicLicense === "NPL"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">无公共许可 (默认)</span>
+                                    <p className="text-xs text-gray-600 mt-1">仅限许可证持有者</p>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setTbnlPublicLicense("PL")}
+                                    className={`
+                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                      ${
+                                        tbnlPublicLicense === "PL"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
+                                      }
+                                    `}
+                                  >
+                                    <span className="font-medium text-sm">公共许可</span>
+                                    <p className="text-xs text-gray-600 mt-1">授予公用许可</p>
                                   </button>
                                 </div>
                               </CardContent>
@@ -566,8 +608,8 @@ export default function CreatePage() {
                                         p-3 rounded-lg border-2 transition-all duration-200 text-left
                                         ${
                                           tbnlDerivatives === option.value
-                                            ? "bg-purple-100 border-purple-300 shadow-md"
-                                            : "bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50"
+                                            ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                            : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
                                         }
                                       `}
                                     >
@@ -577,46 +619,7 @@ export default function CreatePage() {
                                   ))}
                                 </div>
                               </CardContent>
-                            </Card>
-
-                            {/* Public Rights */}
-                            <Card className="border-2 border-yellow-100 bg-yellow-50/30">
-                              <CardContent className="p-4">
-                                <h4 className="font-medium text-sm mb-3">公共权利</h4>
-                                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => setTbnlPublicLicense("NPL")}
-                                    className={`
-                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
-                                      ${
-                                        tbnlPublicLicense === "NPL"
-                                          ? "bg-amber-100 border-amber-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-amber-200 hover:bg-amber-50"
-                                      }
-                                    `}
-                                  >
-                                    <span className="font-medium text-sm">无公共许可 (默认)</span>
-                                    <p className="text-xs text-gray-600 mt-1">仅限许可证持有者</p>
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => setTbnlPublicLicense("PL")}
-                                    className={`
-                                      p-3 rounded-lg border-2 transition-all duration-200 text-left
-                                      ${
-                                        tbnlPublicLicense === "PL"
-                                          ? "bg-green-100 border-green-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-green-200 hover:bg-green-50"
-                                      }
-                                    `}
-                                  >
-                                    <span className="font-medium text-sm">公共许可</span>
-                                    <p className="text-xs text-gray-600 mt-1">授予公众广泛权利</p>
-                                  </button>
-                                </div>
-                              </CardContent>
-                            </Card>
+                            </Card>                            
 
                             {/* Authority */}
                             <Card className="border-2 border-yellow-100 bg-yellow-50/30">
@@ -630,8 +633,8 @@ export default function CreatePage() {
                                       p-3 rounded-lg border-2 transition-all duration-200 text-left
                                       ${
                                         tbnlAuthority === "Legal"
-                                          ? "bg-purple-100 border-purple-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
                                       }
                                     `}
                                   >
@@ -645,8 +648,8 @@ export default function CreatePage() {
                                       p-3 rounded-lg border-2 transition-all duration-200 text-left
                                       ${
                                         tbnlAuthority === "Ledger"
-                                          ? "bg-indigo-100 border-indigo-300 shadow-md"
-                                          : "bg-white border-gray-200 hover:border-indigo-200 hover:bg-indigo-50"
+                                          ? "bg-yellow-100 border-yellow-300 shadow-md"
+                                          : "bg-white border-gray-200 hover:border-yellow-200 hover:bg-yellow-50"
                                       }
                                     `}
                                   >
@@ -666,18 +669,25 @@ export default function CreatePage() {
                               <h4 className="font-medium text-sm mb-3">Creative Commons 许可证选项</h4>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {[
-                                  { value: "CC BY", label: "CC BY", desc: "允许商业使用和衍生作品，但需要署名" },
                                   {
                                     value: "CC BY-NC",
                                     label: "CC BY-NC (默认)",
                                     desc: "不允许商业使用但允许衍生作品，需要署名",
+                                  },
+                                  { 
+                                    value: "CC BY", 
+                                    label: "CC BY", 
+                                    desc: "允许商业使用和衍生作品，但需要署名" 
                                   },
                                   {
                                     value: "CC BY-ND",
                                     label: "CC BY-ND",
                                     desc: "允许商业使用但不允许衍生作品，需要署名",
                                   },
-                                  { value: "CC0", label: "CC0", desc: "公共领域，允许商业使用和衍生作品，无需署名" },
+                                  { value: "CC0", 
+                                    label: "CC0", 
+                                    desc: "公共领域，允许商业使用和衍生作品，无需署名" 
+                                  },
                                 ].map((option) => (
                                   <button
                                     key={option.value}
@@ -703,7 +713,7 @@ export default function CreatePage() {
                       </div>
 
                       {/* Bottom Action Buttons */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 mx-4">
+                      <div className="mt-6 pt-4 bg-white border-t border-gray-200">
                         <div className="flex gap-3 justify-end">
                           <Button
                             type="button"
@@ -715,25 +725,15 @@ export default function CreatePage() {
                           >
                             重置
                           </Button>
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              setShowLicenseSheet(false)
-                              toast.success("许可证设置已保存")
-                            }}
-                            className="harbor-button px-6 bg-primary"
-                          >
-                            保存许可证
-                          </Button>
                         </div>
                       </div>
-                    </SheetContent>
-                  </Sheet>
+                    </DialogContent>
+                  </Dialog>
                 )}
 
-                {/* Enhanced Content Classification Sheet */}
-                <Sheet open={showTagSheet} onOpenChange={setShowTagSheet}>
-                  <SheetTrigger asChild>
+                {/* Content Classification Dialog */}
+                <Dialog open={showTagSheet} onOpenChange={setShowTagSheet}>
+                  <DialogTrigger asChild>
                     <Button
                       type="button"
                       variant="outline"
@@ -749,61 +749,28 @@ export default function CreatePage() {
                         group
                       `}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
                         <div className="p-2 rounded-lg group-hover:bg-purple-50 transition-colors">
                           <Settings className="h-5 w-5 text-zinc-700 group-hover:rotate-180 transition-transform " />
                         </div>
-                        <span className="text-sm font-medium text-zinc-700">
-                          作品分类
-                        </span>
+                        <div className="flex gap-1 text-sm font-medium text-zinc-700">
+                          作品分类<div className="text-destructive">*</div>
+                        </div>
                       </div>
                     </Button>
-                  </SheetTrigger>
+                  </DialogTrigger>
 
-                  <SheetContent side="bottom" className="h-[85vh] bg-white px-0 mx-0">
-                    <SheetHeader className="border-b border-gray-100 px-4">
-                      <Settings className="h-4 w-4 text-zinc-900" />
-                      <SheetTitle className="pb-3 mt-0 text-l font-semibold text-gray-800 text-center border-b border-gray-200">作品分类</SheetTitle>
-                    </SheetHeader>
+                  <DialogContent className="max-w-4xl max-h-[85vh] bg-white">
+                    <DialogHeader className="border-b border-gray-100 pb-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <Settings className="h-4 w-4 text-zinc-900" />
+                        <DialogTitle className="text-l font-semibold text-gray-800 text-center">作品分类</DialogTitle>
+                      </div>
+                    </DialogHeader>
 
-                    <div className="pt-7 pb-7 overflow-y-auto max-h-[calc(85vh-180px)] mx-4 grid grid-cols-1 sm:grid-cols-3 gap-x-5">
-
-                      {/* Rating Section */}
-                      <Card className="border-2 border-zinc-100 bg-zinc-50/30">
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="p-1.5 bg-zinc-100 rounded-lg">
-                              <Star className="h-4 w-4 text-green-600" />
-                            </div>
-                            <h3 className="text-base font-semibold text-zinc-800">分级限制</h3>
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {RATING_OPTIONS.map((option) => (
-                              <button
-                                key={option.value}
-                                type="button"
-                                onClick={() => setSelectedRating(option.value)}
-                                className=
-                                {`
-                                  p-3 rounded-lg border-2 transition-all duration-200 text-left
-                                  ${
-                                    selectedRating === option.value
-                                      ? "bg-zinc-50 border-zinc-400 shadow-md"
-                                      : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
-                                  }
-                                `}
-                              >
-                                <div className="flex items-center gap-2 mb-1">
-                                  {option.icon}
-                                  <span className="font-medium text-sm">{option.label}</span>
-                                </div>
-                                <p className="text-xs text-gray-600">{option.description}</p>
-                              </button>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-
+                    <div className=
+                    "pt-7 pb-7 overflow-y-auto max-h-[calc(85vh-180px)] grid grid-cols-1 sm:grid-cols-3 gap-x-5">
+                      
                       {/* Category Section */}
                       <Card className="border-2 border-zinc-100 bg-zinc-50/30">
                         <CardContent className="p-4">
@@ -811,7 +778,7 @@ export default function CreatePage() {
                             <div className="p-1.5 bg-zinc-100 rounded-lg">
                               <Globe className="h-4 w-4 text-sky-600" />
                             </div>
-                            <h3 className="text-base font-semibold text-zinc-800">作品分区</h3>
+                            <h3 className="flex gap-1 text-base font-semibold text-zinc-800">频道<div className="text-destructive">*</div></h3>
                           </div>
                           <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
                             {CATEGORY_OPTIONS.map((option) => (
@@ -844,6 +811,42 @@ export default function CreatePage() {
                         </CardContent>
                       </Card>
 
+                      {/* Rating Section */}
+                      <Card className="border-2 border-zinc-100 bg-zinc-50/30">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="p-1.5 bg-zinc-100 rounded-lg">
+                              <Star className="h-4 w-4 text-green-600" />
+                            </div>
+                            <h3 className="flex gap-1 text-base font-semibold text-zinc-800">分级<div className="text-destructive">*</div></h3>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {RATING_OPTIONS.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => setSelectedRating(option.value)}
+                                className=
+                                {`
+                                  p-3 rounded-lg border-2 transition-all duration-200 text-left
+                                  ${
+                                    selectedRating === option.value
+                                      ? "bg-zinc-50 border-zinc-400 shadow-md"
+                                      : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
+                                  }
+                                `}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  {option.icon}
+                                  <span className="font-medium text-sm">{option.label}</span>
+                                </div>
+                                <p className="text-xs text-gray-600">{option.description}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
                       {/* Warning Section */}
                       <Card className="border-2 border-zinc-100 bg-zinc-50/30">
                         <CardContent className="p-4">
@@ -851,7 +854,7 @@ export default function CreatePage() {
                             <div className="p-1.5 bg-zinc-100 rounded-lg">
                               <AlertTriangle className="h-4 w-4 text-orange-600" />
                             </div>
-                            <h3 className="text-base font-semibold text-zinc-800">特殊预警</h3>
+                            <h3 className="flex gap-1 text-base font-semibold text-zinc-800">预警<div className="text-destructive">*</div></h3>
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {WARNING_OPTIONS.map((option) => (
@@ -884,11 +887,10 @@ export default function CreatePage() {
                         </CardContent>
                       </Card>
 
-                      
                     </div>
 
                     {/* Bottom Action Buttons */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 mx-4">
+                    <div className="mt-6 pt-4 bg-white border-t border-gray-200">
                       <div className="flex gap-3 justify-end">
                         <Button type="button" variant="outline" 
                         onClick={() => {
@@ -898,21 +900,11 @@ export default function CreatePage() {
                         }} className="px-6">
                           重置
                         </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            setShowTagSheet(false)
-                            toast.success("分类设置已保存")
-                          }}
-                          className="harbor-button px-6 bg-primary"
-                        >
-                          保存设置
-                        </Button>
                       </div>
                     </div>
 
-                  </SheetContent>
-                </Sheet>
+                  </DialogContent>
+                </Dialog>
 
                 {/* Media Upload */}
                 <div className="space-y-2">
@@ -967,14 +959,14 @@ export default function CreatePage() {
                   </Button>
 
                   {/* Publish Button */}
-                  <Button type="submit" disabled={isSubmitting}>
+                  <Button disabled={isSubmitting} className="harbor-button" >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className="harbor-button h-4 w-4 mr-2 animate-spin" />
                         Publishing...
                       </>
                     ) : (
-                      "Publish Post"
+                      "Publish"
                     )}
                   </Button>
                 </div>
