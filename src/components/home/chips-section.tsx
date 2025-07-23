@@ -72,9 +72,8 @@ export function CHIPSSection() {
             </div>
 
             <Button asChild size="lg" className="chip-button text-white font-semibold">
-              <Link href="/create" className="flex items-center space-x-2">
-                <span>发布作品并获得证明</span>
-                <div className="text-lg">🍟</div>
+              <Link href="/what-is-chip" className="flex items-center space-x-2">
+                <div>了解更多</div>
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>

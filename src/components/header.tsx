@@ -62,9 +62,18 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-12 md:h-14">
+          {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-gray-600 hover:text-gray-800"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="hidden md:flex items-center space-x-2">
             <div className="text-2xl"></div>
             <div className="font-bold text-xl bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent"
             >Ordinary</div>
@@ -174,15 +183,7 @@ export default function Header() {
               ) 
             )}
 
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden text-gray-600 hover:text-gray-800"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            
           </div>
         </div>
 
@@ -191,35 +192,26 @@ export default function Header() {
           <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-sm">
             <nav className="flex flex-col space-y-2 p-4">
               <Link
-                href="/discover"
+                href="/"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                SEARCH 
+                Home 
               </Link>
               <Link
                 href="/feed"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                FEED 
+                Feed 
               </Link>
               <Link
                 href="/what-is-chip"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                CHIPS 🍟
+                🍟
               </Link>
-              {currentProfile && (
-                <Link
-                  href="/create"
-                  className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Upload 
-                </Link>
-              )}
               
               {/* {!currentProfile && (
                 <ConnectKitButton.Custom>

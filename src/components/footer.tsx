@@ -95,9 +95,9 @@ export function Footer() {
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <span className="text-gray-400 text-sm">Powered by</span>
             <div className="flex items-center space-x-2">
-              <span className="text-green-400 font-medium">Lens Protocol</span>
+              <Link href="https://lens.xyz/" target="_blank"><span className="text-green-400 font-medium">Lens Protocol</span></Link>
               <span className="text-gray-400">•</span>
-              <span className="text-blue-400 font-medium">Grove Storage</span>
+              <Link href="https://lens.xyz/news/introducing-grove-onchain-controlled-storage" target="_blank"><span className="text-blue-400 font-medium">Grove Storage</span></Link>
             </div>
           </div>
         </div>

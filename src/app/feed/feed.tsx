@@ -69,7 +69,7 @@ export function Feed() {
               className="flex items-center h-9"
             >
               <RefreshCw className={`h-3 w-3 ${refreshing ? 'animate-spin' : ''}`} />
-              {refreshing ? 'Refreshing...' : 'Refresh'}
+              {/*refreshing ? 'Refreshing...' : 'Refresh'*/}
             </Button>
           </div>
         )}

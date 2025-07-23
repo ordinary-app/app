@@ -2,6 +2,7 @@ import React from "react";
 import Masonry from "react-layout-masonry";
 import { Post } from "@lens-protocol/client";
 import { PostCard } from "@/components/post/post-card";
+import { CompactPostCard } from "@/components/post/compact-post-card";
 import { useFeedContext } from "@/contexts/feed-context";
 import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
 
@@ -13,7 +14,7 @@ interface PostListProps {
   skeletonCount?: number;
 }
 
-export function PostList({ posts, loading, emptyText, showToggle = false, skeletonCount = 6 }: PostListProps) 
+export function PostList({ posts, loading, emptyText, showToggle = true, skeletonCount = 6 }: PostListProps) 
 {
   const { viewMode } = useFeedContext();
   const safeItems = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];
@@ -48,15 +49,26 @@ export function PostList({ posts, loading, emptyText, showToggle = false, skelet
           </div>
         )}
         <div className="w-full px-4">
-          <Masonry columns={{ 350: 1, 640: 2, 1024: 3 }} gap={32}>
+          <Masonry columns={{ 350: 1, 640: 2, 1024: 3 }} gap={16}>
             {loading &&
               safeItems.length === 0 &&
               Array.from({ length: skeletonCount }, (_, i) => (
                 <div key={`skeleton-${i}`} style={{ contain: "layout style" }}>
-                  <div className="bg-gray-200 rounded-lg p-4 h-40 animate-pulse">
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-20 bg-gray-300 rounded"></div>
+                  <div className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
+                    <div className="aspect-[4/3] bg-gray-200"></div>
+                    <div className="p-3 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+                        <div className="h-3 bg-gray-200 rounded flex-1"></div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
+                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
+                        </div>
+                        <div className="h-6 w-6 bg-gray-200 rounded"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -67,7 +79,7 @@ export function PostList({ posts, loading, emptyText, showToggle = false, skelet
                 style={{ contain: "layout style" }}
                 className="animate-fade-in"
               >
-                <PostCard post={post} />
+                <CompactPostCard post={post} />
               </div>
             ))}
 
@@ -75,10 +87,21 @@ export function PostList({ posts, loading, emptyText, showToggle = false, skelet
               safeItems.length > 0 &&
               Array.from({ length: Math.min(3, skeletonCount) }, (_, i) => (
                 <div key={`loading-skeleton-${i}`} style={{ contain: "layout style" }}>
-                  <div className="bg-gray-200 rounded-lg p-4 h-40 animate-pulse">
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                    <div className="h-20 bg-gray-300 rounded"></div>
+                  <div className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
+                    <div className="aspect-[4/3] bg-gray-200"></div>
+                    <div className="p-3 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+                        <div className="h-3 bg-gray-200 rounded flex-1"></div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
+                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
+                        </div>
+                        <div className="h-6 w-6 bg-gray-200 rounded"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
