@@ -199,7 +199,7 @@ export function ImageUpload({ images, onImagesChange, maxImages = 12 }: ImageUpl
         >
           <div className="space-y-2">
             <Upload className="h-8 w-8 mx-auto text-gray-400" />
-            <p className="text-sm md:text-sm text-gray-500">点击上传图片</p>
+            <p className="text-sm md:text-sm text-gray-500">点击上传图片 (可选)</p>
             <p className="text-xs text-gray-500">支持 PNG、JPG 格式，单个文件不超过 8MB，最多 {maxImages} 张</p>
           </div>
         </button>
