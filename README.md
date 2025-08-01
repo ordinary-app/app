@@ -1,4 +1,21 @@
-## 📚 相关架构文档
+# Ordinary app
+
+[![License: AGPL](https://img.shields.io/badge/License-AGPL-purple.svg)](https://opensource.org/licenses/agpl-v3)
+[![Lens Protocol](https://img.shields.io/badge/Protocol-Lens-dark.svg)](https://lens.xyz/docs/protocol)
+[![Grove](https://img.shields.io/badge/Storage-Grove-orange.svg)](https://lens.xyz/docs/storage)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.16-blue.svg)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22.16.0-green.svg)](https://nodejs.org/)
+
+> **Note:** The Ordinary app is still in early development.
+
+A decentralized harbor for fandoms. 
+
+An alternative to Tumblr, Pixiv and Lofter.
+
+Ship and preserve your fanworks on-chain.
+
+---
+
 
 [Feed 架构说明（zh）](./docs/FEED_ARCHITECTURE_CN.md)  
 
