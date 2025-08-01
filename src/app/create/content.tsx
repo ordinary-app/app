@@ -307,13 +307,9 @@ export default function CreatePage() {
         })
       } 
       else {
-        metadata = image({
+        metadata = article({
           title,
           content,
-          image: {
-            item: uploadedImages[0].url!,
-            type: uploadedImages[0].type as MediaImageMimeType,
-          },
           attachments: uploadedImages.map(i => ({
             item: i.url!,
             type: i.type as MediaImageMimeType,
