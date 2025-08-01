@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { image, textOnly, MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
+import { image, article , MetadataLicenseType, MetadataAttributeType, MediaImageMimeType } from "@lens-protocol/metadata";
 import { uploadFile } from "@/utils/upload-file";
 import { useRouter } from "next/navigation"
 import { storageClient } from "@/lib/storage-client";
@@ -53,12 +53,7 @@ import { UnifiedEditor } from "@/components/editer/UnifiedEditor"
 import { ToggleButton } from "@/components/editer/ToggleButton"
 import { ImageUpload } from "@/components/editer/ImageUpload"
 
-interface AttachmentProps {
-  name: string;
-  size: number;
-  type: string;
-  url?: string;
-}
+
 
 interface UploadedImage {
   id: string
@@ -144,19 +139,19 @@ const CATEGORY_OPTIONS = [
 
 export default function CreatePage() {
   const [content, setContent] = useState("")
-  const [selectedFile, setSelectedFile] = useState<AttachmentProps[] | null>(null)
+  //const [selectedFile, setSelectedFile] = useState<AttachmentProps[] | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [title, setTitle] = useState("")
   const [images, setImages] = useState<UploadedImage[]>([])
   const [tags, setTags] = useState<Tag[]>([])
-  const [selectedRating, setSelectedRating] = useState("")
+  const [selectedRating, setSelectedRating] = useState("general-rate")
   const [selectedWarnings, setSelectedWarnings] = useState<string[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState("none-relationship")
   const [showTagSheet, setShowTagSheet] = useState(false)
   const [showLicenseSheet, setShowLicenseSheet] = useState(false)
   const [isEditorExpanded, setIsEditorExpanded] = useState(false)
-  //const [addToCollection, setAddToCollection] = useState(false)//将作品加入合集功能
+  //const [addToCollection, setAddToCollection] = useState(false)//合集功能开发中
   //const [language, setLanguage] = useState("zh-CN")
   //const [privacy, setPrivacy] = useState("public")
   //const [commentPermission, setCommentPermission] = useState("all")
@@ -183,34 +178,7 @@ export default function CreatePage() {
   const [tbnlAuthority, setTbnlAuthority] = useState<"Ledger" | "Legal">("Legal")
   const [ccLicense, setCcLicense] = useState("CC BY-NC")
 
-  const handleFileSelect = async(event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList: FileList = event.target.files!
-    if (Array.from(fileList).some(i => i.size > 8 * 1024 * 1024)) {
-      // 8MB limit
-      toast.error("File size must be less than 8MB")
-      return;
-    }
 
-    try {
-      // Upload image to Grove storage
-      let attachments = [];
-      for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        const url = await uploadFile(file)
-        let res = {
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          url,
-        }
-        attachments.push(res)
-      }
-      setSelectedFile(attachments)
-    } catch (uploadError) {
-      toast.error("Failed to upload image. Please try again.")
-      return;
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -221,17 +189,17 @@ export default function CreatePage() {
     }
 
     if (!selectedRating) {
-      toast.error("请选择作品分类")
+      toast.error("请选择作品分类-分级")
       return
     }
 
-    if (!setSelectedWarnings) {
-      toast.error("请选择作品分类")
+    if (!selectedWarnings) {
+      toast.error("请选择作品分类-警告")
       return
     }
     
-    if (!setSelectedCategories) {
-      toast.error("请选择作品分类")
+    if (!selectedCategories) {
+      toast.error("请选择作品分类-频道")
       return
     }
 
@@ -239,10 +207,10 @@ export default function CreatePage() {
     //  return;
     //}
 
-    if (!content.trim()) {
-      toast.error("Please enter some content")
-      return
-    }
+    //if (!content.trim()) {
+    //  toast.error("Please enter some content")
+    //  return
+    //}
 
     if (isOriginal && !licenseType) {
       toast.error("Please select a license for your license Type !")
@@ -294,25 +262,64 @@ export default function CreatePage() {
         return attributes;
       }
 
+      // Upload image to Grove storage
+      let uploadedImages = [];
+      if (images && images.length > 0) {
+        try {
+          for (let i = 0; i < images.length; i++) {
+            const image = images[i];
+            const url = await uploadFile(image.file);
+            uploadedImages.push({
+              ...image,
+              url,
+            });
+          }
+        } catch (uploadError) {
+          toast.error("Failed to upload images. Please try again.")
+          return;
+        }
+      }
+
+      //Build tags
+      const allTags = [...tags.map(tag => tag.name)];
+      // 添加分级
+      if (selectedRating) {
+        allTags.push(selectedRating);
+      }
+      // 添加频道
+      if (selectedCategories) {
+        allTags.push(selectedCategories);
+      }
+      // 添加警告
+      selectedWarnings.forEach(warning => {
+        if (warning) {
+          allTags.push(warning);
+        }
+      });
+
       //Create Metadata
-      if (!selectedFile) {
-        metadata = textOnly({
+      if (!images || images.length === 0) {
+        metadata = article({
+          title,
           content,          
           attributes,
+          tags: allTags,
         })
       } 
       else {
         metadata = image({
+          title,
           content,
           image: {
-            item: selectedFile[0].url!,
-            type: selectedFile[0].type as MediaImageMimeType,
+            item: uploadedImages[0].url!,
+            type: uploadedImages[0].type as MediaImageMimeType,
           },
-          attachments: selectedFile.map(i => ({
+          attachments: uploadedImages.map(i => ({
             item: i.url!,
             type: i.type as MediaImageMimeType,
           })),
           attributes,
+          tags: allTags,
         })
       }
 
@@ -785,17 +792,12 @@ export default function CreatePage() {
                               <button
                                 key={option.value}
                                 type="button"
-                                onClick={() => {
-                                  if (selectedCategories.includes(option.value)) {
-                                    setSelectedCategories((prev) => prev.filter((c) => c !== option.value))
-                                  } else {
-                                    setSelectedCategories((prev) => [...prev, option.value])
-                                  }
-                                }}
-                                className={`
+                                onClick={() => {setSelectedCategories(option.value)}}
+                                className=
+                                {`
                                   p-3 rounded-lg border-2 transition-all duration-200 text-center
                                   ${
-                                    selectedCategories.includes(option.value)
+                                    selectedCategories === option.value
                                       ? "bg-zinc-50 border-zinc-400 shadow-md"
                                       : "bg-white border-gray-200 hover:border-zinc-200 hover:bg-zinc-50"
                                   }
@@ -896,7 +898,7 @@ export default function CreatePage() {
                         onClick={() => {
                           setSelectedRating("")
                           setSelectedWarnings([])
-                          setSelectedCategories([])
+                          setSelectedCategories("")
                         }} className="px-6">
                           重置
                         </Button>
@@ -905,37 +907,6 @@ export default function CreatePage() {
 
                   </DialogContent>
                 </Dialog>
-
-                {/* Media Upload */}
-                <div className="space-y-2">
-                  <Label>Media (Optional)</Label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handleFileSelect}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <label htmlFor="file-upload" className="cursor-pointer">
-                      {selectedFile ? (
-                        selectedFile.map(file => (
-                          <div className="flex space-x-2 items-center" key={file.name}>
-                            <ImageIcon className="h-8 w-8 text-green-600 shrink-0" />
-                            <span className="text-sm font-medium truncate">{file.name}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="space-y-2">
-                          <Upload className="h-8 w-8 mx-auto text-gray-400" />
-                          <p className="text-sm text-gray-600">Click to upload an image</p>
-                          <p className="text-xs text-gray-500">PNG, JPG up to 8MB</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
-                </div>
                
                 <div className="flex justify-end space-x-4">
                    {/* Clear Button */}
@@ -943,7 +914,6 @@ export default function CreatePage() {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      setSelectedFile(null)
                       setIsOriginal(false)
                       setLicenseType(null)
                       setTitle("")
@@ -952,7 +922,7 @@ export default function CreatePage() {
                       setTags([])
                       setSelectedRating("")
                       setSelectedWarnings([])
-                      setSelectedCategories([])
+                      setSelectedCategories("")
                     }}
                   >
                     Clear
