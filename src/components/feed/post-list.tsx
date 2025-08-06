@@ -40,7 +40,7 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
     );
   }
   if (viewMode === "masonry") {
-    // 瀑布流布局=======暂时不能用，貌似 Masonry 和react18不兼容
+    // 瀑布流布局
     return (
       <div className="w-full">
         {showToggle && (
@@ -110,7 +110,7 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
       </div>
     );
   }
-  // 默认列表模式
+  // 列表布局
   return (
     <div className="w-full">
       {showToggle && (
