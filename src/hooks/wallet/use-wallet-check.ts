@@ -9,20 +9,14 @@ export const useWalletCheck = () => {
   const checkWalletConnection = (action: string = "此操作") => {
     if (!isConnected) {
       reconnectWallet();
-      toast.info(`钱包已重新连接，请继续${action}`);
+      toast.info(`请连接钱包进行 ${action} 操作`);
       return false;
     }
     return true;
   };
 
-  const redirectToConnect = () => {
-    toast.error("请先登录");
-    // 可以在这里添加重定向逻辑
-  };
-
   return {
     isConnected,
     checkWalletConnection,
-    redirectToConnect,
   };
 }; 

@@ -48,8 +48,8 @@ export default function Header() {
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/feed', label: 'Feed' },
-    { href: '/discover', label: 'Search' },
-    { href: '/what-is-chip', label: 'CHIPS' },
+    //{ href: '/discover', label: 'Search' },
+    { href: '/what-is-chip', label: 'What is CHIPS' },
   ]
 
   const handleDisconnect = async () => {

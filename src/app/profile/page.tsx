@@ -25,10 +25,10 @@ export default function ProfilePage() {
   const { checkWalletConnection } = useWalletCheck();
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [stats, setStats] = useState({
-    posts: 12,
-    followers: 1234,
-    following: 297,
-    Scores: 2890,
+    posts: "n/a",
+    followers: "n/a",
+    following: "n/a",
+    Scores: "n/a",
   })
 
   // Memoize the profile address to prevent unnecessary re-renders
@@ -69,7 +69,7 @@ export default function ProfilePage() {
                       "Building the future of decentralized social networks. Passionate about Web3, blockchain technology, and creating meaningful connections."}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
+                  {/*<div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
                       Joined March 2024
@@ -80,7 +80,7 @@ export default function ProfilePage() {
                         portfolio.example.com
                       </a>
                     </div>
-                  </div>
+                  </div>*/}
 
                   <div className="flex items-center space-x-6 mb-4">
                     <div className="text-center">
@@ -103,7 +103,7 @@ export default function ProfilePage() {
                 </div>
 
                 <Button 
-                  className="self-start" 
+                  className="self-start harbor-button" 
                   onClick={() => {
                     if (!checkWalletConnection("编辑个人资料")) {
                       return;

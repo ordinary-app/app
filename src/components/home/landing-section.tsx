@@ -35,6 +35,31 @@ export function LandingSection() {
       
       <div className="relative w-full max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-8 items-center">
+          
+          {/* Meme Image with Harbor Theme */}
+          <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
+            <div
+              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${rotate ? ' rotate-1' : ''}`}
+            >
+              <Image
+                src="/meme-en.png"
+                alt="Seagulls at the dock - meme"
+                width={800}
+                height={800}
+                className="rounded-lg w-full h-auto max-w-full"
+                priority
+              />
+              <Link href="/feed">
+              <div
+                className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
+                onMouseEnter={() => setRotate(true)}
+                onMouseLeave={() => setRotate(false)}
+              >
+                去码头整点薯条! 》》
+              </div>
+              </Link>
+            </div>
+          </div>
 
           {/* Content */}
           <div className="col-1 lg:col-1 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
@@ -123,33 +148,7 @@ export function LandingSection() {
                 <Link href="/feed">Explore 🕊️</Link>
               </Button>
             </div>
-          </div>
-          {/* Meme Image with Harbor Theme */}
-          <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
-            <div
-              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${rotate ? ' rotate-1' : ''}`}
-            >
-              <Image
-                src="/meme-en.png"
-                alt="Seagulls at the dock - meme"
-                width={800}
-                height={800}
-                className="rounded-lg w-full h-auto max-w-full"
-                priority
-              />
-              <Link href="/feed">
-              <div
-                className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
-                onMouseEnter={() => setRotate(true)}
-                onMouseLeave={() => setRotate(false)}
-              >
-                去码头整点薯条! 》》
-              </div>
-              </Link>
-            </div>
-          </div>
-          
-          
+          </div>          
           
         </div>
       </div>
