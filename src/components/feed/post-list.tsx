@@ -1,5 +1,6 @@
 import React from "react";
-import Masonry from "react-layout-masonry";
+import { Masonry } from '@mui/lab';
+import { Box, Paper } from '@mui/material';
 import { Post } from "@lens-protocol/client";
 import { PostCard } from "@/components/post/post-card";
 import { CompactPostCard } from "@/components/post/compact-post-card";
@@ -44,69 +45,129 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
     return (
       <div className="w-full">
         {showToggle && (
-          <div className="flex justify-center items-center mb-6 px-4">
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3, px: 0 }}>
             <FeedViewToggle />
-          </div>
+          </Box>
         )}
-        <div className="w-full px-4">
-          <Masonry columns={{ 350: 1, 640: 2, 1024: 3 }} gap={16}>
+        <Box 
+          sx={{ 
+            width: '100%', 
+            maxWidth: 'max-w-7xl',
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <Masonry
+            columns={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 5 }} // 响应式列数布局
+            spacing={1.5} // 间距
+            defaultColumns={4} // 默认列数
+            defaultSpacing={1.5} // 默认间距
+            sequential={false}
+            sx={{
+              width: 'fit-content',
+              margin: '0 auto'
+            }}
+          >
+            {/* 帖子内容 */}
+            {safeItems.map((post, index) => (
+              <Box
+                key={post?.id || `item-${index}`}
+                sx={{
+                  animation: 'fadeIn 0.2s ease-in-out',
+                  animationDelay: `${index * 0.1}s`,
+                  animationFillMode: 'both',
+                  '@keyframes fadeIn': {
+                    '0%': {
+                      opacity: 0,
+                      transform: 'translateY(20px)'
+                    },
+                    '100%': {
+                      opacity: 1,
+                      transform: 'translateY(0)'
+                    }
+                  }
+                }}
+              >
+                <CompactPostCard post={post} />
+              </Box>
+            ))}
+            
+            {/* 初始加载骨架屏 */}
             {loading &&
               safeItems.length === 0 &&
               Array.from({ length: skeletonCount }, (_, i) => (
-                <div key={`skeleton-${i}`} style={{ contain: "layout style" }}>
-                  <div className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
-                    <div className="aspect-[4/3] bg-gray-200"></div>
-                    <div className="p-3 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
-                        <div className="h-3 bg-gray-200 rounded flex-1"></div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
-                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
-                        </div>
-                        <div className="h-6 w-6 bg-gray-200 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Paper
+                  key={`skeleton-${i}`}
+                  sx={{
+                    borderRadius: 3,
+                    //overflow: 'hidden',
+                    boxShadow: 1,
+                    '&:hover': { boxShadow: 2 },
+                    animation: 'pulse 0.1s ease-in-out infinite',
+                    '@keyframes pulse': {
+                      '0%, 100%': { opacity: 1 },
+                      '50%': { opacity: 0.7 }
+                    }
+                  }}
+                >
+                  <Box
+                    sx={{
+                      aspectRatio: Math.random() > 0.5 ? '4/3' : '3/4', // 随机高度骨架模拟
+                      bgcolor: 'grey.200'
+                    }}
+                  />
+                  <Box sx={{ p: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                      <Box sx={{ width: 24, height: 24, bgcolor: 'grey.200', borderRadius: '50%' }} />
+                      <Box sx={{ height: 12, bgcolor: 'grey.200', borderRadius: 1, flex: 1 }} />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
+                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
+                      </Box>
+                      <Box sx={{ height: 24, width: 24, bgcolor: 'grey.200', borderRadius: 1 }} />
+                    </Box>
+                  </Box>
+                </Paper>
               ))}
 
-            {safeItems.map((post, index) => (
-              <div
-                key={post?.id || `item-${index}`}
-                style={{ contain: "layout style" }}
-                className="animate-fade-in"
-              >
-                <CompactPostCard post={post} />
-              </div>
-            ))}
-
+            {/* 加载更多时的骨架屏 */}
             {loading &&
               safeItems.length > 0 &&
-              Array.from({ length: Math.min(3, skeletonCount) }, (_, i) => (
-                <div key={`loading-skeleton-${i}`} style={{ contain: "layout style" }}>
-                  <div className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
-                    <div className="aspect-[4/3] bg-gray-200"></div>
-                    <div className="p-3 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
-                        <div className="h-3 bg-gray-200 rounded flex-1"></div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
-                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
-                        </div>
-                        <div className="h-6 w-6 bg-gray-200 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              Array.from({ length: Math.min(4, skeletonCount) }, (_, i) => (
+                <Paper
+                  key={`loading-skeleton-${i}`}
+                  sx={{
+                    borderRadius: 3,
+                    //overflow: 'hidden',
+                    boxShadow: 1,
+                    animation: 'pulse 0.1s ease-in-out infinite'
+                  }}
+                >
+                  <Box
+                    sx={{
+                      aspectRatio: '4/3',
+                      bgcolor: 'grey.200'
+                    }}
+                  />
+                  <Box sx={{ p: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                      <Box sx={{ width: 24, height: 24, bgcolor: 'grey.200', borderRadius: '50%' }} />
+                      <Box sx={{ height: 12, bgcolor: 'grey.200', borderRadius: 1, flex: 1 }} />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
+                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
+                      </Box>
+                      <Box sx={{ height: 24, width: 24, bgcolor: 'grey.200', borderRadius: 1 }} />
+                    </Box>
+                  </Box>
+                </Paper>
               ))}
           </Masonry>
-        </div>
+        </Box>
       </div>
     );
   }

@@ -34,7 +34,7 @@ export function Feed() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
       {/* 错误信息显示 */}
       {error && (
         <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">{error}</div>
@@ -52,7 +52,7 @@ export function Feed() {
           </Button>
         </div>
       )}
-      <div className="text-center mb-8">
+      <div className="text-center mb-auto">
         <h1 className="text-3xl font-bold mb-2">Latest</h1>
         <p className="text-gray-600">on global feed</p>
         {/* 第一条帖子上方的信息栏 */}
