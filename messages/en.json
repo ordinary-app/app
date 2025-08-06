@@ -1,0 +1,45 @@
+{
+  "navigation": {
+    "home": "Home",
+    "feed": "Feed",
+    "discover": "Discover",
+    "create": "Create",
+    "profile": "Profile",
+    "language": "Language",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "feed": {
+    "title": "Latest",
+    "subtitle": "on global feed",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "loadMore": "Load More",
+    "newPosts": "New posts available",
+    "noMore": "No More",
+    "lastUpdated": "Last updated: {time}"
+  },
+  "post": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "bookmark": "Bookmark",
+    "share": "Share",
+    "comment": "Comment"
+  },
+  "home": {
+    "title": "Ordinary",
+    "subtitle": "Chip Harbor:",
+    "description": "A decentralized social graph where your content, connections, and communities truly belong to you.",
+    "connectWallet": "Connect Wallet",
+    "getStarted": "Get Started",
+    "readMore": "Read More",
+    "learnMore": "Learn More"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "navigation": {
+    "home": "首页",
+    "feed": "动态",
+    "discover": "发现",
+    "create": "创作",
+    "profile": "个人资料",
+    "language": "语言",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "retry": "重试",
+    "cancel": "取消",
+    "confirm": "确认"
+  },
+  "feed": {
+    "title": "最新",
+    "subtitle": "全球动态",
+    "refresh": "刷新",
+    "refreshing": "刷新中...",
+    "loadMore": "加载更多",
+    "newPosts": "有新内容",
+    "noMore": "没有更多了",
+    "lastUpdated": "最后更新：{time}"
+  },
+  "post": {
+    "like": "点赞",
+    "unlike": "取消点赞",
+    "bookmark": "收藏",
+    "share": "分享",
+    "comment": "评论"
+  },
+  "home": {
+    "title": "Ordinary",
+    "subtitle": "薯条码头:",
+    "description": "一个去中心化的社交图谱，让你的内容、连接和社区真正属于你。",
+    "connectWallet": "连接钱包",
+    "getStarted": "开始使用",
+    "readMore": "了解更多",
+    "learnMore": "学习更多"
+  }
+}

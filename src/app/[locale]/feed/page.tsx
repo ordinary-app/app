@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Feed } from "@/app/feed/feed"
+import { Feed } from "./feed";
 
 export default function FeedPage() {
   return (
@@ -9,5 +9,5 @@ export default function FeedPage() {
         <Feed />
       </div>
     </div>
-  )
-} 
+  );
+}
