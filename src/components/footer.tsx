@@ -1,6 +1,9 @@
-import Link from "next/link"
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
+  const homeT = useTranslations("home");
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -11,9 +14,7 @@ export function Footer() {
               <div className="text-2xl">⚓</div>
               <span className="font-bold text-xl">Ordinary</span>
             </div>
-            <p className="text-gray-400 text-sm">
-              A safe harbor for fandoms, protecting freedom of creativity and publishing rights for fanart creators.
-            </p>
+            <p className="text-gray-400 text-sm">{t("brand.description")}</p>
             <div className="flex space-x-4 text-2xl">
               <span>🕊️</span>
               <span>🍟</span>
@@ -23,38 +24,50 @@ export function Footer() {
 
           {/* Core Principles */}
           <div>
-            <h3 className="font-semibold mb-4">Core Principles</h3>
+            <h3 className="font-semibold mb-4">{t("corePrinciples.title")}</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>(1) 抗审查 Anti-Censorship</li>
-              <li>(2) 尊重原创 Respect Originality</li>
-              <li>(3) 去中心化 Decentralized</li>
-              <li>(4) 为爱发电 Powered by Love</li>
-              <li>(5) 有偿交换 Fair Exchange</li>
+              <li>(1) {homeT("principles.antiCensorship")}</li>
+              <li>(2) {homeT("principles.respectOriginality")}</li>
+              <li>(3) {homeT("principles.decentralized")}</li>
+              <li>(4) {homeT("principles.poweredByLove")}</li>
+              <li>(5) {t("corePrinciples.fairExchange")}</li>
             </ul>
           </div>
 
           {/* Community */}
           <div>
-            <h3 className="font-semibold mb-4">Community</h3>
+            <h3 className="font-semibold mb-4">{t("community.title")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/feed" className="text-gray-400 hover:text-white transition-colors">
-                  Community Feed
+                <Link
+                  href="/feed"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("community.feed")}
                 </Link>
               </li>
               <li>
-                <Link href="/creators" className="text-gray-400 hover:text-white transition-colors">
-                  Featured Creators
+                <Link
+                  href="/creators"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("community.creators")}
                 </Link>
               </li>
               <li>
-                <Link href="/guidelines" className="text-gray-400 hover:text-white transition-colors">
-                  Community Guidelines
+                <Link
+                  href="/guidelines"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("community.guidelines")}
                 </Link>
               </li>
               <li>
-                <Link href="/support" className="text-gray-400 hover:text-white transition-colors">
-                  Creator Support
+                <Link
+                  href="/support"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("community.support")}
                 </Link>
               </li>
             </ul>
@@ -62,26 +75,38 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
+            <h3 className="font-semibold mb-4">{t("resources.title")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/docs" className="text-gray-400 hover:text-white transition-colors">
-                  Documentation
+                <Link
+                  href="/docs"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("resources.documentation")}
                 </Link>
               </li>
               <li>
-                <Link href="/api" className="text-gray-400 hover:text-white transition-colors">
-                  API Reference
+                <Link
+                  href="/api"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("resources.api")}
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-                  Privacy Policy
+                <Link
+                  href="/privacy"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("resources.privacy")}
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
-                  Terms of Service
+                <Link
+                  href="/terms"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {t("resources.terms")}
                 </Link>
               </li>
             </ul>
@@ -89,19 +114,26 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
-            © 2025 Ordinary. Built with ❤️ for the decentralized fanart networks.
-          </p>
+          <p className="text-gray-400 text-sm">{t("copyright")}</p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <span className="text-gray-400 text-sm">Powered by</span>
+            <span className="text-gray-400 text-sm">{t("poweredBy")}</span>
             <div className="flex items-center space-x-2">
-              <Link href="https://lens.xyz/" target="_blank"><span className="text-green-400 font-medium">Lens Protocol</span></Link>
+              <Link href="https://lens.xyz/" target="_blank">
+                <span className="text-green-400 font-medium">
+                  Lens Protocol
+                </span>
+              </Link>
               <span className="text-gray-400">•</span>
-              <Link href="https://lens.xyz/news/introducing-grove-onchain-controlled-storage" target="_blank"><span className="text-blue-400 font-medium">Grove Storage</span></Link>
+              <Link
+                href="https://lens.xyz/news/introducing-grove-onchain-controlled-storage"
+                target="_blank"
+              >
+                <span className="text-blue-400 font-medium">Grove Storage</span>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

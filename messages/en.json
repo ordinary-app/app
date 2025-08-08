@@ -2,6 +2,7 @@
   "navigation": {
     "home": "Home",
     "feed": "Feed",
+    "what-is-chips": "What is CHIPS",
     "discover": "Discover",
     "create": "Create",
     "profile": "Profile",
@@ -36,10 +37,191 @@
   "home": {
     "title": "Ordinary",
     "subtitle": "Chip Harbor:",
-    "description": "A decentralized social graph where your content, connections, and communities truly belong to you.",
+    "subtitleFull": "A Safe Harbor for Fandoms",
+    "description": "Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.",
     "connectWallet": "Connect Wallet",
-    "getStarted": "Get Started",
+    "getStarted": "Start Here",
     "readMore": "Read More",
-    "learnMore": "Learn More"
+    "learnMore": "Explore",
+    "cta": "Go to the Chip Harbor! 》》",
+    "principles": {
+      "antiCensorship": "Anti-Censorship",
+      "respectOriginality": "Respect Originality",
+      "decentralized": "Decentralized",
+      "poweredByLove": "Powered by Love"
+    }
+  },
+  "detail": {
+    "buildingFuture": "Building the Future",
+    "mainTitle": "A Safe Harbor for",
+    "mainTitleHighlight": "Uploading & Sharing Artworks",
+    "platformDescription": "A nonprofit decentralized social platform for fanworks",
+    "protocolDescription": "Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart creators",
+    "features": {
+      "antiCensorship": {
+        "title": "Censorship Protection",
+        "badge": "Censorship Resistant",
+        "description": "Decentralized storage based on blockchain technology ensures your creative content cannot be arbitrarily deleted or censored, truly guaranteeing creative freedom."
+      },
+      "originalAttribution": {
+        "title": "Original Attribution System",
+        "badge": "Original Attribution",
+        "description": "Users can declare their works as original when uploading posts. The post will be bound to a CHIPS proof with a unique ID recorded immutably on the blockchain for others to verify."
+      },
+      "decentralized": {
+        "title": "Decentralized",
+        "badge": "Decentralized",
+        "description": "A decentralized community governed jointly by creators and users, where everyone has a voice in determining the community's development direction."
+      },
+      "poweredByLove": {
+        "title": "Powered by Love",
+        "badge": "Powered by Love",
+        "description": "Supporting pure creative passion, allowing creators to focus on content they love without commercial constraints."
+      },
+      "fairExchange": {
+        "title": "Fair Exchange",
+        "badge": "Fair Exchange",
+        "description": "Fair anonymous stablecoin exchange mechanism ensuring quality creations receive deserved rewards and recognition, building a sustainable creative ecosystem."
+      },
+      "globalCommunity": {
+        "title": "Global Connection",
+        "badge": "Global Community",
+        "description": "Easily connect with fanwork creators worldwide, breaking geographical barriers to build a borderless creative community for freer cultural exchange."
+      }
+    },
+    "techStack": {
+      "title": "Technical Architecture",
+      "subtitle": "Modern platform built on the latest Web3 technology stack",
+      "lens": {
+        "title": "Lens Protocol",
+        "description": "Decentralized social protocol building an open social graph"
+      },
+      "grove": {
+        "title": "Grove Storage",
+        "description": "Distributed content storage ensuring long-term data preservation"
+      },
+      "wallet": {
+        "title": "Family Wallet",
+        "description": "Secure and convenient wallet connection experience"
+      },
+      "nextjs": {
+        "title": "Next.js",
+        "description": "Modern web framework for ultimate user experience"
+      }
+    },
+    "roadmap": {
+      "title": "Development Roadmap",
+      "subtitle": "Building a complete decentralized creative ecosystem in phases",
+      "phase1": {
+        "title": "Foundation Platform",
+        "subtitle": "Building core functional modules",
+        "features": [
+          "User authentication system",
+          "Content creation tools",
+          "Original attribution feature",
+          "Community feed display"
+        ]
+      },
+      "phase2": {
+        "title": "Communication Layer",
+        "subtitle": "Building social interaction features",
+        "features": [
+          "Interactive feature mechanisms",
+          "Real-time notification push",
+          "Tag management exploration",
+          "Trending sort functionality"
+        ]
+      },
+      "phase3": {
+        "title": "Ecosystem Enhancement",
+        "subtitle": "Creating complete creative ecosystem",
+        "features": [
+          "Token reward system",
+          "Data protection mechanisms",
+          "Community governance features",
+          "Mobile application"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Join Ordinary Community",
+      "subtitle": "Create freely with global creators in a decentralized harbor",
+      "description": "Let every creation sail freely in these waters",
+      "joinNow": "Join Now",
+      "explore": "Explore Community"
+    }
+  },
+  "chips": {
+    "title": "CHIPS Proof System",
+    "description": "A blockchain-based original work certification system that provides immutable ownership proof for every original content",
+    "howItWorks": {
+      "step1": {
+        "title": "Claim Original",
+        "description": "Users can choose to declare their work as original when posting, and the system will generate a unique CHIPS proof for that work"
+      },
+      "step2": {
+        "title": "Blockchain Record",
+        "description": "The unique ID and related information of the CHIPS proof are permanently recorded on the blockchain, ensuring data immutability"
+      },
+      "step3": {
+        "title": "Public Verification",
+        "description": "Anyone can view and verify CHIPS proofs, ensuring transparency and credibility of original works"
+      }
+    },
+    "learnMore": "Learn More",
+    "certificate": {
+      "verified": "Verified",
+      "certificateId": "Certificate ID",
+      "creator": "Creator",
+      "created": "Created",
+      "blockchain": "Blockchain",
+      "immutable": "Immutable",
+      "status": "Status",
+      "verifiedOriginal": "Verified Original",
+      "viewOnBlockchain": "View on Blockchain"
+    },
+    "benefits": {
+      "antiCounterfeit": {
+        "title": "Anti-Counterfeit Protection",
+        "description": "Blockchain technology ensures proofs cannot be forged or tampered with"
+      },
+      "uniqueId": {
+        "title": "Unique Identifier",
+        "description": "Each proof has a unique ID for easy tracking and verification"
+      },
+      "transparency": {
+        "title": "Public Transparency",
+        "description": "Everyone can view and verify the authenticity of proofs"
+      },
+      "permanentStorage": {
+        "title": "Permanent Storage",
+        "description": "Proof information is permanently stored and will not be lost or damaged"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "A safe harbor for fandoms, protecting freedom of creativity and publishing rights for fanart creators."
+    },
+    "corePrinciples": {
+      "title": "Core Principles",
+      "fairExchange": "Fair Exchange"
+    },
+    "community": {
+      "title": "Community",
+      "feed": "Community Feed",
+      "creators": "Featured Creators",
+      "guidelines": "Community Guidelines",
+      "support": "Creator Support"
+    },
+    "resources": {
+      "title": "Resources",
+      "documentation": "Documentation",
+      "api": "API Reference",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "copyright": "© 2025 Ordinary. Built with ❤️ for the decentralized fanart networks.",
+    "poweredBy": "Powered by"
   }
 }

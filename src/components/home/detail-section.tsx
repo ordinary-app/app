@@ -1,15 +1,25 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Shield, Users, Zap, Globe, Heart, Coins, ArrowRight } from "lucide-react"
-import Link from "next/link"
-import { CHIPSSection } from "@/components/home/chips-section"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
-import { ConnectKitButton } from "connectkit"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Shield,
+  Users,
+  Zap,
+  Globe,
+  Heart,
+  Coins,
+  ArrowRight,
+} from "lucide-react";
+import Link from "next/link";
+import { CHIPSSection } from "@/components/home/chips-section";
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
+import { ConnectKitButton } from "connectkit";
+import { useTranslations } from "next-intl";
 
 export function DetailSection() {
+  const t = useTranslations("detail");
   const { isConnected } = useWalletCheck();
 
   return (
@@ -24,10 +34,16 @@ export function DetailSection() {
       <div className="absolute top-40 right-20 opacity-8 anchor-animation">
         <div className="text-6xl"></div>
       </div>
-      <div className="absolute bottom-40 left-20 opacity-8 wave-animation" style={{ animationDelay: "1s" }}>
+      <div
+        className="absolute bottom-40 left-20 opacity-8 wave-animation"
+        style={{ animationDelay: "1s" }}
+      >
         <div className="text-7xl"></div>
       </div>
-      <div className="absolute bottom-20 right-10 opacity-8 anchor-animation" style={{ animationDelay: "2s" }}>
+      <div
+        className="absolute bottom-20 right-10 opacity-8 anchor-animation"
+        style={{ animationDelay: "2s" }}
+      >
         <div className="text-5xl"></div>
       </div>
 
@@ -36,24 +52,25 @@ export function DetailSection() {
         <div className="text-center mb-20">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             <div className="text-harbor-500">🚢</div>
-            <span className="text-harbor-700 font-medium">Building the Future</span>
+            <span className="text-harbor-700 font-medium">
+              {t("buildingFuture")}
+            </span>
             <div className="text-harbor-500">🚢</div>
           </div>
 
           <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
-            <p className="mb-4">上传与分享作品的</p>
+            <p className="mb-4">{t("mainTitle")}</p>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
-              安全港湾
+              {t("mainTitleHighlight")}
             </span>
           </h2>
 
           <div className="max-w-4xl mx-auto space-y-4">
             <p className="text-2xl text-neutral-700 leading-relaxed">
-              A nonprofit decentralized social platform for fanworks
+              {t("platformDescription")}
             </p>
             <p className="text-lg text-neutral-600 leading-relaxed">
-              Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart
-              creators 🌊
+              {t("protocolDescription")} 🌊
             </p>
           </div>
 
@@ -75,16 +92,21 @@ export function DetailSection() {
                   <Shield className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">抗审查保护</CardTitle>
-                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
-                    (001) Censorship Resistant
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.antiCensorship.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-harbor-600 border-harbor-300 mt-2"
+                  >
+                    (001) {t("features.antiCensorship.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                基于区块链技术的去中心化存储，确保您的创作内容不会被任意删除或审查，让创作自由得到真正保障。
+                {t("features.antiCensorship.description")}
               </p>
             </CardContent>
           </Card>
@@ -97,16 +119,21 @@ export function DetailSection() {
                   <Heart className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">原创声明系统</CardTitle>
-                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
-                    (010) Original Attribution
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.originalAttribution.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-harbor-600 border-harbor-300 mt-2"
+                  >
+                    (010) {t("features.originalAttribution.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed mb-4">
-                用户可以在上传发布帖子时声明作品为原创，该帖子就会绑定一个薯条证明，每个薯条证明具有唯一ID记录在区块链上不可篡改，可供他人查看。
+                {t("features.originalAttribution.description")}
               </p>
             </CardContent>
           </Card>
@@ -119,16 +146,21 @@ export function DetailSection() {
                   <Users className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">去中心化</CardTitle>
-                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
-                    (011) Decentralized
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.decentralized.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-harbor-600 border-harbor-300 mt-2"
+                  >
+                    (011) {t("features.decentralized.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                由创作者和用户共同治理的去中心化社区，每个人都有发言权，共同决定社区的发展方向。
+                {t("features.decentralized.description")}
               </p>
             </CardContent>
           </Card>
@@ -141,16 +173,21 @@ export function DetailSection() {
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">为爱发电</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-warning-300 mt-2">
-                    (100) Powered by Love
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.poweredByLove.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-warning-600 border-warning-300 mt-2"
+                  >
+                    (100) {t("features.poweredByLove.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                支持纯粹的创作热情，让创作者能够专注于自己热爱的内容创作，不被商业化束缚。
+                {t("features.poweredByLove.description")}
               </p>
             </CardContent>
           </Card>
@@ -163,16 +200,21 @@ export function DetailSection() {
                   <Coins className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">有偿交换</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-neutral-300 mt-2">
-                    (101) Fair Exchange
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.fairExchange.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-warning-600 border-neutral-300 mt-2"
+                  >
+                    (101) {t("features.fairExchange.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                公平的稳定代币匿名交换机制，让优质创作获得应有的回报和认可，建立可持续的创作生态。
+                {t("features.fairExchange.description")}
               </p>
             </CardContent>
           </Card>
@@ -185,16 +227,21 @@ export function DetailSection() {
                   <Globe className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">全球连接</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-seagull-300 mt-2">
-                    Global Community
+                  <CardTitle className="text-neutral-900 text-xl">
+                    {t("features.globalCommunity.title")}
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    className="text-warning-600 border-seagull-300 mt-2"
+                  >
+                    {t("features.globalCommunity.badge")}
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                轻松连接全球的同人创作者，打破地域限制，构建无国界的创作社区，让文化交流更加自由。
+                {t("features.globalCommunity.description")}
               </p>
             </CardContent>
           </Card>
@@ -204,13 +251,19 @@ export function DetailSection() {
         <div className="relative bg-white border border-harbor-200 rounded-3xl shadow-xl p-12 mb-20">
           <div className="absolute inset-0 bg-gradient-to-br from-white-50/30 to-white-100/30 rounded-3xl"></div>
           <div className="relative z-10">
-          <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-lg">🗺️</div>
-            <span className="text-harbor-700 font-medium">Dapp Architecture</span>
-          </div>
-          <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">技术架构</h2>
-              <p className="text-lg text-neutral-600">基于最新Web3技术栈构建的现代化平台</p>
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
+                <div className="text-lg">🗺️</div>
+                <span className="text-harbor-700 font-medium">
+                  Dapp Architecture
+                </span>
+              </div>
+              <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">
+                {t("techStack.title")}
+              </h2>
+              <p className="text-lg text-neutral-600">
+                {t("techStack.subtitle")}
+              </p>
               <div className="flex items-center justify-center mt-6">
                 <div className="h-px bg-gradient-to-r from-transparent via-harbor-300 to-transparent w-24"></div>
                 <div className="mx-4 text-3xl animate-wave"></div>
@@ -220,27 +273,51 @@ export function DetailSection() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="group text-center p-8 bg-white border border-harbor-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🔗</div>
-                <h4 className="font-bold text-neutral-900 mb-3 text-lg">Lens Protocol</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">去中心化社交协议，构建开放的社交图谱</p>
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  🔗
+                </div>
+                <h4 className="font-bold text-neutral-900 mb-3 text-lg">
+                  {t("techStack.lens.title")}
+                </h4>
+                <p className="text-sm text-neutral-600 leading-relaxed">
+                  {t("techStack.lens.description")}
+                </p>
               </div>
 
               <div className="group text-center p-8 bg-white border border-success-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🌳</div>
-                <h4 className="font-bold text-neutral-900 mb-3 text-lg">Grove Storage</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">分布式内容存储，确保数据长期保存</p>
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  🌳
+                </div>
+                <h4 className="font-bold text-neutral-900 mb-3 text-lg">
+                  {t("techStack.grove.title")}
+                </h4>
+                <p className="text-sm text-neutral-600 leading-relaxed">
+                  {t("techStack.grove.description")}
+                </p>
               </div>
 
               <div className="group text-center p-8 bg-white border border-warning-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🏠</div>
-                <h4 className="font-bold text-neutral-900 mb-3 text-lg">Family Wallet</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">安全便捷的钱包连接体验</p>
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  🏠
+                </div>
+                <h4 className="font-bold text-neutral-900 mb-3 text-lg">
+                  {t("techStack.wallet.title")}
+                </h4>
+                <p className="text-sm text-neutral-600 leading-relaxed">
+                  {t("techStack.wallet.description")}
+                </p>
               </div>
 
               <div className="group text-center p-8 bg-white border border-seagull-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">⚡</div>
-                <h4 className="font-bold text-neutral-900 mb-3 text-lg">Next.js</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">现代化Web框架，极致用户体验</p>
+                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  ⚡
+                </div>
+                <h4 className="font-bold text-neutral-900 mb-3 text-lg">
+                  {t("techStack.nextjs.title")}
+                </h4>
+                <p className="text-sm text-neutral-600 leading-relaxed">
+                  {t("techStack.nextjs.description")}
+                </p>
               </div>
             </div>
           </div>
@@ -253,11 +330,17 @@ export function DetailSection() {
         <div className="text-center mb-20">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             <div className="text-lg">🗺️</div>
-            <span className="text-harbor-700 font-medium">Development Roadmap</span>
+            <span className="text-harbor-700 font-medium">
+              Development Roadmap
+            </span>
           </div>
 
-          <h3 className="text-4xl font-bold text-neutral-900 mb-4">发展路线图</h3>
-          <p className="text-lg text-neutral-600 mb-12">分阶段构建完整的去中心化创作生态</p>
+          <h3 className="text-4xl font-bold text-neutral-900 mb-4">
+            {t("roadmap.title")}
+          </h3>
+          <p className="text-lg text-neutral-600 mb-12">
+            {t("roadmap.subtitle")}
+          </p>
 
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -266,30 +349,31 @@ export function DetailSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/30 to-harbor-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Badge className="bg-harbor-500 text-white px-4 py-2 text-sm font-medium">Phase 1</Badge>
+                    <Badge className="bg-harbor-500 text-white px-4 py-2 text-sm font-medium">
+                      Phase 1
+                    </Badge>
                     <div className="text-2xl">🚀</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">基础平台</CardTitle>
-                  <p className="text-neutral-600">构建核心功能模块</p>
+                  <CardTitle className="text-2xl text-neutral-900">
+                    {t("roadmap.phase1.title")}
+                  </CardTitle>
+                  <p className="text-neutral-600">
+                    {t("roadmap.phase1.subtitle")}
+                  </p>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <ul className="space-y-3 text-left">
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>用户认证系统</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>内容创作工具</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>原创声明功能</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>社区动态展示</span>
-                    </li>
+                    {t
+                      .raw("roadmap.phase1.features")
+                      .map((feature: string, index: number) => (
+                        <li
+                          key={index}
+                          className="flex items-center space-x-3 text-neutral-700"
+                        >
+                          <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
                   </ul>
                 </CardContent>
               </Card>
@@ -299,30 +383,31 @@ export function DetailSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-success-50/30 to-success-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Badge className="bg-success-500 text-white px-4 py-2 text-sm font-medium">Phase 2</Badge>
+                    <Badge className="bg-success-500 text-white px-4 py-2 text-sm font-medium">
+                      Phase 2
+                    </Badge>
                     <div className="text-2xl">💬</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">通讯层建设</CardTitle>
-                  <p className="text-neutral-600">构建社交互动功能</p>
+                  <CardTitle className="text-2xl text-neutral-900">
+                    {t("roadmap.phase2.title")}
+                  </CardTitle>
+                  <p className="text-neutral-600">
+                    {t("roadmap.phase2.subtitle")}
+                  </p>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <ul className="space-y-3 text-left">
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>互动功能机制</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>实时通知推送</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>标签管理探索</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                      <span>热度排序功能</span>
-                    </li>
+                    {t
+                      .raw("roadmap.phase2.features")
+                      .map((feature: string, index: number) => (
+                        <li
+                          key={index}
+                          className="flex items-center space-x-3 text-neutral-700"
+                        >
+                          <div className="w-2 h-2 bg-success-500 rounded-full"></div>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
                   </ul>
                 </CardContent>
               </Card>
@@ -332,30 +417,31 @@ export function DetailSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-warning-50/30 to-warning-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Badge className="bg-warning-500 text-white px-4 py-2 text-sm font-medium">Phase 3</Badge>
+                    <Badge className="bg-warning-500 text-white px-4 py-2 text-sm font-medium">
+                      Phase 3
+                    </Badge>
                     <div className="text-2xl">🌟</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">生态完善</CardTitle>
-                  <p className="text-neutral-600">打造完整创作生态</p>
+                  <CardTitle className="text-2xl text-neutral-900">
+                    {t("roadmap.phase3.title")}
+                  </CardTitle>
+                  <p className="text-neutral-600">
+                    {t("roadmap.phase3.subtitle")}
+                  </p>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <ul className="space-y-3 text-left">
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>代币打赏系统</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>数据保护机制</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>社区自治功能</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                      <span>移动端应用</span>
-                    </li>
+                    {t
+                      .raw("roadmap.phase3.features")
+                      .map((feature: string, index: number) => (
+                        <li
+                          key={index}
+                          className="flex items-center space-x-3 text-neutral-700"
+                        >
+                          <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
                   </ul>
                 </CardContent>
               </Card>
@@ -374,30 +460,38 @@ export function DetailSection() {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 Ordinary 社区</h3>
-            <p className="text-xl sm:text-2xl mb-4 opacity-90">与全球创作者一起，在去中心化的港口自由创作</p>
-            <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
+            <h3 className="text-4xl sm:text-5xl font-bold mb-6">
+              {t("cta.title")}
+            </h3>
+            <p className="text-xl sm:text-2xl mb-4 opacity-90">
+              {t("cta.subtitle")}
+            </p>
+            <p className="text-lg mb-12 opacity-80">
+              {t("cta.description")} 🚢✨
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            {isConnected ? (
-              <Button
-                asChild
-                size="lg"
-                className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-              >
-                <Link href="/feed" className="flex items-center space-x-2">
-                  <span>立即加入</span>
-                  <div className="text-xl">🍟</div>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </Button>
+              {isConnected ? (
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  <Link href="/feed" className="flex items-center space-x-2">
+                    <span>{t("cta.joinNow")}</span>
+                    <div className="text-xl">🍟</div>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  </Link>
+                </Button>
               ) : (
                 <ConnectKitButton.Custom>
                   {({ show }) => (
-                    <Button size="lg" 
-                    className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                    onClick={show}>
-                      <span>立即加入</span>
+                    <Button
+                      size="lg"
+                      className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      onClick={show}
+                    >
+                      <span>{t("cta.joinNow")}</span>
                       <div className="text-xl">🍟</div>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
@@ -412,7 +506,7 @@ export function DetailSection() {
                 className="border-2 border-white text-white hover:bg-white hover:text-harbor-600 bg-transparent px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 <Link href="/feed" className="flex items-center space-x-2">
-                  <span>探索社区</span>
+                  <span>{t("cta.explore")}</span>
                   <div className="text-xl">🌊</div>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
@@ -422,5 +516,5 @@ export function DetailSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

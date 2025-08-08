@@ -1,4 +1,3 @@
-// src/app/[locale]/layout.tsx
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { Inter } from "next/font/google";

@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { Span } from "next/dist/trace";
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
 import { ConnectKitButton } from "connectkit";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
+
 export function LandingSection() {
   const t = useTranslations("home");
   const { isConnected } = useWalletCheck();
@@ -38,6 +38,33 @@ export function LandingSection() {
 
       <div className="relative w-full max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-8 items-center">
+          {/* Meme Image with Harbor Theme */}
+          <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
+            <div
+              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${
+                rotate ? " rotate-1" : ""
+              }`}
+            >
+              <Image
+                src="/meme-en.png"
+                alt="Seagulls at the dock - meme"
+                width={800}
+                height={800}
+                className="rounded-lg w-full h-auto max-w-full"
+                priority
+              />
+              <Link href="/feed">
+                <div
+                  className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
+                  onMouseEnter={() => setRotate(true)}
+                  onMouseLeave={() => setRotate(false)}
+                >
+                  {t("cta")}
+                </div>
+              </Link>
+            </div>
+          </div>
+
           {/* Content */}
           <div className="col-1 lg:col-1 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
             <div className="space-y-4">
@@ -49,7 +76,7 @@ export function LandingSection() {
                 <span className="text-4xl text-harbor-600 leading-tight">
                   {t("subtitle")}
                   <br className="block sm:hidden" />
-                  为爱发电的自由创作港
+                  {t("subtitleFull")}
                 </span>
                 <br />
                 <span className="text-2xl text-neutral-600">
@@ -71,9 +98,7 @@ export function LandingSection() {
                       (001)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      抗审查
-                      <br />
-                      Anti-Censorship
+                      {t("principles.antiCensorship")}
                     </span>
                   </div>
                 </CardContent>
@@ -86,9 +111,7 @@ export function LandingSection() {
                       (010)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      尊重原创
-                      <br />
-                      Respect Originality
+                      {t("principles.respectOriginality")}
                     </span>
                   </div>
                 </CardContent>
@@ -101,9 +124,7 @@ export function LandingSection() {
                       (011)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      去中心化
-                      <br />
-                      Decentralized
+                      {t("principles.decentralized")}
                     </span>
                   </div>
                 </CardContent>
@@ -116,9 +137,7 @@ export function LandingSection() {
                       (100)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      为爱发电
-                      <br />
-                      Powered by Love
+                      {t("principles.poweredByLove")}
                     </span>
                   </div>
                 </CardContent>
@@ -143,7 +162,7 @@ export function LandingSection() {
                       className="harbor-button text-white font-semibold w-full sm:w-auto"
                       onClick={show}
                     >
-                      {t("connectWallet")}
+                      {t("getStarted")}
                     </Button>
                   )}
                 </ConnectKitButton.Custom>
@@ -157,32 +176,6 @@ export function LandingSection() {
               >
                 <Link href="/feed">{t("learnMore")} 🕊️</Link>
               </Button>
-            </div>
-          </div>
-          {/* Meme Image with Harbor Theme */}
-          <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
-            <div
-              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${
-                rotate ? " rotate-1" : ""
-              }`}
-            >
-              <Image
-                src="/meme-en.png"
-                alt="Seagulls at the dock - meme"
-                width={800}
-                height={800}
-                className="rounded-lg w-full h-auto max-w-full"
-                priority
-              />
-              <Link href="/feed">
-                <div
-                  className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
-                  onMouseEnter={() => setRotate(true)}
-                  onMouseLeave={() => setRotate(false)}
-                >
-                  去码头整点薯条! 》》
-                </div>
-              </Link>
             </div>
           </div>
         </div>
