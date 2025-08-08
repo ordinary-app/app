@@ -51,8 +51,7 @@ export default function Header() {
   const navItems = [
     { href: "/", label: t("home") },
     { href: "/feed", label: t("feed") },
-    { href: "/discover", label: t("discover") },
-    { href: "/what-is-chip", label: "CHIPS" },
+    { href: "/what-is-chip", label: "What is CHIPS" },
   ];
 
   const handleDisconnect = async () => {

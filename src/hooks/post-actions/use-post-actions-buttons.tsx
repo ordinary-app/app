@@ -81,7 +81,7 @@ export const usePostActionsButtons = ({
       shouldIncrementOnClick: false,
       isActive: isCommentSheetOpen,
       isDisabled: false,
-      isUserLoggedIn: true,
+      isUserLoggedIn: isLoggedIn,
     },
     bookmarkButton: {
       icon: Bookmark,
@@ -104,7 +104,7 @@ export const usePostActionsButtons = ({
       fillColor: "rgba(107, 114, 128, 0.8)",
       shouldIncrementOnClick: false,
       hideCount: true,
-      isUserLoggedIn: true,
+      isUserLoggedIn: isLoggedIn,
       dropdownItems: [
         {
           icon: Share2,

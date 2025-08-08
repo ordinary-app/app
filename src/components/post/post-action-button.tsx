@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
 
 export type DropdownItem = {
   icon: any;
@@ -78,15 +79,16 @@ export const ActionButton = ({
 }: ActionButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const { checkWalletConnection } = useWalletCheck();
 
   const showLoginActions = !isUserLoggedIn;
   const formattedCount = formatNumber(initialCount);
 
   const handleClick = async () => {
     if (showLoginActions) {
-      // TODO: Show login modal
-      console.log("Login required");
-      return;
+      if (!checkWalletConnection(label)) {
+        return;
+      }
     }
 
     if (isDisabled || !onClick) return;
@@ -145,7 +147,7 @@ export const ActionButton = ({
       onClick={handleClick}
       disabled={isDisabled}
       className={cn(
-        "flex items-center",
+        "flex items-center touch-manipulation min-h-[44px] min-w-[44px]",
         className
       )}
       style={{
@@ -154,6 +156,8 @@ export const ActionButton = ({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
     >
       <Icon {...iconProps} />
       {!(label === "Bookmark" || label === "Share") && formattedCount && (
@@ -165,7 +169,7 @@ export const ActionButton = ({
   );
 
   const divWrapperClassName = cn(
-    "group flex items-center",
+    "group flex items-center touch-manipulation",
     divCursorStyle,
     divOpacityClass,
     className
@@ -191,6 +195,8 @@ export const ActionButton = ({
             style={{ backgroundColor: buttonBgStyle }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={() => setIsHovered(true)}
+            onTouchEnd={() => setIsHovered(false)}
           >
             <TooltipWrapper>{MainButton}</TooltipWrapper>
           </div>
@@ -217,6 +223,8 @@ export const ActionButton = ({
       style={{ backgroundColor: buttonBgStyle }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
     >
       <TooltipWrapper>{MainButton}</TooltipWrapper>
     </div>
