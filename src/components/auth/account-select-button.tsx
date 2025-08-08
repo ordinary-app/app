@@ -10,6 +10,7 @@ import { useLensAuthStore } from "@/stores/auth-store";
 import { useProfileSelectStore } from "@/stores/profile-select-store";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { env } from "@/lib/env";
 
 export function SelectAccountButton({ account, onSuccess }: { account: Account; onSuccess?: () => void }) {
   const { address: walletAddress } = useAccount();
@@ -28,6 +29,10 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
         accountOwner: {
           account: account.address,
           owner: walletAddress,
+          app:
+            env.NEXT_PUBLIC_ENVIRONMENT === "development"
+              ? env.NEXT_PUBLIC_APP_ADDRESS_TESTNET
+              : env.NEXT_PUBLIC_APP_ADDRESS,
         },
         signMessage: async (message: string) => {
           return await signMessageAsync({ message });
@@ -52,12 +57,12 @@ export function SelectAccountButton({ account, onSuccess }: { account: Account; 
         throw new Error("Authentication token unavailable");
       }
 
-      toast.success("登录成功！");
+      toast.success("Login successful!");
       setCurrentProfile(account);
       setProfileSelectModalOpen(false);
       onSuccess?.();
-      // 登录成功后跳转到 profile 页面
-      router.push("/profile");
+      // 登录成功后跳转到 feed 页面
+      router.push("/feed");
     } catch (err) {
       console.error("Error logging in:", err);
       toast.error(err instanceof Error ? err.message : "Failed to log in. Please try again.");

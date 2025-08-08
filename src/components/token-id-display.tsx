@@ -6,12 +6,13 @@ import { Loader2 } from "lucide-react";
 interface TokenIdDisplayProps {
   uri: string | undefined;
   isOriginal: boolean;
+  licenseType: string;
 }
 
-export function TokenIdDisplay({ uri, isOriginal }: TokenIdDisplayProps) {
+export function TokenIdDisplay({ uri, isOriginal, licenseType }: TokenIdDisplayProps) {
   const { tokenId, isLoading, error } = useTokenId(uri);
 
-  if (!isOriginal || !uri) {
+  if (!isOriginal || !uri || licenseType!="token-bound-nft") {
     return null;
   }
 

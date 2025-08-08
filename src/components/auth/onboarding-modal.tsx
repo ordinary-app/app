@@ -217,9 +217,10 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
       }
 
       // 7. Setup Authentication
-      const authToast = toast.loading("Setting up authentication...");
-      const credentials = await client.getCredentials();
+      //const authToast = toast.loading("Setting up authentication...");
+      //const credentials = await client.getCredentials();
 
+      /*
       if (credentials.isErr()) {
         toast.dismiss(authToast);
         toast.error("Failed to get credentials. Please reload and log in.");
@@ -245,6 +246,8 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
 
       // router.push(`/u/${username}`);
       // window.location.reload();
+      */
+
     } catch (err: any) {
       console.error("Error during final account creation:", err);
       toast.error(`Failed to create account: ${err.message || "An unknown error occurred."}`);
@@ -287,7 +290,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
         </DialogHeader>
         <div className="flex-1 flex gap-4 flex-col">
           <p className="text-xs text-muted-foreground">
-            Welcome to Treehouse! Let's start by choosing your username. Make it a good one - this can't be changed
+            Welcome to Ordinary! Let's start by choosing your username. Make it a good one - this can't be changed
             later.
           </p>
           <div className="space-y-6">

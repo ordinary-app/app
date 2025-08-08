@@ -1,8 +1,8 @@
 "use client"
 
 import {
-  Upload, 
-  ImageIcon, 
+  //Upload, 
+  //ImageIcon, 
   FileText, 
   Loader2,
   Settings, 
@@ -52,7 +52,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { UnifiedEditor } from "@/components/editer/UnifiedEditor"
 import { ToggleButton } from "@/components/editer/ToggleButton"
 import { ImageUpload } from "@/components/editer/ImageUpload"
-
+import { handleOperationWith } from "@lens-protocol/client/viem"
 
 
 interface UploadedImage {
@@ -346,10 +346,21 @@ export default function CreatePage() {
         })
       }
  
-      await post(client, { contentUri: uri });
-      
-      toast.success("Your post has been created successfully!")
+      //const feed = await getFeedAddress(lens, currentProfile?.address);
 
+      //const actions = getPostActions(collectingSettings, address);
+
+      await post(client, {
+        contentUri: uri,
+        //feed,
+        //actions,
+      })
+      .andThen(handleOperationWith(walletClient))
+      .andTee((v) => {
+        console.log(v);
+      })
+      .andThen(client.waitForTransaction);
+      
       router.push("/");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create post. Please try again.")
