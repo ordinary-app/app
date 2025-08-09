@@ -111,8 +111,8 @@ export default function ProfilePage() {
                     setIsEditOpen(true);
                   }}
                 >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Profile
+                  <Edit className="h-4 w-4" />
+                  Edit
                 </Button>
               </div>
             </CardContent>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
           <Tabs defaultValue="posts" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="posts">Posts</TabsTrigger>
-              <TabsTrigger value="original">CHIPS</TabsTrigger>
+              <TabsTrigger value="original">Onchain Proof</TabsTrigger>
               <TabsTrigger value="media">Media</TabsTrigger>
               <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
             </TabsList>
@@ -141,22 +141,29 @@ export default function ProfilePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <ScanLine className="w-5 h-5 text-orange-600" />
-                    <span>Original Statements</span>
+                    <span>Onchain Proof</span>
                   </CardTitle>
-                  <CardDescription>Your original content permanently stored on Grove Storage</CardDescription>
+                  <CardDescription>Here is the detail of your post data onchain</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {(userPosts || [])
-                    .filter((post: any) => {
-                      // Check if post is original based on license attribute
-                      const metadata = post.metadata;
-                      if (!metadata?.attributes) return false;
-                      const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
-                      return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "";
-                    })
+                    // .filter((post: any) => {
+                    //   // Check if post is original based on license attribute
+                    //   const metadata = post.metadata;
+                    //   if (!metadata?.attributes) return false;
+                    //   const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
+                    //   return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "";
+                    // })
                     .map((post: any) => {
                       const content = post.metadata?.content || "No content available";
                       const timestamp = new Date(post.timestamp).toLocaleDateString();
+                      
+                      // Check if post has token-bound-nft license
+                      const metadata = post.metadata;
+                      const licenseAttr = metadata?.attributes?.find((attr: any) => attr.key === "license");
+                      const licenseType = licenseAttr?.value;
+                      const isTokenBoundNFT = licenseType === "token-bound-nft";
+                      
                       return (
                         <div
                           key={post.id}
@@ -164,7 +171,9 @@ export default function ProfilePage() {
                         >
                           <div className="flex items-start justify-between mb-2">
                             <p className="text-gray-800 flex-1">{content}</p>
-                            <TokenIdDisplay uri={post.contentUri} isOriginal={true} />
+                            {isTokenBoundNFT && (
+                              <TokenIdDisplay uri={post.contentUri} isOriginal={true} licenseType="token-bound-nft" />
+                            )}
                           </div>
                           <div className="flex items-start justify-between text-sm">
                             <span className="text-orange-600 break-all flex-1 mr-2">

@@ -38,6 +38,7 @@ export function LandingSection() {
           
           {/* Meme Image with Harbor Theme */}
           <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
+            <Link href="/feed">
             <div
               className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${rotate ? ' rotate-1' : ''}`}
             >
@@ -48,17 +49,20 @@ export function LandingSection() {
                 height={800}
                 className="rounded-lg w-full h-auto max-w-full"
                 priority
+                onMouseEnter={() => setRotate(true)}
+                onMouseLeave={() => setRotate(false)}
               />
-              <Link href="/feed">
+              {/*<Link href="/feed">
               <div
-                className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-s font-medium shadow-lg cursor-pointer"
+                className="absolute -bottom-5 left-1/4 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-xs font-medium shadow-lg cursor-pointer"
                 onMouseEnter={() => setRotate(true)}
                 onMouseLeave={() => setRotate(false)}
               >
                 去码头整点薯条! 》》
               </div>
-              </Link>
+              </Link>*/}
             </div>
+            </Link>
           </div>
 
           {/* Content */}
@@ -95,28 +99,28 @@ export function LandingSection() {
                 </CardContent>
               </Card>
 
-              <Card className="border-success-200 bg-white hover:bg-success-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-success-600">(010)</span>
+                    <span className="text-sm font-mono text-harbor-600">(010)</span>
                     <span className="text-sm font-medium text-neutral-700">尊重原创<br/>Respect Originality</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-warning-200 bg-white hover:bg-warning-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-warning-500">(011)</span>
+                    <span className="text-sm font-mono text-harbor-500">(011)</span>
                     <span className="text-sm font-medium text-neutral-700">去中心化<br/>Decentralized</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-warning-200 bg-white hover:bg-warning-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-warning-600">(100)</span>
+                    <span className="text-sm font-mono text-harbor-600">(100)</span>
                     <span className="text-sm font-medium text-neutral-700">为爱发电<br/>Powered by Love</span>
                   </div>
                 </CardContent>
@@ -143,9 +147,9 @@ export function LandingSection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white w-full sm:w-auto"
+                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto"
               >
-                <Link href="/feed">Explore 🕊️</Link>
+                <Link href="/feed">  Explore  </Link>
               </Button>
             </div>
           </div>          

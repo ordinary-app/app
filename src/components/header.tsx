@@ -49,7 +49,7 @@ export default function Header() {
     { href: '/', label: 'Home' },
     { href: '/feed', label: 'Feed' },
     //{ href: '/discover', label: 'Search' },
-    { href: '/what-is-chip', label: 'What is CHIPS' },
+    { href: '/what-is-chip', label: 'Onchain Proof' },
   ]
 
   const handleDisconnect = async () => {
@@ -173,7 +173,7 @@ export default function Header() {
                 <ConnectKitButton.Custom>
                   {({ show }) => {
                       return (
-                        <Button onClick={show}>
+                        <Button onClick={show} className="harbor-button text-white font-semibold">
                           Connect
                         </Button>
                       );
@@ -210,7 +210,7 @@ export default function Header() {
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                🍟
+                Onchain Proof
               </Link>
               
               {/* {!currentProfile && (

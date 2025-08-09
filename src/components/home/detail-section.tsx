@@ -35,9 +35,9 @@ export function DetailSection() {
         {/* Project Vision */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-harbor-500">🚢</div>
-            <span className="text-harbor-700 font-medium">Building the Future</span>
-            <div className="text-harbor-500">🚢</div>
+            {/*<div className="text-harbor-500">🚢</div>*/}
+            <span className="text-harbor-700 font-medium">Decentralized Fandoms</span>
+            {/*<div className="text-harbor-500">🚢</div>*/}
           </div>
 
           <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
@@ -53,7 +53,7 @@ export function DetailSection() {
             </p>
             <p className="text-lg text-neutral-600 leading-relaxed">
               Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart
-              creators 🌊
+              creators
             </p>
           </div>
 
@@ -97,16 +97,16 @@ export function DetailSection() {
                   <Heart className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">原创声明系统</CardTitle>
+                  <CardTitle className="text-neutral-900 text-xl">数据认证系统</CardTitle>
                   <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
-                    (010) Original Attribution
+                    (010) Onchain Proof
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed mb-4">
-                用户可以在上传发布帖子时声明作品为原创，该帖子就会绑定一个薯条证明，每个薯条证明具有唯一ID记录在区块链上不可篡改，可供他人查看。
+                用户发布内容时，系统将自动为该数据生成链上证明，记录发布时间戳和数据摘要。
               </p>
             </CardContent>
           </Card>
@@ -133,16 +133,16 @@ export function DetailSection() {
             </CardContent>
           </Card>
 
-          <Card className="group border border-success-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-success-50/50 to-success-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                <div className="p-3 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">为爱发电</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-warning-300 mt-2">
+                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
                     (100) Powered by Love
                   </Badge>
                 </div>
@@ -155,17 +155,17 @@ export function DetailSection() {
             </CardContent>
           </Card>
 
-          <Card className="group border border-warning-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-warning-50/50 to-warning-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                <div className="p-3 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   <Coins className="w-7 h-7 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">有偿交换</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-neutral-300 mt-2">
-                    (101) Fair Exchange
+                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
+                    (101) Coin Exchange
                   </Badge>
                 </div>
               </div>
@@ -177,36 +177,35 @@ export function DetailSection() {
             </CardContent>
           </Card>
 
-          <Card className="group border border-seagull-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-seagull-50/50 to-seagull-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                <div className="p-3 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   <Globe className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">全球连接</CardTitle>
-                  <Badge variant="outline" className="text-warning-600 border-seagull-300 mt-2">
-                    Global Community
+                  <CardTitle className="text-neutral-900 text-xl">匿名连接</CardTitle>
+                  <Badge variant="outline" className="text-harbor-600 border-harbor-300 mt-2">
+                    (110) Anonymous Community
                   </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                轻松连接全球的同人创作者，打破地域限制，构建无国界的创作社区，让文化交流更加自由。
+                加密登录保护隐私身份，构建匿名自由的创作社区，让文化交流更加安全。
               </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Technology Stack */}
-        <div className="relative bg-white border border-harbor-200 rounded-3xl shadow-xl p-12 mb-20">
+        {/*<div className="relative bg-white border border-harbor-200 rounded-3xl shadow-xl p-12 mb-20">
           <div className="absolute inset-0 bg-gradient-to-br from-white-50/30 to-white-100/30 rounded-3xl"></div>
           <div className="relative z-10">
           <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-lg">🗺️</div>
             <span className="text-harbor-700 font-medium">Dapp Architecture</span>
           </div>
           <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">技术架构</h2>
@@ -234,7 +233,7 @@ export function DetailSection() {
               <div className="group text-center p-8 bg-white border border-warning-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">🏠</div>
                 <h4 className="font-bold text-neutral-900 mb-3 text-lg">Family Wallet</h4>
-                <p className="text-sm text-neutral-600 leading-relaxed">安全便捷的钱包连接体验</p>
+                <p className="text-sm text-neutral-600 leading-relaxed">安全便捷的地址连接体验</p>
               </div>
 
               <div className="group text-center p-8 bg-white border border-seagull-200 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105">
@@ -244,15 +243,15 @@ export function DetailSection() {
               </div>
             </div>
           </div>
-        </div>
+        </div>*/}
 
         {/* CHIPSSection */}
         <CHIPSSection />
 
         {/* Roadmap */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-32 mt-24">
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-lg">🗺️</div>
+            {/*<div className="text-lg">🗺️</div>*/}
             <span className="text-harbor-700 font-medium">Development Roadmap</span>
           </div>
 
@@ -284,7 +283,7 @@ export function DetailSection() {
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>原创声明功能</span>
+                      <span>数据认证功能</span>
                     </li>
                     <li className="flex items-center space-x-3 text-neutral-700">
                       <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
@@ -374,11 +373,11 @@ export function DetailSection() {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-4xl sm:text-5xl font-bold mb-6">加入 Ordinary 社区</h3>
-            <p className="text-xl sm:text-2xl mb-4 opacity-90">与全球创作者一起，在去中心化的港口自由创作</p>
-            <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
+            <h3 className="text-4xl sm:text-5xl font-bold mb-6">Ordinary</h3>
+            <p className="text-xl sm:text-2xl mb-4 opacity-90">链上同人创作安全港</p>
+            <p className="text-lg mb-12 opacity-80">为创作行为提供链上记录<br/>为作品提供链上托管</p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
             {isConnected ? (
               <Button
                 asChild
@@ -387,7 +386,6 @@ export function DetailSection() {
               >
                 <Link href="/feed" className="flex items-center space-x-2">
                   <span>立即加入</span>
-                  <div className="text-xl">🍟</div>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>
@@ -398,7 +396,7 @@ export function DetailSection() {
                     className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                     onClick={show}>
                       <span>立即加入</span>
-                      <div className="text-xl">🍟</div>
+                      {/*<div className="text-xl">🍟</div>*/}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
                   )}
@@ -413,7 +411,7 @@ export function DetailSection() {
               >
                 <Link href="/feed" className="flex items-center space-x-2">
                   <span>探索社区</span>
-                  <div className="text-xl">🌊</div>
+                  {/*<div className="text-xl">🌊</div>*/}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>

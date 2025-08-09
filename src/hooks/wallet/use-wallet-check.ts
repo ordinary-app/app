@@ -9,7 +9,7 @@ export const useWalletCheck = () => {
   const checkWalletConnection = (action: string = "此操作") => {
     if (!isConnected) {
       reconnectWallet();
-      toast.info(`请连接钱包进行 ${action} 操作`);
+      toast.info(`请连接地址进行 ${action} 操作`);
       return false;
     }
     return true;

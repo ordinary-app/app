@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight } from "lucide-react"
+import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 
 export function CHIPSSection() {
@@ -9,7 +9,7 @@ export function CHIPSSection() {
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-harbor-50/30">
       {/* Background Elements */}
       <div className="absolute top-20 right-10 opacity-8 float-animation">
-        <div className="text-6xl">🍟</div>
+        {/*<div className="text-6xl">🍟</div>*/}
       </div>
       <div className="absolute bottom-20 left-10 opacity-8 anchor-animation">
         <div className="text-5xl"></div>
@@ -17,19 +17,25 @@ export function CHIPSSection() {
 
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
-            <div className="text-harbor-500">🔒</div>
-            <span className="text-chip-600 font-bold">CHIPS</span>
-            <div className="text-harbor-500">🔒</div>
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-5 shadow-sm">
+            <div className="text-harbor-500"></div>
+            <span className="text-chip-600 font-medium">Onchain Proof</span>
+            <div className="text-harbor-500"></div>
           </div>
-
-          <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">薯条证明系统</h2>
+        </div>
+        <div className="text-center mb-16">
+          <div className="relative inline-block mb-6">
+            <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900">链上证明系统</h2>
+            <span className="absolute -top-0 -right-11 px-1.5 py-0.5 font-light text-xs bg-chip-gradient text-white rounded-full shadow-md">
+              Beta
+            </span>
+          </div>
           <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-            基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明
+            基于区块链技术的发布数据认证系统，为每一份发布内容提供不可篡改的时间戳和数据完整性证明
           </p>
         </div>
-
+        
         {/* How It Works */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div className="space-y-8">
@@ -39,9 +45,9 @@ export function CHIPSSection() {
                   1
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">声明原创</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">数据提交</h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    用户在发布帖子时可以选择声明作品为原创，系统将为该作品生成独特的薯条证明
+                    用户发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要
                   </p>
                 </div>
               </div>
@@ -53,7 +59,7 @@ export function CHIPSSection() {
                 <div>
                   <h3 className="text-xl font-semibold text-neutral-900 mb-2">区块链记录</h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    薯条证明的唯一ID和相关信息被永久记录在区块链上，确保数据不可篡改
+                    链上证明的唯一ID、时间戳和数据摘要被永久记录在区块链上，确保发布记录不可篡改
                   </p>
                 </div>
               </div>
@@ -65,7 +71,7 @@ export function CHIPSSection() {
                 <div>
                   <h3 className="text-xl font-semibold text-neutral-900 mb-2">公开验证</h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    任何人都可以查看和验证薯条证明，确保原创作品的透明度和可信度
+                    任何人都可以查看和验证链上证明，确保发布数据的透明度和完整性
                   </p>
                 </div>
               </div>
@@ -85,8 +91,8 @@ export function CHIPSSection() {
               <CardHeader className="bg-gradient-to-r from-chip-500 to-chip-300 text-white rounded-t-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="text-2xl">🍟</div>
-                    <CardTitle className="text-xl">CHIPS</CardTitle>
+                    {/*<div className="text-2xl">🍟</div>*/}
+                    <CardTitle className="text-xl">Onchain Proof</CardTitle>
                   </div>
                   <Badge className="bg-white/20 text-white border-white/30">Verified</Badge>
                 </div>
@@ -94,21 +100,21 @@ export function CHIPSSection() {
               <CardContent className="p-6 space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Certificate ID</span>
+                    <span className="text-sm text-neutral-600">ID</span>
                     <div className="flex items-center space-x-2">
                       <Hash className="w-4 h-4 text-harbor-500" />
-                      <span className="font-mono text-sm text-harbor-700">CHIPS-TOKEN-ID</span>
+                      <span className="font-mono text-sm text-harbor-700">Storage-ID</span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-neutral-600">Creator</span>
-                    <span className="font-medium text-neutral-900">@seagull_artist</span>
+                    <span className="font-medium text-neutral-900">@artist</span>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-neutral-600">Created</span>
-                    <span className="text-sm text-neutral-700">2024-01-15 14:30 UTC</span>
+                    <span className="text-sm text-neutral-700">2025-08-08 09:30 UTC</span>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -125,7 +131,7 @@ export function CHIPSSection() {
                     <span className="text-sm text-neutral-600">Status</span>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-success-500" />
-                      <span className="text-sm text-success-600 font-medium">Verified Original</span>
+                      <span className="text-sm text-success-600 font-medium">Data Verified</span>
                     </div>
                   </div>
                 </div>

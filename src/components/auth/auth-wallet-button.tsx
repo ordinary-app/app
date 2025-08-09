@@ -13,7 +13,7 @@ export const ConnectWalletButton = ({ text = "Login", className }: ConnectWallet
       {({ isConnected, show }) => {
         if (!isConnected) {
           return (
-            <Button variant="default" onClick={show} className={className}>
+            <Button variant="default" onClick={show} className={`harbor-button text-white font-semibold ${className}`}>
               {text}
             </Button>
           );

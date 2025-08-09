@@ -146,7 +146,7 @@ export default function CreatePage() {
   const [images, setImages] = useState<UploadedImage[]>([])
   const [tags, setTags] = useState<Tag[]>([])
   const [selectedRating, setSelectedRating] = useState("general-rate")
-  const [selectedWarnings, setSelectedWarnings] = useState<string[]>([])
+  const [selectedWarnings, setSelectedWarnings] = useState<string[]>(["none-warning"])
   const [selectedCategories, setSelectedCategories] = useState("none-relationship")
   const [showTagSheet, setShowTagSheet] = useState(false)
   const [showLicenseSheet, setShowLicenseSheet] = useState(false)
@@ -207,10 +207,10 @@ export default function CreatePage() {
     //  return;
     //}
 
-    //if (!content.trim()) {
-    //  toast.error("Please enter some content")
-    //  return
-    //}
+    if (!content.trim()) {
+    toast.error("Please enter some content !")
+    return
+    }
 
     if (isOriginal && !licenseType) {
       toast.error("Please select a license for your license Type !")
@@ -496,7 +496,7 @@ export default function CreatePage() {
                                   <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
                                   <span className="font-semibold text-sm">Token Bound NFT License</span>
                                 </div>
-                                <p className="text-xs text-gray-600">基于区块链的许可证(CHIPS测试中🍟)</p>
+                                <p className="text-xs text-gray-600">基于区块链的许可证(将铸造NFT TOKEN(sepolia)，功能测试中🍟)</p>
                               </button>
 
                               <button
