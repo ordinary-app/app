@@ -49,9 +49,10 @@ export default function Header() {
   }, [isConnected, address, currentProfile, setProfileSelectModalOpen]);
 
   const navItems = [
-    { href: "/", label: t("home") },
-    { href: "/feed", label: t("feed") },
-    { href: "/what-is-chip", label: t("what-is-chips") },
+    { href: "/", label: "Home" },
+    { href: "/feed", label: "Feed" },
+    //{ href: '/discover', label: 'Search' },
+    { href: "/what-is-chip", label: "What is CHIPS" },
   ];
 
   const handleDisconnect = async () => {
@@ -250,7 +251,7 @@ export default function Header() {
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                🍟
+                Onchain Proof
               </Link>
 
               {/* Language Switch for Mobile */}

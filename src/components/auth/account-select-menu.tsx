@@ -11,6 +11,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { SelectAccountButton } from "./account-select-button";
 import { OnboardingModal } from "./onboarding-modal";
 import { useLensAuthStore } from "@/stores/auth-store";
+import { env } from "@/lib/env";
 
 export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOpenChange?: (open: boolean) => void }) {
   const { address } = useAccount();
@@ -62,6 +63,10 @@ export function SelectAccountMenu({ open, onOpenChange }: { open?: boolean; onOp
       }
       const authenticated = await client.login({
         onboardingUser: {
+          app:
+            env.NEXT_PUBLIC_ENVIRONMENT === "development"
+              ? env.NEXT_PUBLIC_APP_ADDRESS_TESTNET
+              : env.NEXT_PUBLIC_APP_ADDRESS,
           wallet: walletAddress,
         },
         signMessage: async (message: string) => {

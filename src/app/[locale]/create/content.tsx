@@ -1,8 +1,8 @@
 "use client"
 
 import {
-  Upload, 
-  ImageIcon, 
+  //Upload, 
+  //ImageIcon, 
   FileText, 
   Loader2,
   Settings, 
@@ -52,7 +52,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { UnifiedEditor } from "@/components/editer/UnifiedEditor"
 import { ToggleButton } from "@/components/editer/ToggleButton"
 import { ImageUpload } from "@/components/editer/ImageUpload"
-
+import { handleOperationWith } from "@lens-protocol/client/viem"
 
 
 interface UploadedImage {
@@ -146,7 +146,7 @@ export default function CreatePage() {
   const [images, setImages] = useState<UploadedImage[]>([])
   const [tags, setTags] = useState<Tag[]>([])
   const [selectedRating, setSelectedRating] = useState("general-rate")
-  const [selectedWarnings, setSelectedWarnings] = useState<string[]>([])
+  const [selectedWarnings, setSelectedWarnings] = useState<string[]>(["none-warning"])
   const [selectedCategories, setSelectedCategories] = useState("none-relationship")
   const [showTagSheet, setShowTagSheet] = useState(false)
   const [showLicenseSheet, setShowLicenseSheet] = useState(false)
@@ -207,10 +207,10 @@ export default function CreatePage() {
     //  return;
     //}
 
-    //if (!content.trim()) {
-    //  toast.error("Please enter some content")
-    //  return
-    //}
+    if (!content.trim()) {
+    toast.error("Please enter some content !")
+    return
+    }
 
     if (isOriginal && !licenseType) {
       toast.error("Please select a license for your license Type !")
@@ -346,10 +346,21 @@ export default function CreatePage() {
         })
       }
  
-      await post(client, { contentUri: uri });
-      
-      toast.success("Your post has been created successfully!")
+      //const feed = await getFeedAddress(lens, currentProfile?.address);
 
+      //const actions = getPostActions(collectingSettings, address);
+
+      await post(client, {
+        contentUri: uri,
+        //feed,
+        //actions,
+      })
+      .andThen(handleOperationWith(walletClient))
+      .andTee((v) => {
+        console.log(v);
+      })
+      .andThen(client.waitForTransaction);
+      
       router.push("/");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create post. Please try again.")
@@ -485,7 +496,7 @@ export default function CreatePage() {
                                   <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
                                   <span className="font-semibold text-sm">Token Bound NFT License</span>
                                 </div>
-                                <p className="text-xs text-gray-600">基于区块链的许可证(CHIPS测试中🍟)</p>
+                                <p className="text-xs text-gray-600">基于区块链的许可证(将铸造NFT TOKEN(sepolia)，功能测试中🍟)</p>
                               </button>
 
                               <button

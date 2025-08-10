@@ -139,7 +139,7 @@ export function UnifiedEditor({
       <div className="px-4 py-2.5">
         <textarea
           ref={contentRef}
-          placeholder="分享你的想法... ..."
+          placeholder="分享你的想法... ... (必填)"
           value={content}
           onChange={handleContentChange}
           className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm"

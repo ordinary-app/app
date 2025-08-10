@@ -1,6 +1,7 @@
 // store/lensAuth.ts
 import { create } from "zustand";
-import { PublicClient, testnet, SessionClient } from "@lens-protocol/client";
+import { PublicClient, testnet, SessionClient, mainnet } from "@lens-protocol/client";
+import { env } from "@/lib/env";
 
 type LensAuthState = {
   client: ReturnType<typeof PublicClient.create>;
@@ -16,9 +17,12 @@ type LensAuthState = {
 
 export const useLensAuthStore = create<LensAuthState>((set) => ({
   client: PublicClient.create({
-    environment: testnet,
+    environment: env.NEXT_PUBLIC_ENVIRONMENT === "development" ? testnet : mainnet,
+    origin: "https://o-harbor.vercel.app",
     storage: typeof window !== "undefined" ? window.localStorage : undefined,
-    //apiKey: process.env.NEXT_PUBLIC_LENS_API_KEY,
+    apiKey: env.NEXT_PUBLIC_ENVIRONMENT === "development"
+    ? env.LENS_API_KEY_TESTNET
+    : env.LENS_API_KEY,
   }),
   sessionClient: null,
   currentProfile: null,

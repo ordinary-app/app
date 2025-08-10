@@ -2,22 +2,28 @@
 
 import { getDefaultConfig } from 'connectkit';
 import { createConfig, http } from 'wagmi';
-import { lensTestnet, sepolia } from 'wagmi/chains';
+import { sepolia } from 'wagmi/chains';
+import { chains } from "@lens-chain/sdk/viem";
+import { env } from "@/lib/env";
 
-const isLocalhost = window.location.hostname === 'localhost' || 
-                    window.location.hostname === '127.0.0.1' ||
-                    window.location.hostname === '[::1]'; // IPv6 localhost
+const getChains = () => {
+  const lensChain = env.NEXT_PUBLIC_ENVIRONMENT === "development" ? chains.testnet : chains.mainnet;
+  return [lensChain, sepolia] as const;
+};
 
 export const config = createConfig(
   getDefaultConfig({
     appName: 'Ordinary',
-    chains: [sepolia],
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-    ...(!isLocalhost && {
-      transports: {
-        [sepolia.id]: http(`https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`), // or your preferred Sepolia RPC URL
-      },
-    })
+    appDescription: "Decentralized fandoms",
+    appUrl: "https://o-harbor.vercel.app",
+    appIcon: "https://o-harbor.vercel.app/logo.png",
+    chains: getChains(),
+    walletConnectProjectId: env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+    transports: {
+      [sepolia.id]: http(`https://eth-sepolia.g.alchemy.com/v2/${env.NEXT_PUBLIC_ALCHEMY_ID}`),
+      [chains.mainnet.id]: http(),
+      [chains.testnet.id]: http(),
+    },
   })
 );
 
