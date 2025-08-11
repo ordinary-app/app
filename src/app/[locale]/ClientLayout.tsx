@@ -1,28 +1,28 @@
+// app/ClientLayout.tsx
 "use client";
 
+import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
+
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { MuiThemeProvider } from "@/components/providers/mui-theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
 import { PostActionsProvider } from "@/contexts/post-actions-context";
 import { FeedProvider } from "@/contexts/feed-context";
 import { ActionBarProvider } from "@/contexts/action-bar-context";
-import Web3Provider from "../Web3Provider";
-const Header = dynamic(() => import("../../components/header"), { ssr: false });
-// const Web3Provider = dynamic(() => import("../Web3Provider"), { ssr: false });
-const GlobalModals = dynamic(() => import("../../components/global-modals"), {
+
+import Web3Provider from "@/app/Web3Provider";
+
+const Header = dynamic(() => import("@/components/header"), { ssr: false });
+const GlobalModals = dynamic(() => import("@/components/global-modals"), {
   ssr: false,
 });
-const AuthManager = dynamic(
-  () => import("../../components/auth/auth-manager"),
-  { ssr: false }
-);
+const AuthManager = dynamic(() => import("@/components/auth/auth-manager"), {
+  ssr: false,
+});
 
-export default function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
@@ -30,20 +30,22 @@ export default function ClientLayout({
       enableSystem
       disableTransitionOnChange
     >
-      <Web3Provider>
-        <PostActionsProvider>
-          <ActionBarProvider>
-            <FeedProvider>
-              <AuthManager />
-              <GlobalModals />
-              <Header />
-              <main>{children}</main>
-              <Footer />
-              <Toaster />
-            </FeedProvider>
-          </ActionBarProvider>
-        </PostActionsProvider>
-      </Web3Provider>
+      <MuiThemeProvider>
+        <Web3Provider>
+          <PostActionsProvider>
+            <ActionBarProvider>
+              <FeedProvider>
+                <AuthManager />
+                <GlobalModals />
+                <Header />
+                <main>{children}</main>
+                <Footer />
+                <Toaster />
+              </FeedProvider>
+            </ActionBarProvider>
+          </PostActionsProvider>
+        </Web3Provider>
+      </MuiThemeProvider>
     </ThemeProvider>
   );
 }
