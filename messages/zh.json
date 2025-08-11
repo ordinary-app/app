@@ -10,6 +10,17 @@
     "english": "English",
     "chinese": "中文"
   },
+  "header": {
+    "upload": "上传",
+    "selectProfile": "选择档案",
+    "logOut": "退出登录",
+    "connect": "连接",
+    "settings": "设置",
+    "developing": "开发中",
+    "disconnect": "断开连接",
+    "anonymous": "匿名",
+    "fanworkLover": "同人爱好者"
+  },
   "common": {
     "loading": "加载中...",
     "error": "错误",

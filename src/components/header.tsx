@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Settings, LogOut, Menu, X } from "lucide-react";
@@ -21,10 +21,10 @@ import { UserAvatar } from "@/components/user-avatar";
 import { toast } from "sonner";
 import copy from "copy-to-clipboard";
 import { useTranslations } from "next-intl";
-import { LanguageSwitch } from "@/components/ui/language-switch";
 
 export default function Header() {
-  const t = useTranslations("navigation");
+  const t = useTranslations("header");
+  const navT = useTranslations("navigation");
   const { disconnect: disconnectWallet } = useDisconnect();
   const { currentProfile, setCurrentProfile, sessionClient, setSessionClient } =
     useLensAuthStore();
@@ -49,10 +49,10 @@ export default function Header() {
   }, [isConnected, address, currentProfile, setProfileSelectModalOpen]);
 
   const navItems = [
-    { href: "/", label: t("home") },
-    { href: "/feed", label: t("feed") },
-    //{ href: '/discover', label: 'Search' },
-    { href: "/what-is-chip", label: t("onchainProof") },
+    { href: "/", label: navT("home") },
+    { href: "/feed", label: navT("feed") },
+    //{ href: '/discover', label: navT('discover') },
+    { href: "/what-is-chip", label: navT("onchainProof") },
   ];
 
   const handleDisconnect = async () => {
@@ -105,9 +105,6 @@ export default function Header() {
           </nav>
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            {/* Language Switch */}
-            <LanguageSwitch />
-
             {/* Create Button - 只在用户登录时显示 */}
             {currentProfile && (
               <Button
@@ -116,7 +113,7 @@ export default function Header() {
                 size="sm"
                 className="harbor-button text-white"
               >
-                <Link href="/create">Upload</Link>
+                <Link href="/create">{t("upload")}</Link>
               </Button>
             )}
 
@@ -147,10 +144,10 @@ export default function Header() {
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
                       <p className="font-medium">
-                        @{currentProfile?.username?.localName || "Anonymous"}
+                        @{currentProfile?.username?.localName || t("anonymous")}
                       </p>
                       <p className="w-[200px] truncate text-sm text-muted-foreground">
-                        {currentProfile?.metadata?.bio || "Fanwork Lover"}
+                        {currentProfile?.metadata?.bio || t("fanworkLover")}
                       </p>
                     </div>
                   </div>
@@ -161,7 +158,7 @@ export default function Header() {
                       className="text-gray-700 hover:text-gray-900"
                     >
                       <User className="mr-2 h-4 w-4" />
-                      Profile
+                      {navT("profile")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
@@ -170,7 +167,7 @@ export default function Header() {
                       className="text-gray-700 hover:text-gray-900"
                     >
                       <Settings className="mr-2 h-4 w-4" />
-                      Settings (developing)
+                      {t("settings")} ({t("developing")})
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-gray-200" />
@@ -179,7 +176,7 @@ export default function Header() {
                     className="text-gray-700 hover:text-gray-900"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    Disconnect
+                    {t("disconnect")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -201,19 +198,26 @@ export default function Header() {
                     }}
                   >
                     <User className="mr-2 h-4 w-4" />
-                    <span>Select Profile</span>
+                    <span>{t("selectProfile")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => disconnectWallet()}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
+                    <span>{t("logOut")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <ConnectKitButton.Custom>
                 {({ show }) => {
-                  return <Button onClick={show}>Connect</Button>;
+                  return (
+                    <Button
+                      onClick={show}
+                      className="harbor-button text-white font-semibold"
+                    >
+                      {t("connect")}
+                    </Button>
+                  );
                   // }
                 }}
               </ConnectKitButton.Custom>
@@ -230,39 +234,22 @@ export default function Header() {
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("home")}
+                {navT("home")}
               </Link>
               <Link
                 href="/feed"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("feed")}
-              </Link>
-              <Link
-                href="/discover"
-                className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {t("discover")}
+                {navT("feed")}
               </Link>
               <Link
                 href="/what-is-chip"
                 className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Onchain Proof
+                {navT("onchainProof")}
               </Link>
-
-              {/* Language Switch for Mobile */}
-              <div className="py-2 border-t border-gray-100 mt-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600 font-medium">
-                    {t("language")}
-                  </span>
-                  <LanguageSwitch />
-                </div>
-              </div>
 
               {/* {!currentProfile && (
                 <ConnectKitButton.Custom>

@@ -10,6 +10,17 @@
     "english": "English",
     "chinese": "中文"
   },
+  "header": {
+    "upload": "Upload",
+    "selectProfile": "Select Profile",
+    "logOut": "Log out",
+    "connect": "Connect",
+    "settings": "Settings",
+    "developing": "developing",
+    "disconnect": "Disconnect",
+    "anonymous": "Anonymous",
+    "fanworkLover": "Fanwork Lover"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
