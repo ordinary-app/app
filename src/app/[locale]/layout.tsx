@@ -5,6 +5,8 @@ import "../globals.css";
 import ClientLayout from "./ClientLayout";
 import { routing } from "@/i18n/routing";
 
+export const dynamic = 'force-dynamic';
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

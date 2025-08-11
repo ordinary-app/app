@@ -12,7 +12,7 @@ import { PostActionsProvider } from "@/contexts/post-actions-context";
 import { FeedProvider } from "@/contexts/feed-context";
 import { ActionBarProvider } from "@/contexts/action-bar-context";
 
-import Web3Provider from "@/app/Web3Provider";
+const Web3Provider = dynamic(() => import("@/app/Web3Provider"), {ssr: false});
 
 const Header = dynamic(() => import("@/components/header"), { ssr: false });
 const GlobalModals = dynamic(() => import("@/components/global-modals"), {
