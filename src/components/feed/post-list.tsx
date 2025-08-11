@@ -5,7 +5,7 @@ import { PostCard } from "@/components/post/post-card";
 import { CompactPostCard } from "@/components/post/compact-post-card";
 import { useFeedContext } from "@/contexts/feed-context";
 import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
-import { MasonryGrid } from "@/components/feed/masonry-grid";
+import { MasonryGrid, PostSkeleton } from "@/components/feed/masonry-grid";
 
 interface PostListProps {
   posts: Post[];
@@ -19,17 +19,49 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
 {
   const { viewMode } = useFeedContext();
   const theme = useMantineTheme();
-  const safeItems = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];
+  const items = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];
   
-  if (loading) {
+  const renderToggle = () => {
+    if (!showToggle) return null;
+    
+    return viewMode === "masonry" ? (
+      <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+        <FeedViewToggle />
+      </Box>
+    ) : (
+      <div className="flex justify-center items-center mb-6">
+        <FeedViewToggle />
+      </div>
+    );
+  };
+  
+  // 初始加载
+  if (loading && items.length === 0) {
+    if (viewMode === "masonry") {
+      return (
+        <div className="w-full">
+          {renderToggle()}
+          <MasonryGrid
+            loading={true}
+            skeletonCount={skeletonCount}
+            columns={{ base: 2, xs: 2, sm: 3, md: 4, lg: 4 }}
+          >
+            {[]}
+          </MasonryGrid>
+        </div>
+      );
+    }
+    
     return (
       <div className="w-full">
-        {showToggle && (
-          <div className="flex justify-center items-center mb-6">
-            <FeedViewToggle />
-          </div>
-        )}
-        <div className="text-center py-8">loading...</div>
+        {renderToggle()}
+        <div className="flex flex-col gap-4 items-center">
+          {Array.from({ length: skeletonCount }).map((_, i) => (
+            <div key={`skeleton-${i}`} className="w-full max-w-2xl">
+              <PostSkeleton theme={theme} height={160} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -37,67 +69,59 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
   if (!posts.length) {
     return (
       <div className="w-full">
-        <div className="text-center py-8 text-gray-400">{emptyText || "暂无内容"}</div>
+        <div className="text-center py-8 text-gray-400">{emptyText || "no content"}</div>
       </div>
     );
   }
+
+  // 瀑布流布局
   if (viewMode === "masonry") {
-    // 瀑布流布局
     return (
       <div className="w-full">
-        {showToggle && (
-          <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: theme.spacing.lg }}>
-            <FeedViewToggle />
-          </Box>
-        )}
+        {renderToggle()}
         <MasonryGrid
-          loading={loading}
+          loading={loading && items.length > 0}
           skeletonCount={skeletonCount}
           columns={{ base: 2, xs: 2, sm: 3, md: 4, lg: 4 }}
         >
-          {safeItems.map((post) => (
+          {items.map((post) => (
             <CompactPostCard key={post?.id} post={post} />
           ))}
         </MasonryGrid>
       </div>
     );
   }
+  
   // 列表布局
-  return (
-    <div className="w-full">
-      {showToggle && (
-        <div className="flex justify-center items-center mb-6">
-          <FeedViewToggle />
-        </div>
-      )}
-      <div className="flex flex-col gap-4 items-center">
-        {safeItems.map((post, index) => (
-          <div
-            key={post?.id || `item-${index}`}
-            className="w-full"
-            style={{ 
-              contain: "layout style",
-              animationDelay: `${index * 0.1}s`
-            }}
-          >
-            <PostCard post={post} />
-          </div>
-        ))}
-      </div>
-      
-      {loading && safeItems.length > 0 && (
-        <div className="mt-6">
-          {Array.from({ length: Math.min(3, skeletonCount) }).map((_, i) => (
-            <div key={`skeleton-${i}`} className="animate-pulse mb-4">
-              <div className="bg-gray-200 rounded-lg p-4 h-40">
-                <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                <div className="h-20 bg-gray-300 rounded"></div>
-              </div>
+  if (viewMode === "list") {
+    return (
+      <div className="w-full">
+        {renderToggle()}
+        <div className="flex flex-col gap-4 items-center">
+          {items.map((post, index) => (
+            <div
+              key={post?.id || `item-${index}`}
+              className="w-full"
+              style={{ 
+                contain: "layout style",
+                animationDelay: `${index * 0.1}s`
+              }}
+            >
+              <PostCard post={post} />
             </div>
           ))}
         </div>
-      )}
-    </div>
-  );
+        
+        {loading && items.length > 0 && (
+          <div className="mt-6 flex flex-col gap-4 items-center">
+            {Array.from({ length: Math.min(3, skeletonCount) }).map((_, i) => (
+              <div key={`skeleton-${i}`} className="w-full max-w-2xl">
+                <PostSkeleton theme={theme} height={160} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 }

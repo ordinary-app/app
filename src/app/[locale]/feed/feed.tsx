@@ -96,7 +96,7 @@ export function Feed() {
         </div>
         <PostList
           posts={posts || []}
-          loading={loading}
+          loading={loading || loadingMore}
           emptyText="No More"
           skeletonCount={6}
         />
