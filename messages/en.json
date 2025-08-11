@@ -44,6 +44,8 @@
     "readMore": "Read More",
     "learnMore": "Explore",
     "cta": "Go to the Chip Harbor! 》》",
+    "tagline": "A SAFE HARBOR FOR FANDOMS",
+    "explore": "Explore",
     "principles": {
       "antiCensorship": "Anti-Censorship",
       "respectOriginality": "Respect Originality",
@@ -53,6 +55,7 @@
   },
   "detail": {
     "buildingFuture": "Building the Future",
+    "sectionTitle": "Decentralized Fandoms",
     "mainTitle": "A Safe Harbor for",
     "mainTitleHighlight": "Uploading & Sharing Artworks",
     "platformDescription": "A nonprofit decentralized social platform for fanworks",
@@ -60,33 +63,27 @@
     "features": {
       "antiCensorship": {
         "title": "Censorship Protection",
-        "badge": "Censorship Resistant",
         "description": "Decentralized storage based on blockchain technology ensures your creative content cannot be arbitrarily deleted or censored, truly guaranteeing creative freedom."
       },
-      "originalAttribution": {
-        "title": "Original Attribution System",
-        "badge": "Original Attribution",
-        "description": "Users can declare their works as original when uploading posts. The post will be bound to a CHIPS proof with a unique ID recorded immutably on the blockchain for others to verify."
+      "dataProof": {
+        "title": "Onchain Proof",
+        "description": "When users publish content, the system automatically generates on-chain proof for that data, recording publication timestamps and data summaries."
       },
       "decentralized": {
         "title": "Decentralized",
-        "badge": "Decentralized",
         "description": "A decentralized community governed jointly by creators and users, where everyone has a voice in determining the community's development direction."
       },
       "poweredByLove": {
         "title": "Powered by Love",
-        "badge": "Powered by Love",
         "description": "Supporting pure creative passion, allowing creators to focus on content they love without commercial constraints."
       },
-      "fairExchange": {
-        "title": "Fair Exchange",
-        "badge": "Fair Exchange",
+      "coinExchange": {
+        "title": "Coin Exchange",
         "description": "Fair anonymous stablecoin exchange mechanism ensuring quality creations receive deserved rewards and recognition, building a sustainable creative ecosystem."
       },
-      "globalCommunity": {
-        "title": "Global Connection",
-        "badge": "Global Community",
-        "description": "Easily connect with fanwork creators worldwide, breaking geographical barriers to build a borderless creative community for freer cultural exchange."
+      "anonymousCommunity": {
+        "title": "Anonymous Community",
+        "description": "Encrypted login protects privacy identity, building an anonymous and free creative community, making cultural exchange more secure."
       }
     },
     "techStack": {
@@ -118,7 +115,7 @@
         "features": [
           "User authentication system",
           "Content creation tools",
-          "Original attribution feature",
+          "Data proof functionality",
           "Community feed display"
         ]
       },
@@ -146,26 +143,30 @@
     "cta": {
       "title": "Join Ordinary Community",
       "subtitle": "Create freely with global creators in a decentralized harbor",
-      "description": "Let every creation sail freely in these waters",
+      "sectionTitle": "Ordinary",
+      "sectionSubtitle": "On-chain Fan Creation Safe Harbor",
+      "description1": "Providing on-chain records for creative activities",
+      "description2": "Providing on-chain hosting for works",
       "joinNow": "Join Now",
-      "explore": "Explore Community"
+      "exploreCommunity": "Explore Community"
     }
   },
   "chips": {
     "title": "CHIPS Proof System",
+    "subtitle": "Onchain Proof",
     "description": "A blockchain-based original work certification system that provides immutable ownership proof for every original content",
     "howItWorks": {
       "step1": {
-        "title": "Claim Original",
-        "description": "Users can choose to declare their work as original when posting, and the system will generate a unique CHIPS proof for that work"
+        "title": "Data Submission",
+        "description": "When users publish content, the system automatically generates on-chain proof for that data, recording publication timestamps and data summaries"
       },
       "step2": {
         "title": "Blockchain Record",
-        "description": "The unique ID and related information of the CHIPS proof are permanently recorded on the blockchain, ensuring data immutability"
+        "description": "The unique ID, timestamp, and data summary of the on-chain proof are permanently recorded on the blockchain, ensuring publication records cannot be tampered with"
       },
       "step3": {
         "title": "Public Verification",
-        "description": "Anyone can view and verify CHIPS proofs, ensuring transparency and credibility of original works"
+        "description": "Anyone can view and verify on-chain proofs, ensuring transparency and integrity of published data"
       }
     },
     "learnMore": "Learn More",
@@ -177,7 +178,7 @@
       "blockchain": "Blockchain",
       "immutable": "Immutable",
       "status": "Status",
-      "verifiedOriginal": "Verified Original",
+      "dataVerified": "Data Verified",
       "viewOnBlockchain": "View on Blockchain"
     },
     "benefits": {

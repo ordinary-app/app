@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Settings, LogOut, Menu, X } from "lucide-react";
@@ -49,10 +49,10 @@ export default function Header() {
   }, [isConnected, address, currentProfile, setProfileSelectModalOpen]);
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/feed", label: "Feed" },
+    { href: "/", label: t("home") },
+    { href: "/feed", label: t("feed") },
     //{ href: '/discover', label: 'Search' },
-    { href: "/what-is-chip", label: "What is CHIPS" },
+    { href: "/what-is-chip", label: t("onchainProof") },
   ];
 
   const handleDisconnect = async () => {

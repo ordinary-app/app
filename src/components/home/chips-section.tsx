@@ -1,8 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import {
+  Shield,
+  Hash,
+  Eye,
+  Lock,
+  CheckCircle,
+  ArrowRight,
+  AlertTriangle,
+} from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 export function CHIPSSection() {
@@ -23,25 +31,21 @@ export function CHIPSSection() {
         <div className="text-center">
           <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-5 shadow-sm">
             <div className="text-harbor-500"></div>
-            <span className="text-chip-600 font-medium">Onchain Proof</span>
+            <span className="text-chip-600 font-medium">{t("subtitle")}</span>
             <div className="text-harbor-500"></div>
           </div>
         </div>
         <div className="text-center mb-16">
           <div className="relative inline-block mb-6">
             <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900">
-              链上证明系统
+              {t("title")}
             </h2>
             <span className="absolute -top-0 -right-11 px-1.5 py-0.5 font-light text-xs bg-chip-gradient text-white rounded-full shadow-md">
               Beta
             </span>
           </div>
-
-          <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 mb-6">
-            薯条证明系统
-          </h2>
           <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-            基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明
+            {t("description")}
           </p>
         </div>
 
@@ -55,10 +59,10 @@ export function CHIPSSection() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                    数据提交
+                    {t("howItWorks.step1.title")}
                   </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    用户发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要
+                    {t("howItWorks.step1.description")}
                   </p>
                 </div>
               </div>
@@ -72,7 +76,7 @@ export function CHIPSSection() {
                     {t("howItWorks.step2.title")}
                   </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    链上证明的唯一ID、时间戳和数据摘要被永久记录在区块链上，确保发布记录不可篡改
+                    {t("howItWorks.step2.description")}
                   </p>
                 </div>
               </div>
@@ -86,7 +90,7 @@ export function CHIPSSection() {
                     {t("howItWorks.step3.title")}
                   </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    任何人都可以查看和验证链上证明，确保发布数据的透明度和完整性
+                    {t("howItWorks.step3.description")}
                   </p>
                 </div>
               </div>
@@ -114,7 +118,7 @@ export function CHIPSSection() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     {/*<div className="text-2xl">🍟</div>*/}
-                    <CardTitle className="text-xl">Onchain Proof</CardTitle>
+                    <CardTitle className="text-xl">{t("subtitle")}</CardTitle>
                   </div>
                   <Badge className="bg-white/20 text-white border-white/30">
                     {t("certificate.verified")}
@@ -125,13 +129,10 @@ export function CHIPSSection() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-neutral-600">
-                      Certificate ID
+                      {t("certificate.certificateId")}
                     </span>
                     <div className="flex items-center space-x-2">
                       <Hash className="w-4 h-4 text-harbor-500" />
-                      <span className="font-mono text-sm text-harbor-700">
-                        CHIPS-TOKEN-ID
-                      </span>
                       <span className="font-mono text-sm text-harbor-700">
                         Storage-ID
                       </span>
@@ -139,16 +140,20 @@ export function CHIPSSection() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Creator</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.creator")}
+                    </span>
                     <span className="font-medium text-neutral-900">
-                      @seagull_artist
+                      @artist
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Created</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.created")}
+                    </span>
                     <span className="text-sm text-neutral-700">
-                      2024-01-15 14:30 UTC
+                      2025-08-08 09:30 UTC
                     </span>
                   </div>
 
@@ -173,7 +178,7 @@ export function CHIPSSection() {
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-success-500" />
                       <span className="text-sm text-success-600 font-medium">
-                        Verified Original
+                        {t("certificate.dataVerified")}
                       </span>
                     </div>
                   </div>

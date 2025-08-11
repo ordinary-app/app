@@ -44,6 +44,8 @@
     "readMore": "了解更多",
     "learnMore": "探索更多",
     "cta": "去码头整点薯条! 》》",
+    "tagline": "同人创作的避风港",
+    "explore": "探索",
     "principles": {
       "antiCensorship": "抗审查",
       "respectOriginality": "尊重原创",
@@ -53,6 +55,7 @@
   },
   "detail": {
     "buildingFuture": "构建未来",
+    "sectionTitle": "去中心化同人圈",
     "mainTitle": "上传与分享作品的",
     "mainTitleHighlight": "安全港湾",
     "platformDescription": "非营利去中心化同人作品社交平台",
@@ -60,33 +63,27 @@
     "features": {
       "antiCensorship": {
         "title": "抗审查保护",
-        "badge": "抗审查",
         "description": "基于区块链技术的去中心化存储，确保您的创作内容不会被任意删除或审查，让创作自由得到真正保障。"
       },
-      "originalAttribution": {
-        "title": "原创声明系统",
-        "badge": "原创归属",
-        "description": "用户可以在上传发布帖子时声明作品为原创，该帖子就会绑定一个薯条证明，每个薯条证明具有唯一ID记录在区块链上不可篡改，可供他人查看。"
+      "dataProof": {
+        "title": "数据认证系统",
+        "description": "用户发布内容时，系统将自动为该数据生成链上证明，记录发布时间戳和数据摘要。"
       },
       "decentralized": {
         "title": "去中心化",
-        "badge": "去中心化",
         "description": "由创作者和用户共同治理的去中心化社区，每个人都有发言权，共同决定社区的发展方向。"
       },
       "poweredByLove": {
         "title": "为爱发电",
-        "badge": "为爱发电",
         "description": "支持纯粹的创作热情，让创作者能够专注于自己热爱的内容创作，不被商业化束缚。"
       },
-      "fairExchange": {
+      "coinExchange": {
         "title": "有偿交换",
-        "badge": "公平交换",
         "description": "公平的稳定代币匿名交换机制，让优质创作获得应有的回报和认可，建立可持续的创作生态。"
       },
-      "globalCommunity": {
-        "title": "全球连接",
-        "badge": "全球社区",
-        "description": "轻松连接全球的同人创作者，打破地域限制，构建无国界的创作社区，让文化交流更加自由。"
+      "anonymousCommunity": {
+        "title": "匿名连接",
+        "description": "加密登录保护隐私身份，构建匿名自由的创作社区，让文化交流更加安全。"
       }
     },
     "techStack": {
@@ -118,7 +115,7 @@
         "features": [
           "用户认证系统",
           "内容创作工具",
-          "原创声明功能",
+          "数据认证功能",
           "社区动态展示"
         ]
       },
@@ -146,26 +143,30 @@
     "cta": {
       "title": "加入 Ordinary 社区",
       "subtitle": "与全球创作者一起，在去中心化的港口自由创作",
-      "description": "让每一份创作都能在这片海域自由航行",
+      "sectionTitle": "Ordinary",
+      "sectionSubtitle": "链上同人创作安全港",
+      "description1": "为创作行为提供链上记录",
+      "description2": "为作品提供链上托管",
       "joinNow": "立即加入",
-      "explore": "探索社区"
+      "exploreCommunity": "探索社区"
     }
   },
   "chips": {
     "title": "薯条证明系统",
+    "subtitle": "链上证明",
     "description": "基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明",
     "howItWorks": {
       "step1": {
-        "title": "声明原创",
-        "description": "用户在发布帖子时可以选择声明作品为原创，系统将为该作品生成独特的薯条证明"
+        "title": "数据提交",
+        "description": "用户发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要"
       },
       "step2": {
         "title": "区块链记录",
-        "description": "薯条证明的唯一ID和相关信息被永久记录在区块链上，确保数据不可篡改"
+        "description": "链上证明的唯一ID、时间戳和数据摘要被永久记录在区块链上，确保发布记录不可篡改"
       },
       "step3": {
         "title": "公开验证",
-        "description": "任何人都可以查看和验证薯条证明，确保原创作品的透明度和可信度"
+        "description": "任何人都可以查看和验证链上证明，确保发布数据的透明度和完整性"
       }
     },
     "learnMore": "了解更多",
@@ -177,7 +178,7 @@
       "blockchain": "区块链",
       "immutable": "Immutable",
       "status": "状态",
-      "verifiedOriginal": "已验证原创",
+      "dataVerified": "数据已验证",
       "viewOnBlockchain": "在区块链上查看"
     },
     "benefits": {

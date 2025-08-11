@@ -15,7 +15,7 @@ import {
   Zap,
   Heart,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
 import { ConnectKitButton } from "connectkit";
 

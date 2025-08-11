@@ -12,7 +12,7 @@ import {
   Coins,
   ArrowRight,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { CHIPSSection } from "@/components/home/chips-section";
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
 import { ConnectKitButton } from "connectkit";
@@ -53,7 +53,7 @@ export function DetailSection() {
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             {/*<div className="text-harbor-500">🚢</div>*/}
             <span className="text-harbor-700 font-medium">
-              Decentralized Fandoms
+              {t("sectionTitle")}
             </span>
             {/*<div className="text-harbor-500">🚢</div>*/}
           </div>
@@ -70,8 +70,7 @@ export function DetailSection() {
               {t("platformDescription")}
             </p>
             <p className="text-lg text-neutral-600 leading-relaxed">
-              Powered by open-source blockchain protocol, protecting creative
-              freedom and publishing rights for fanart creators
+              {t("protocolDescription")}
             </p>
           </div>
 
@@ -96,12 +95,6 @@ export function DetailSection() {
                   <CardTitle className="text-neutral-900 text-xl">
                     {t("features.antiCensorship.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (001) {t("features.antiCensorship.badge")}
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
@@ -121,20 +114,14 @@ export function DetailSection() {
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">
-                    数据认证系统
+                    {t("features.dataProof.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (010) Onchain Proof
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed mb-4">
-                用户发布内容时，系统将自动为该数据生成链上证明，记录发布时间戳和数据摘要。
+                {t("features.dataProof.description")}
               </p>
             </CardContent>
           </Card>
@@ -150,12 +137,6 @@ export function DetailSection() {
                   <CardTitle className="text-neutral-900 text-xl">
                     {t("features.decentralized.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (011) {t("features.decentralized.badge")}
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
@@ -175,14 +156,8 @@ export function DetailSection() {
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">
-                    为爱发电
+                    {t("features.poweredByLove.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (100) Powered by Love
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
@@ -202,20 +177,14 @@ export function DetailSection() {
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">
-                    有偿交换
+                    {t("features.coinExchange.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (101) Coin Exchange
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                {t("features.fairExchange.description")}
+                {t("features.coinExchange.description")}
               </p>
             </CardContent>
           </Card>
@@ -229,20 +198,14 @@ export function DetailSection() {
                 </div>
                 <div>
                   <CardTitle className="text-neutral-900 text-xl">
-                    匿名连接
+                    {t("features.anonymousCommunity.title")}
                   </CardTitle>
-                  <Badge
-                    variant="outline"
-                    className="text-harbor-600 border-harbor-300 mt-2"
-                  >
-                    (110) Anonymous Community
-                  </Badge>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <p className="text-neutral-700 leading-relaxed">
-                加密登录保护隐私身份，构建匿名自由的创作社区，让文化交流更加安全。
+                {t("features.anonymousCommunity.description")}
               </p>
             </CardContent>
           </Card>
@@ -319,7 +282,7 @@ export function DetailSection() {
           <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
             {/*<div className="text-lg">🗺️</div>*/}
             <span className="text-harbor-700 font-medium">
-              Development Roadmap
+              {t("roadmap.title")}
             </span>
           </div>
 
@@ -351,22 +314,17 @@ export function DetailSection() {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <ul className="space-y-3 text-left">
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>用户认证系统</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>内容创作工具</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>数据认证功能</span>
-                    </li>
-                    <li className="flex items-center space-x-3 text-neutral-700">
-                      <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
-                      <span>社区动态展示</span>
-                    </li>
+                    {t
+                      .raw("roadmap.phase1.features")
+                      .map((feature: string, index: number) => (
+                        <li
+                          key={index}
+                          className="flex items-center space-x-3 text-neutral-700"
+                        >
+                          <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
                   </ul>
                 </CardContent>
               </Card>
@@ -453,14 +411,16 @@ export function DetailSection() {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-4xl sm:text-5xl font-bold mb-6">Ordinary</h3>
+            <h3 className="text-4xl sm:text-5xl font-bold mb-6">
+              {t("cta.sectionTitle")}
+            </h3>
             <p className="text-xl sm:text-2xl mb-4 opacity-90">
-              链上同人创作安全港
+              {t("cta.sectionSubtitle")}
             </p>
             <p className="text-lg mb-12 opacity-80">
-              为创作行为提供链上记录
+              {t("cta.description1")}
               <br />
-              为作品提供链上托管
+              {t("cta.description2")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
@@ -471,7 +431,7 @@ export function DetailSection() {
                   className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
                   <Link href="/feed" className="flex items-center space-x-2">
-                    <span>立即加入</span>
+                    <span>{t("cta.joinNow")}</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </Button>
@@ -483,7 +443,7 @@ export function DetailSection() {
                       className="bg-white text-harbor-600 hover:bg-harbor-50 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                       onClick={show}
                     >
-                      <span>立即加入</span>
+                      <span>{t("cta.joinNow")}</span>
                       {/*<div className="text-xl">🍟</div>*/}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
@@ -498,7 +458,7 @@ export function DetailSection() {
                 className="border-2 border-white text-white hover:bg-white hover:text-harbor-600 bg-transparent px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 <Link href="/feed" className="flex items-center space-x-2">
-                  <span>探索社区</span>
+                  <span>{t("cta.exploreCommunity")}</span>
                   {/*<div className="text-xl">🌊</div>*/}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>

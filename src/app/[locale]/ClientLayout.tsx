@@ -7,9 +7,9 @@ import { Footer } from "@/components/footer";
 import { PostActionsProvider } from "@/contexts/post-actions-context";
 import { FeedProvider } from "@/contexts/feed-context";
 import { ActionBarProvider } from "@/contexts/action-bar-context";
-
+import Web3Provider from "../Web3Provider";
 const Header = dynamic(() => import("../../components/header"), { ssr: false });
-const Web3Provider = dynamic(() => import("../Web3Provider"), { ssr: false });
+// const Web3Provider = dynamic(() => import("../Web3Provider"), { ssr: false });
 const GlobalModals = dynamic(() => import("../../components/global-modals"), {
   ssr: false,
 });

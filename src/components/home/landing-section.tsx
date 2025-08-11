@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
 import { ConnectKitButton } from "connectkit";
@@ -84,7 +84,7 @@ export function LandingSection() {
                 </span>
                 <br />
                 <span className="text-2xl text-neutral-600">
-                  A SAFE HARBOR FOR FANDOMS
+                  {t("tagline")}
                 </span>
               </h1>
 
@@ -115,9 +115,7 @@ export function LandingSection() {
                       (010)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      尊重原创
-                      <br />
-                      Respect Originality
+                      {t("principles.respectOriginality")}
                     </span>
                   </div>
                 </CardContent>
@@ -130,9 +128,7 @@ export function LandingSection() {
                       (011)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      去中心化
-                      <br />
-                      Decentralized
+                      {t("principles.decentralized")}
                     </span>
                   </div>
                 </CardContent>
@@ -145,9 +141,7 @@ export function LandingSection() {
                       (100)
                     </span>
                     <span className="text-sm font-medium text-neutral-700">
-                      为爱发电
-                      <br />
-                      Powered by Love
+                      {t("principles.poweredByLove")}
                     </span>
                   </div>
                 </CardContent>
@@ -184,7 +178,7 @@ export function LandingSection() {
                 size="lg"
                 className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto"
               >
-                <Link href="/feed"> Explore </Link>
+                <Link href="/feed"> {t("explore")} </Link>
               </Button>
             </div>
           </div>
