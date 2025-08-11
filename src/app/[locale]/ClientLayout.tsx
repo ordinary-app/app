@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { MuiThemeProvider } from "@/components/providers/mui-theme-provider";
+import { MantineThemeProvider } from "@/components/providers/mantine-theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
 import { PostActionsProvider } from "@/contexts/post-actions-context";
@@ -30,22 +30,22 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <MuiThemeProvider>
-        <Web3Provider>
-          <PostActionsProvider>
-            <ActionBarProvider>
-              <FeedProvider>
-                <AuthManager />
-                <GlobalModals />
-                <Header />
-                <main>{children}</main>
-                <Footer />
-                <Toaster />
-              </FeedProvider>
-            </ActionBarProvider>
-          </PostActionsProvider>
-        </Web3Provider>
-      </MuiThemeProvider>
+        <MantineThemeProvider>
+          <Web3Provider>
+            <PostActionsProvider>
+              <ActionBarProvider>
+                <FeedProvider>
+                  <AuthManager />
+                  <GlobalModals />
+                  <Header />
+                  <main>{children}</main>
+                  <Footer />
+                  <Toaster />
+                </FeedProvider>
+              </ActionBarProvider>
+            </PostActionsProvider>
+          </Web3Provider>
+        </MantineThemeProvider>
     </ThemeProvider>
   );
 }

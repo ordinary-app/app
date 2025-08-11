@@ -1,11 +1,11 @@
 import React from "react";
-import { Masonry } from '@mui/lab';
-import { Box, Paper } from '@mui/material';
+import { Box, useMantineTheme } from '@mantine/core';
 import { Post } from "@lens-protocol/client";
 import { PostCard } from "@/components/post/post-card";
 import { CompactPostCard } from "@/components/post/compact-post-card";
 import { useFeedContext } from "@/contexts/feed-context";
 import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
+import { MasonryGrid } from "@/components/feed/masonry-grid";
 
 interface PostListProps {
   posts: Post[];
@@ -18,6 +18,7 @@ interface PostListProps {
 export function PostList({ posts, loading, emptyText, showToggle = true, skeletonCount = 6 }: PostListProps) 
 {
   const { viewMode } = useFeedContext();
+  const theme = useMantineTheme();
   const safeItems = posts && Array.isArray(posts) ? posts.filter((item) => item != null) : [];
   
   if (loading) {
@@ -45,129 +46,19 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
     return (
       <div className="w-full">
         {showToggle && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3, px: 0 }}>
+          <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: theme.spacing.lg }}>
             <FeedViewToggle />
           </Box>
         )}
-        <Box 
-          sx={{ 
-            width: '100%', 
-            maxWidth: 'max-w-7xl',
-            display: 'flex',
-            justifyContent: 'center'
-          }}
+        <MasonryGrid
+          loading={loading}
+          skeletonCount={skeletonCount}
+          columns={{ base: 2, xs: 2, sm: 3, md: 4, lg: 4 }}
         >
-          <Masonry
-            columns={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 5 }} // 响应式列数布局
-            spacing={1.5} // 间距
-            defaultColumns={4} // 默认列数
-            defaultSpacing={1.5} // 默认间距
-            sequential={false}
-            sx={{
-              width: 'fit-content',
-              margin: '0 auto'
-            }}
-          >
-            {/* 帖子内容 */}
-            {safeItems.map((post, index) => (
-              <Box
-                key={post?.id || `item-${index}`}
-                sx={{
-                  animation: 'fadeIn 0.2s ease-in-out',
-                  animationDelay: `${index * 0.1}s`,
-                  animationFillMode: 'both',
-                  '@keyframes fadeIn': {
-                    '0%': {
-                      opacity: 0,
-                      transform: 'translateY(20px)'
-                    },
-                    '100%': {
-                      opacity: 1,
-                      transform: 'translateY(0)'
-                    }
-                  }
-                }}
-              >
-                <CompactPostCard post={post} />
-              </Box>
-            ))}
-            
-            {/* 初始加载骨架屏 */}
-            {loading &&
-              safeItems.length === 0 &&
-              Array.from({ length: skeletonCount }, (_, i) => (
-                <Paper
-                  key={`skeleton-${i}`}
-                  sx={{
-                    borderRadius: 3,
-                    //overflow: 'hidden',
-                    boxShadow: 1,
-                    '&:hover': { boxShadow: 2 },
-                    animation: 'pulse 0.1s ease-in-out infinite',
-                    '@keyframes pulse': {
-                      '0%, 100%': { opacity: 1 },
-                      '50%': { opacity: 0.7 }
-                    }
-                  }}
-                >
-                  <Box
-                    sx={{
-                      aspectRatio: Math.random() > 0.5 ? '4/3' : '3/4', // 随机高度骨架模拟
-                      bgcolor: 'grey.200'
-                    }}
-                  />
-                  <Box sx={{ p: 1.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                      <Box sx={{ width: 24, height: 24, bgcolor: 'grey.200', borderRadius: '50%' }} />
-                      <Box sx={{ height: 12, bgcolor: 'grey.200', borderRadius: 1, flex: 1 }} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
-                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
-                      </Box>
-                      <Box sx={{ height: 24, width: 24, bgcolor: 'grey.200', borderRadius: 1 }} />
-                    </Box>
-                  </Box>
-                </Paper>
-              ))}
-
-            {/* 加载更多时的骨架屏 */}
-            {loading &&
-              safeItems.length > 0 &&
-              Array.from({ length: Math.min(4, skeletonCount) }, (_, i) => (
-                <Paper
-                  key={`loading-skeleton-${i}`}
-                  sx={{
-                    borderRadius: 3,
-                    //overflow: 'hidden',
-                    boxShadow: 1,
-                    animation: 'pulse 0.1s ease-in-out infinite'
-                  }}
-                >
-                  <Box
-                    sx={{
-                      aspectRatio: '4/3',
-                      bgcolor: 'grey.200'
-                    }}
-                  />
-                  <Box sx={{ p: 1.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                      <Box sx={{ width: 24, height: 24, bgcolor: 'grey.200', borderRadius: '50%' }} />
-                      <Box sx={{ height: 12, bgcolor: 'grey.200', borderRadius: 1, flex: 1 }} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
-                        <Box sx={{ height: 24, width: 48, bgcolor: 'grey.200', borderRadius: 1 }} />
-                      </Box>
-                      <Box sx={{ height: 24, width: 24, bgcolor: 'grey.200', borderRadius: 1 }} />
-                    </Box>
-                  </Box>
-                </Paper>
-              ))}
-          </Masonry>
-        </Box>
+          {safeItems.map((post) => (
+            <CompactPostCard key={post?.id} post={post} />
+          ))}
+        </MasonryGrid>
       </div>
     );
   }
