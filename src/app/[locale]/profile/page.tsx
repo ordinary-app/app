@@ -43,7 +43,7 @@ export default function ProfilePage() {
 
   return (
     <TooltipProvider>
-      <main className="container mx-auto px-4 py-8">
+      <main className="min-h-screen container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
           <Card className="mb-8">
