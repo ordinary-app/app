@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
 
 export type DropdownItem = {
   icon: any;
@@ -79,14 +79,14 @@ export const ActionButton = ({
 }: ActionButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { checkWalletConnection } = useWalletCheck();
+  const { checkAuthentication } = useAuthCheck();
 
   const showLoginActions = !isUserLoggedIn;
   const formattedCount = formatNumber(initialCount);
 
   const handleClick = async () => {
     if (showLoginActions) {
-      if (!checkWalletConnection(label)) {
+      if (!checkAuthentication(label)) {
         return;
       }
     }

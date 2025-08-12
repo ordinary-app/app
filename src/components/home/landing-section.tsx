@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
-import Image from "next/image"
-import { Span } from "next/dist/trace"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
-import { ConnectKitButton } from "connectkit"
-import React, { useState } from "react"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
+import Image from "next/image";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
+import { ConnectKitButton } from "connectkit";
+import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export function LandingSection() {
-  const { isConnected } = useWalletCheck();
+  const t = useTranslations("home");
+  const { isAuthenticated } = useAuthCheck();
   const [rotate, setRotate] = useState(false);
 
   return (
@@ -20,7 +21,7 @@ export function LandingSection() {
 
       {/* Animated Harbor Elements */}
       <div className="absolute top-10 right-10 opacity-15 float-animation ">
-        <div className="text-6xl">⚓</div>
+        {/*<div className="text-6xl">⚓</div>*/}
       </div>
       <div className="absolute bottom-20 left-10 opacity-15 anchor-animation">
         <div className="text-4xl"></div>
@@ -28,31 +29,34 @@ export function LandingSection() {
       <div className="absolute top-32 left-20 opacity-10 wave-animation">
         <div className="text-5xl"></div>
       </div>
-      <div className="absolute bottom-32 right-20 opacity-10 anchor-animation" style={{ animationDelay: "2s" }}>
+      <div
+        className="absolute bottom-32 right-20 opacity-10 anchor-animation"
+        style={{ animationDelay: "2s" }}
+      >
         <div className="text-3xl"></div>
       </div>
 
-      
       <div className="relative w-full max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-8 items-center">
-          
           {/* Meme Image with Harbor Theme */}
           <div className="relative col-1 lg:col-1 w-full max-w-full sm:max-w-xl sm:mx-auto mb-8">
             <Link href="/feed">
-            <div
-              className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${rotate ? ' rotate-1' : ''}`}
-            >
-              <Image
-                src="/meme-en.png"
-                alt="Seagulls at the dock - meme"
-                width={800}
-                height={800}
-                className="rounded-lg w-full h-auto max-w-full"
-                priority
-                onMouseEnter={() => setRotate(true)}
-                onMouseLeave={() => setRotate(false)}
-              />
-              {/*<Link href="/feed">
+              <div
+                className={`relative flex justify-center bg-white rounded-2xl shadow-xl p-4 max-w-full w-full transform transition-transform duration-300 border border-harbor-200${
+                  rotate ? " rotate-1" : ""
+                }`}
+              >
+                <Image
+                  src="/gull-on-gull.jpg"
+                  alt="Logo-0-1-0"
+                  width={800}
+                  height={800}
+                  className="rounded-lg w-full h-auto max-w-full"
+                  priority
+                  onMouseEnter={() => setRotate(true)}
+                  onMouseLeave={() => setRotate(false)}
+                />
+                {/*<Link href="/feed">
               <div
                 className="absolute -bottom-5 left-1/4 transform -translate-x-1/2 bg-gradient-to-r from-chip-300 via-chip-400 to-chip-500 text-white px-3 py-2 rounded-full text-xs font-medium shadow-lg cursor-pointer"
                 onMouseEnter={() => setRotate(true)}
@@ -61,7 +65,7 @@ export function LandingSection() {
                 去码头整点薯条! 》》
               </div>
               </Link>*/}
-            </div>
+              </div>
             </Link>
           </div>
 
@@ -69,22 +73,23 @@ export function LandingSection() {
           <div className="col-1 lg:col-1 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-left">
-                <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
-                  Ordinary
+                <span className="font-sans bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent">
+                  {t("title")}
                 </span>
                 <br />
-                <span className="text-4xl text-harbor-600 leading-tight">
-                  薯条码头:<br className="block sm:hidden" />为爱发电的自由创作港
+                <span className="text-4xl text-orange-500 leading-tight">
+                  {t("subtitle")}
+                  <br className="block sm:hidden" />
+                  {t("subtitleFull")}
                 </span>
                 <br />
                 <span className="text-2xl text-neutral-600">
-                  A SAFE HARBOR FOR FANDOMS
+                  {t("tagline")}
                 </span>
               </h1>
 
               <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline">
-                Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source
-                blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.
+                {t("description")}
               </p>
             </div>
 
@@ -93,8 +98,12 @@ export function LandingSection() {
               <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-harbor-600">(001)</span>
-                    <span className="text-sm font-medium text-neutral-700">抗审查<br/>Anti-Censorship</span>
+                    <span className="text-sm font-mono text-harbor-600">
+                      (001)
+                    </span>
+                    <span className="text-sm font-medium text-neutral-700">
+                      {t("principles.antiCensorship")}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -102,8 +111,12 @@ export function LandingSection() {
               <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-harbor-600">(010)</span>
-                    <span className="text-sm font-medium text-neutral-700">尊重原创<br/>Respect Originality</span>
+                    <span className="text-sm font-mono text-harbor-600">
+                      (010)
+                    </span>
+                    <span className="text-sm font-medium text-neutral-700">
+                      {t("principles.respectOriginality")}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -111,8 +124,12 @@ export function LandingSection() {
               <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-harbor-500">(011)</span>
-                    <span className="text-sm font-medium text-neutral-700">去中心化<br/>Decentralized</span>
+                    <span className="text-sm font-mono text-harbor-500">
+                      (011)
+                    </span>
+                    <span className="text-sm font-medium text-neutral-700">
+                      {t("principles.decentralized")}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -120,8 +137,12 @@ export function LandingSection() {
               <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-mono text-harbor-600">(100)</span>
-                    <span className="text-sm font-medium text-neutral-700">为爱发电<br/>Powered by Love</span>
+                    <span className="text-sm font-mono text-harbor-600">
+                      (100)
+                    </span>
+                    <span className="text-sm font-medium text-neutral-700">
+                      {t("principles.poweredByLove")}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -129,15 +150,23 @@ export function LandingSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full mt-8">
-              {isConnected ? (
-                <Button asChild size="lg" className="harbor-button text-white font-semibold w-full sm:w-auto">
-                  <Link href="/feed">Start Here</Link>
+              {isAuthenticated ? (
+                <Button
+                  asChild
+                  size="lg"
+                  className="chip-button text-white font-semibold w-full sm:w-auto"
+                >
+                  <Link href="/feed">{t("getStarted")}</Link>
                 </Button>
               ) : (
                 <ConnectKitButton.Custom>
                   {({ show }) => (
-                    <Button size="lg" className="harbor-button text-white font-semibold w-full sm:w-auto" onClick={show}>
-                      Start Here
+                    <Button
+                      size="lg"
+                      className="chip-button text-white font-semibold w-full sm:w-auto"
+                      onClick={show}
+                    >
+                      {t("getStarted")}
                     </Button>
                   )}
                 </ConnectKitButton.Custom>
@@ -149,13 +178,12 @@ export function LandingSection() {
                 size="lg"
                 className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto"
               >
-                <Link href="/feed">  Explore  </Link>
+                <Link href="/feed"> {t("explore")} </Link>
               </Button>
             </div>
-          </div>          
-          
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

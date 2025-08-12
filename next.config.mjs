@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+import createNextIntlPlugin from "next-intl/plugin";
+const withNextIntl = createNextIntlPlugin();
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -13,10 +16,10 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.module.rules.push({
       test: /HeartbeatWorker\.js$/,
-      type: 'javascript/auto',
+      type: "javascript/auto",
     });
     return config;
   },
-}
+};
 
-export default nextConfig
+export default withNextIntl(nextConfig);

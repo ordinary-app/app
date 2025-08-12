@@ -1,0 +1,239 @@
+{
+  "navigation": {
+    "home": "首页",
+    "feed": "动态",
+    "onchainProof": "链上证明",
+    "discover": "发现",
+    "create": "创作",
+    "profile": "个人资料",
+    "language": "语言",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "header": {
+    "upload": "上传",
+    "selectProfile": "选择档案",
+    "logOut": "退出登录",
+    "connect": "连接",
+    "settings": "设置",
+    "developing": "开发中",
+    "disconnect": "断开连接",
+    "anonymous": "匿名",
+    "fanworkLover": "同人爱好者"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "retry": "重试",
+    "cancel": "取消",
+    "confirm": "确认"
+  },
+  "feed": {
+    "title": "最新",
+    "subtitle": "全球动态",
+    "refresh": "刷新",
+    "refreshing": "刷新中...",
+    "loadMore": "加载更多",
+    "newPosts": "有新内容",
+    "noMore": "没有更多了",
+    "lastUpdated": "最后更新：{time}"
+  },
+  "post": {
+    "like": "点赞",
+    "unlike": "取消点赞",
+    "bookmark": "收藏",
+    "share": "分享",
+    "comment": "评论"
+  },
+  "home": {
+    "title": "Ordinary",
+    "subtitle": "薯条码头:",
+    "subtitleFull": "为爱发电的自由创作港",
+    "description": "Ordinary是一个非营利的去中心化社交平台，基于开源区块链协议，专为同人作品创作而生。保护创作者的创作自由和发布权利。",
+    "connectWallet": "连接钱包",
+    "getStarted": "开始体验",
+    "readMore": "了解更多",
+    "learnMore": "探索更多",
+    "cta": "去码头整点薯条! 》》",
+    "tagline": "同人创作的避风港",
+    "explore": "探索",
+    "principles": {
+      "antiCensorship": "抗审查",
+      "respectOriginality": "尊重原创",
+      "decentralized": "去中心化",
+      "poweredByLove": "为爱发电"
+    }
+  },
+  "detail": {
+    "buildingFuture": "构建未来",
+    "sectionTitle": "去中心化同人圈",
+    "mainTitle": "上传与分享作品的",
+    "mainTitleHighlight": "安全港湾",
+    "platformDescription": "非营利去中心化同人作品社交平台",
+    "protocolDescription": "基于开源区块链协议，保护创作者的创作自由和发布权利",
+    "features": {
+      "antiCensorship": {
+        "title": "抗审查保护",
+        "description": "基于区块链技术的去中心化存储，确保您的创作内容不会被任意删除或审查，让创作自由得到真正保障。"
+      },
+      "dataProof": {
+        "title": "数据认证系统",
+        "description": "用户发布内容时，系统将自动为该数据生成链上证明，记录发布时间戳和数据摘要。"
+      },
+      "decentralized": {
+        "title": "去中心化",
+        "description": "由创作者和用户共同治理的去中心化社区，每个人都有发言权，共同决定社区的发展方向。"
+      },
+      "poweredByLove": {
+        "title": "为爱发电",
+        "description": "支持纯粹的创作热情，让创作者能够专注于自己热爱的内容创作，不被商业化束缚。"
+      },
+      "coinExchange": {
+        "title": "有偿交换",
+        "description": "公平的稳定代币匿名交换机制，让优质创作获得应有的回报和认可，建立可持续的创作生态。"
+      },
+      "anonymousCommunity": {
+        "title": "匿名连接",
+        "description": "加密登录保护隐私身份，构建匿名自由的创作社区，让文化交流更加安全。"
+      }
+    },
+    "techStack": {
+      "title": "技术架构",
+      "subtitle": "基于最新Web3技术栈构建的现代化平台",
+      "lens": {
+        "title": "Lens Protocol",
+        "description": "去中心化社交协议，构建开放的社交图谱"
+      },
+      "grove": {
+        "title": "Grove Storage",
+        "description": "分布式内容存储，确保数据长期保存"
+      },
+      "wallet": {
+        "title": "Family Wallet",
+        "description": "安全便捷的钱包连接体验"
+      },
+      "nextjs": {
+        "title": "Next.js",
+        "description": "现代化Web框架，极致用户体验"
+      }
+    },
+    "roadmap": {
+      "title": "发展路线图",
+      "subtitle": "分阶段构建完整的去中心化创作生态",
+      "phase1": {
+        "title": "基础平台",
+        "subtitle": "构建核心功能模块",
+        "features": [
+          "用户认证系统",
+          "内容创作工具",
+          "数据认证功能",
+          "社区动态展示"
+        ]
+      },
+      "phase2": {
+        "title": "通讯层建设",
+        "subtitle": "构建社交互动功能",
+        "features": [
+          "互动功能机制",
+          "实时通知推送",
+          "标签管理探索",
+          "热度排序功能"
+        ]
+      },
+      "phase3": {
+        "title": "生态完善",
+        "subtitle": "打造完整创作生态",
+        "features": [
+          "代币打赏系统",
+          "数据保护机制",
+          "社区自治功能",
+          "移动端应用"
+        ]
+      }
+    },
+    "cta": {
+      "title": "加入 Ordinary 社区",
+      "subtitle": "与全球创作者一起，在去中心化的港口自由创作",
+      "sectionTitle": "Ordinary",
+      "sectionSubtitle": "链上同人创作安全港",
+      "description1": "为创作行为提供链上记录",
+      "description2": "为作品提供链上托管",
+      "joinNow": "立即加入",
+      "exploreCommunity": "探索社区"
+    }
+  },
+  "chips": {
+    "title": "薯条证明系统",
+    "subtitle": "链上证明",
+    "description": "基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明",
+    "howItWorks": {
+      "step1": {
+        "title": "数据提交",
+        "description": "用户发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要"
+      },
+      "step2": {
+        "title": "区块链记录",
+        "description": "链上证明的唯一ID、时间戳和数据摘要被永久记录在区块链上，确保发布记录不可篡改"
+      },
+      "step3": {
+        "title": "公开验证",
+        "description": "任何人都可以查看和验证链上证明，确保发布数据的透明度和完整性"
+      }
+    },
+    "learnMore": "了解更多",
+    "certificate": {
+      "verified": "已验证",
+      "certificateId": "证书ID",
+      "creator": "创作者",
+      "created": "创建时间",
+      "blockchain": "区块链",
+      "immutable": "Immutable",
+      "status": "状态",
+      "dataVerified": "数据已验证",
+      "viewOnBlockchain": "在Grove Storage上查看"
+    },
+    "benefits": {
+      "antiCounterfeit": {
+        "title": "防伪保护",
+        "description": "区块链技术确保证明无法被伪造或篡改"
+      },
+      "uniqueId": {
+        "title": "唯一标识",
+        "description": "每个证明都有独特的ID，便于追踪和验证"
+      },
+      "transparency": {
+        "title": "公开透明",
+        "description": "所有人都可以查看和验证证明的真实性"
+      },
+      "permanentStorage": {
+        "title": "长期保存",
+        "description": "证明信息长期存储，不易丢失或损坏"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "同人创作者的安全港湾，保护创作自由和发布权利。"
+    },
+    "corePrinciples": {
+      "title": "核心原则",
+      "fairExchange": "有偿交换"
+    },
+    "community": {
+      "title": "社区",
+      "feed": "社区动态",
+      "creators": "精选创作者",
+      "guidelines": "社区指南",
+      "support": "创作者支持"
+    },
+    "resources": {
+      "title": "资源",
+      "documentation": "文档",
+      "api": "API 参考",
+      "privacy": "隐私政策",
+      "terms": "服务条款"
+    },
+    "copyright": "© 2025 Ordinary. 为去中心化同人创作网络倾情打造 ❤️",
+    "poweredBy": "技术支持"
+  }
+}

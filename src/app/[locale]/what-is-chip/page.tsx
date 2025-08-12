@@ -1,29 +1,41 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, Users, Globe, Zap, Heart } from "lucide-react"
-import Link from "next/link"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
-import { ConnectKitButton } from "connectkit"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Shield,
+  Hash,
+  Eye,
+  Lock,
+  CheckCircle,
+  ArrowRight,
+  Users,
+  Globe,
+  Zap,
+  Heart,
+} from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
+import { ConnectKitButton } from "connectkit";
 
 export default function WhatIsChipPage() {
-  const { isConnected } = useWalletCheck();
+  const { isAuthenticated } = useAuthCheck();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-harbor-50/30">
-      <main className="py-12 px-4 sm:px-6 lg:px-8">
+      <main className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-8 shadow-sm">
               <div className="text-2xl"></div>
-              <span className="text-chip-700 font-medium text-lg">Onchain Proof</span>
+              <span className="text-chip-700 font-medium text-lg">
+                Onchain Proof
+              </span>
               <div className="text-2xl"></div>
             </div>
 
-           
             <h1 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 whitespace-nowrap">
               <span className="align-middle">什么是</span>
               <span className="bg-gradient-to-r from-chip-600 via-chip-500 to-chip-400 bg-clip-text text-transparent align-middle">
@@ -36,14 +48,22 @@ export default function WhatIsChipPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {isConnected ? (
-                <Button asChild size="lg" className="chip-button text-white font-semibold">
+              {isAuthenticated ? (
+                <Button
+                  asChild
+                  size="lg"
+                  className="chip-button text-white font-semibold"
+                >
                   <Link href="/create">发布内容并获得证明</Link>
                 </Button>
               ) : (
                 <ConnectKitButton.Custom>
                   {({ show }) => (
-                    <Button size="lg" className="chip-button text-white font-semibold" onClick={show}>
+                    <Button
+                      size="lg"
+                      className="chip-button text-white font-semibold"
+                      onClick={show}
+                    >
                       连接发布内容
                     </Button>
                   )}
@@ -64,7 +84,9 @@ export default function WhatIsChipPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
             <div className="space-y-8">
               <div>
-                <h2 className="text-3xl font-bold text-neutral-900 mb-6">链上证明是什么？</h2>
+                <h2 className="text-3xl font-bold text-neutral-900 mb-6">
+                  链上证明是什么？
+                </h2>
                 <div className="space-y-4 text-lg text-neutral-700 leading-relaxed">
                   <p>
                     链上证明是 Ordinary
@@ -73,14 +95,18 @@ export default function WhatIsChipPage() {
                   <p>
                     每个链上证明都拥有独一无二的证明ID，这个ID连同发布时间戳、数据摘要、发布者信息等关键数据一起被永久记录在区块链上，形成不可篡改的数字证书。
                   </p>
-                  <p>这确保了发布数据的完整性和可追溯性，也为整个社区提供了透明、可信的数据验证机制。</p>
+                  <p>
+                    这确保了发布数据的完整性和可追溯性，也为整个社区提供了透明、可信的数据验证机制。
+                  </p>
                 </div>
               </div>
 
               <div className="bg-gradient-to-r from-harbor-50 to-harbor-100 border border-harbor-200 rounded-2xl p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="text-3xl">💡</div>
-                  <h3 className="text-xl font-semibold text-harbor-800">核心理念</h3>
+                  <h3 className="text-xl font-semibold text-harbor-800">
+                    核心理念
+                  </h3>
                 </div>
                 <p className="text-harbor-700 leading-relaxed">
                   "让每一份发布都有迹可循，让每一次数据都受到保护" ——
@@ -110,36 +136,56 @@ export default function WhatIsChipPage() {
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">证明编号</span>
+                      <span className="text-neutral-600 font-medium">
+                        证明编号
+                      </span>
                       <div className="flex items-center space-x-2">
                         <Hash className="w-4 h-4 text-harbor-500" />
-                        <span className="font-mono text-harbor-700 font-semibold">CD-2024-001337</span>
+                        <span className="font-mono text-harbor-700 font-semibold">
+                          CD-2024-001337
+                        </span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">创作者</span>
-                      <span className="font-semibold text-neutral-900">@seagull_artist</span>
+                      <span className="text-neutral-600 font-medium">
+                        创作者
+                      </span>
+                      <span className="font-semibold text-neutral-900">
+                        @seagull_artist
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">认证时间</span>
-                      <span className="text-neutral-700">2024-01-15 14:30 UTC</span>
+                      <span className="text-neutral-600 font-medium">
+                        认证时间
+                      </span>
+                      <span className="text-neutral-700">
+                        2024-01-15 14:30 UTC
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">区块链状态</span>
+                      <span className="text-neutral-600 font-medium">
+                        区块链状态
+                      </span>
                       <div className="flex items-center space-x-2">
                         <Lock className="w-4 h-4 text-success-500" />
-                        <span className="text-success-600 font-medium">不可篡改</span>
+                        <span className="text-success-600 font-medium">
+                          不可篡改
+                        </span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-neutral-600 font-medium">验证状态</span>
+                      <span className="text-neutral-600 font-medium">
+                        验证状态
+                      </span>
                       <div className="flex items-center space-x-2">
                         <CheckCircle className="w-4 h-4 text-success-500" />
-                        <span className="text-success-600 font-semibold">数据已验证</span>
+                        <span className="text-success-600 font-semibold">
+                          数据已验证
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -155,16 +201,24 @@ export default function WhatIsChipPage() {
               </Card>
 
               {/* Floating Elements */}
-              <div className="absolute -top-6 -right-6 text-4xl opacity-40 float-animation">🔒</div>
-              <div className="absolute -bottom-6 -left-6 text-3xl opacity-40 anchor-animation">⚓</div>
+              <div className="absolute -top-6 -right-6 text-4xl opacity-40 float-animation">
+                🔒
+              </div>
+              <div className="absolute -bottom-6 -left-6 text-3xl opacity-40 anchor-animation">
+                ⚓
+              </div>
             </div>
           </div>
 
           {/* How It Works */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">链上证明如何工作？</h2>
-              <p className="text-lg text-neutral-600">简单三步，为您的发布数据获得区块链认证</p>
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+                链上证明如何工作？
+              </h2>
+              <p className="text-lg text-neutral-600">
+                简单三步，为您的发布数据获得区块链认证
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -174,7 +228,9 @@ export default function WhatIsChipPage() {
                   <div className="w-16 h-16 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">1</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">数据提交</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                    数据提交
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
                     当您发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要。
                   </p>
@@ -187,7 +243,9 @@ export default function WhatIsChipPage() {
                   <div className="w-16 h-16 bg-gradient-to-br from-success-500 to-success-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">2</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">区块链记录</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                    区块链记录
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
                     系统自动生成唯一的证明ID，并将数据摘要、发布者信息、时间戳等关键信息记录到区块链上。
                   </p>
@@ -200,7 +258,9 @@ export default function WhatIsChipPage() {
                   <div className="w-16 h-16 bg-gradient-to-br from-warning-500 to-warning-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">3</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">获得认证</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                    获得认证
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
                     您的数据获得链上证明，任何人都可以通过证明ID验证发布数据的完整性和真实性。
                   </p>
@@ -212,8 +272,12 @@ export default function WhatIsChipPage() {
           {/* Benefits */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">链上证明的优势</h2>
-              <p className="text-lg text-neutral-600">为什么选择链上证明来认证您的发布数据？</p>
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+                链上证明的优势
+              </h2>
+              <p className="text-lg text-neutral-600">
+                为什么选择链上证明来认证您的发布数据？
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -222,8 +286,12 @@ export default function WhatIsChipPage() {
                   <div className="w-12 h-12 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Shield className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">防伪保护</h3>
-                  <p className="text-sm text-neutral-600">区块链技术确保证明无法被伪造或篡改</p>
+                  <h3 className="font-semibold text-neutral-900 mb-2">
+                    防伪保护
+                  </h3>
+                  <p className="text-sm text-neutral-600">
+                    区块链技术确保证明无法被伪造或篡改
+                  </p>
                 </CardContent>
               </Card>
 
@@ -232,8 +300,12 @@ export default function WhatIsChipPage() {
                   <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Hash className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">唯一标识</h3>
-                  <p className="text-sm text-neutral-600">每个证明都有独特的ID，便于追踪和验证</p>
+                  <h3 className="font-semibold text-neutral-900 mb-2">
+                    唯一标识
+                  </h3>
+                  <p className="text-sm text-neutral-600">
+                    每个证明都有独特的ID，便于追踪和验证
+                  </p>
                 </CardContent>
               </Card>
 
@@ -242,8 +314,12 @@ export default function WhatIsChipPage() {
                   <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Eye className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">公开透明</h3>
-                  <p className="text-sm text-neutral-600">所有人都可以查看和验证证明的真实性</p>
+                  <h3 className="font-semibold text-neutral-900 mb-2">
+                    公开透明
+                  </h3>
+                  <p className="text-sm text-neutral-600">
+                    所有人都可以查看和验证证明的真实性
+                  </p>
                 </CardContent>
               </Card>
 
@@ -252,8 +328,12 @@ export default function WhatIsChipPage() {
                   <div className="w-12 h-12 bg-gradient-to-br from-seagull-500 to-seagull-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Lock className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">永久保存</h3>
-                  <p className="text-sm text-neutral-600">证明信息永久存储，不会丢失或损坏</p>
+                  <h3 className="font-semibold text-neutral-900 mb-2">
+                    永久保存
+                  </h3>
+                  <p className="text-sm text-neutral-600">
+                    证明信息永久存储，不会丢失或损坏
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -262,8 +342,12 @@ export default function WhatIsChipPage() {
           {/* Why Ordinary */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">为什么选择 Ordinary？</h2>
-              <p className="text-lg text-neutral-600">我们致力于为创作者社区提供最佳的创作与社交体验</p>
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+                为什么选择 Ordinary？
+              </h2>
+              <p className="text-lg text-neutral-600">
+                我们致力于为创作者社区提供最佳的创作与社交体验
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -275,8 +359,12 @@ export default function WhatIsChipPage() {
                       <Users className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">社区驱动</CardTitle>
-                      <p className="text-neutral-600">由创作者社区共同治理和发展</p>
+                      <CardTitle className="text-neutral-900 text-xl">
+                        社区驱动
+                      </CardTitle>
+                      <p className="text-neutral-600">
+                        由创作者社区共同治理和发展
+                      </p>
                     </div>
                   </div>
                 </CardHeader>
@@ -296,7 +384,9 @@ export default function WhatIsChipPage() {
                       <Globe className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">开源透明</CardTitle>
+                      <CardTitle className="text-neutral-900 text-xl">
+                        开源透明
+                      </CardTitle>
                       <p className="text-neutral-600">基于开源区块链协议构建</p>
                     </div>
                   </div>
@@ -316,8 +406,12 @@ export default function WhatIsChipPage() {
                       <Heart className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">非营利性质</CardTitle>
-                      <p className="text-neutral-600">专注于服务创作者，不以盈利为目的</p>
+                      <CardTitle className="text-neutral-900 text-xl">
+                        非营利性质
+                      </CardTitle>
+                      <p className="text-neutral-600">
+                        专注于服务创作者，不以盈利为目的
+                      </p>
                     </div>
                   </div>
                 </CardHeader>
@@ -336,14 +430,17 @@ export default function WhatIsChipPage() {
                       <Zap className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">技术先进</CardTitle>
+                      <CardTitle className="text-neutral-900 text-xl">
+                        技术先进
+                      </CardTitle>
                       <p className="text-neutral-600">采用最新的Web3技术栈</p>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <p className="text-neutral-700 leading-relaxed">
-                    基于 Lens Protocol、Grove Storage 等先进的Web3技术构建，确保平台具有最佳的性能、安全性和用户体验。
+                    基于 Lens Protocol、Grove Storage
+                    等先进的Web3技术构建，确保平台具有最佳的性能、安全性和用户体验。
                   </p>
                 </CardContent>
               </Card>
@@ -361,12 +458,18 @@ export default function WhatIsChipPage() {
             </div>
 
             <div className="relative z-10">
-              <h3 className="text-4xl sm:text-5xl font-bold mb-6">开始使用链上证明</h3>
-              <p className="text-xl sm:text-2xl mb-4 opacity-90">认证您的发布数据，加入去中心化创作社区</p>
-              <p className="text-lg mb-12 opacity-80">让每一份创作都能在这片海域自由航行 🚢✨</p>
+              <h3 className="text-4xl sm:text-5xl font-bold mb-6">
+                开始使用链上证明
+              </h3>
+              <p className="text-xl sm:text-2xl mb-4 opacity-90">
+                认证您的发布数据，加入去中心化创作社区
+              </p>
+              <p className="text-lg mb-12 opacity-80">
+                让每一份创作都能在这片海域自由航行 🚢✨
+              </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                {isConnected ? (
+                {isAuthenticated ? (
                   <Button
                     asChild
                     size="lg"
@@ -374,7 +477,6 @@ export default function WhatIsChipPage() {
                   >
                     <Link href="/feed" className="flex items-center space-x-2">
                       <span>立即加入</span>
-                      <div className="text-xl">🍟</div>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </Link>
                   </Button>
@@ -414,5 +516,5 @@ export default function WhatIsChipPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

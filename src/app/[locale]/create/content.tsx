@@ -42,8 +42,7 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
-import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
+import { useAuthCheck } from "@/hooks/auth/use-auth-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
@@ -163,8 +162,7 @@ export default function CreatePage() {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnected } = useAccount();
-  const reconnectWallet = useReconnectWallet();
-  const { checkWalletConnection } = useWalletCheck();
+  const { checkAuthentication } = useAuthCheck();
 
   // Toast state
   const [showDevelopmentToast, setShowDevelopmentToast] = useState(false)
@@ -203,9 +201,9 @@ export default function CreatePage() {
       return
     }
 
-    //if (!checkWalletConnection("发布内容")) {
-    //  return;
-    //}
+    if (!checkAuthentication("发布内容")) {
+      return;
+    }
 
     if (!content.trim()) {
     toast.error("Please enter some content !")
@@ -221,13 +219,8 @@ export default function CreatePage() {
 
     try {
 
-      if (!client || !client.isSessionClient()) {
-        throw new Error("Failed to get public client");
-      }
-  
-      if (!walletClient) {
-        reconnectWallet();
-        return;
+      if (!client?.isSessionClient()) {
+        throw Error("Failed to get public client");
       }
 
       //license Metadata
@@ -335,7 +328,7 @@ export default function CreatePage() {
           account: address,
         });
         if (!result) return;
-        const txHash = await walletClient.writeContract(result.request);
+        const txHash = await walletClient?.writeContract(result.request);
        
         toast.success("CHIPS +1", {
           description: `View on explorer: ${explorerUrl}${txHash}`,
@@ -361,7 +354,7 @@ export default function CreatePage() {
       })
       .andThen(client.waitForTransaction);
       
-      router.push("/");
+      router.push("/feed");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create post. Please try again.")
     } finally {
@@ -936,10 +929,10 @@ export default function CreatePage() {
                   </Button>
 
                   {/* Publish Button */}
-                  <Button disabled={isSubmitting} className="harbor-button" >
+                  <Button disabled={isSubmitting} className="chip-button" >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="harbor-button h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className="chip-button h-4 w-4 mr-2 animate-spin" />
                         Publishing...
                       </>
                     ) : (

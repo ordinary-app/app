@@ -1,10 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Shield, Hash, Eye, Lock, CheckCircle, ArrowRight, AlertTriangle } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Shield,
+  Hash,
+  Eye,
+  Lock,
+  CheckCircle,
+  ArrowRight,
+  AlertTriangle,
+} from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export function CHIPSSection() {
+  const t = useTranslations("chips");
+
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-harbor-50/30">
       {/* Background Elements */}
@@ -20,22 +31,24 @@ export function CHIPSSection() {
         <div className="text-center">
           <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-5 shadow-sm">
             <div className="text-harbor-500"></div>
-            <span className="text-chip-600 font-medium">Onchain Proof</span>
+            <span className="text-chip-600 font-medium">{t("subtitle")}</span>
             <div className="text-harbor-500"></div>
           </div>
         </div>
         <div className="text-center mb-16">
           <div className="relative inline-block mb-6">
-            <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900">链上证明系统</h2>
+            <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900">
+              {t("title")}
+            </h2>
             <span className="absolute -top-0 -right-11 px-1.5 py-0.5 font-light text-xs bg-chip-gradient text-white rounded-full shadow-md">
               Beta
             </span>
           </div>
           <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-            基于区块链技术的发布数据认证系统，为每一份发布内容提供不可篡改的时间戳和数据完整性证明
+            {t("description")}
           </p>
         </div>
-        
+
         {/* How It Works */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div className="space-y-8">
@@ -45,9 +58,11 @@ export function CHIPSSection() {
                   1
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">数据提交</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                    {t("howItWorks.step1.title")}
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    用户发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要
+                    {t("howItWorks.step1.description")}
                   </p>
                 </div>
               </div>
@@ -57,9 +72,11 @@ export function CHIPSSection() {
                   2
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">区块链记录</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                    {t("howItWorks.step2.title")}
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    链上证明的唯一ID、时间戳和数据摘要被永久记录在区块链上，确保发布记录不可篡改
+                    {t("howItWorks.step2.description")}
                   </p>
                 </div>
               </div>
@@ -69,17 +86,26 @@ export function CHIPSSection() {
                   3
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">公开验证</h3>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                    {t("howItWorks.step3.title")}
+                  </h3>
                   <p className="text-neutral-600 leading-relaxed">
-                    任何人都可以查看和验证链上证明，确保发布数据的透明度和完整性
+                    {t("howItWorks.step3.description")}
                   </p>
                 </div>
               </div>
             </div>
 
-            <Button asChild size="lg" className="chip-button text-white font-semibold">
-              <Link href="/what-is-chip" className="flex items-center space-x-2">
-                <div>了解更多</div>
+            <Button
+              asChild
+              size="lg"
+              className="chip-button text-white font-semibold"
+            >
+              <Link
+                href="/what-is-chip"
+                className="flex items-center space-x-2"
+              >
+                <div>{t("learnMore")}</div>
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
@@ -92,46 +118,68 @@ export function CHIPSSection() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     {/*<div className="text-2xl">🍟</div>*/}
-                    <CardTitle className="text-xl">Onchain Proof</CardTitle>
+                    <CardTitle className="text-xl">{t("subtitle")}</CardTitle>
                   </div>
-                  <Badge className="bg-white/20 text-white border-white/30">Verified</Badge>
+                  <Badge className="bg-white/20 text-white border-white/30">
+                    {t("certificate.verified")}
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">ID</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.certificateId")}
+                    </span>
                     <div className="flex items-center space-x-2">
                       <Hash className="w-4 h-4 text-harbor-500" />
-                      <span className="font-mono text-sm text-harbor-700">Storage-ID</span>
+                      <span className="font-mono text-sm text-harbor-700">
+                        Storage-ID
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Creator</span>
-                    <span className="font-medium text-neutral-900">@artist</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.creator")}
+                    </span>
+                    <span className="font-medium text-neutral-900">
+                      @artist
+                    </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Created</span>
-                    <span className="text-sm text-neutral-700">2025-08-08 09:30 UTC</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.created")}
+                    </span>
+                    <span className="text-sm text-neutral-700">
+                      2025-08-08 09:30 UTC
+                    </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Blockchain</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.blockchain")}
+                    </span>
                     <div className="flex items-center space-x-2">
                       <Lock className="w-4 h-4 text-success-500" />
-                      <span className="text-sm text-success-600">Immutable</span>
+                      <span className="text-sm text-success-600">
+                        {t("certificate.immutable")}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">Status</span>
+                    <span className="text-sm text-neutral-600">
+                      {t("certificate.status")}
+                    </span>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-success-500" />
-                      <span className="text-sm text-success-600 font-medium">Data Verified</span>
+                      <span className="text-sm text-success-600 font-medium">
+                        {t("certificate.dataVerified")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -142,7 +190,7 @@ export function CHIPSSection() {
                   className="w-full border-harbor-200 text-harbor-700 hover:bg-harbor-50 bg-transparent"
                 >
                   <Eye className="w-4 h-4 mr-2" />
-                  View on Blockchain
+                  {t("certificate.viewOnBlockchain")}
                 </Button>
               </CardContent>
             </Card>
@@ -160,8 +208,12 @@ export function CHIPSSection() {
               <div className="w-12 h-12 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">防伪保护</h3>
-              <p className="text-sm text-neutral-600">区块链技术确保证明无法被伪造或篡改</p>
+              <h3 className="font-semibold text-neutral-900 mb-2">
+                {t("benefits.antiCounterfeit.title")}
+              </h3>
+              <p className="text-sm text-neutral-600">
+                {t("benefits.antiCounterfeit.description")}
+              </p>
             </CardContent>
           </Card>
 
@@ -170,8 +222,12 @@ export function CHIPSSection() {
               <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Hash className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">唯一标识</h3>
-              <p className="text-sm text-neutral-600">每个证明都有独特的ID，便于追踪和验证</p>
+              <h3 className="font-semibold text-neutral-900 mb-2">
+                {t("benefits.uniqueId.title")}
+              </h3>
+              <p className="text-sm text-neutral-600">
+                {t("benefits.uniqueId.description")}
+              </p>
             </CardContent>
           </Card>
 
@@ -180,8 +236,12 @@ export function CHIPSSection() {
               <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Eye className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">公开透明</h3>
-              <p className="text-sm text-neutral-600">所有人都可以查看和验证证明的真实性</p>
+              <h3 className="font-semibold text-neutral-900 mb-2">
+                {t("benefits.transparency.title")}
+              </h3>
+              <p className="text-sm text-neutral-600">
+                {t("benefits.transparency.description")}
+              </p>
             </CardContent>
           </Card>
 
@@ -190,12 +250,16 @@ export function CHIPSSection() {
               <div className="w-12 h-12 bg-gradient-to-br from-seagull-500 to-seagull-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Lock className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">永久保存</h3>
-              <p className="text-sm text-neutral-600">证明信息永久存储，不会丢失或损坏</p>
+              <h3 className="font-semibold text-neutral-900 mb-2">
+                {t("benefits.permanentStorage.title")}
+              </h3>
+              <p className="text-sm text-neutral-600">
+                {t("benefits.permanentStorage.description")}
+              </p>
             </CardContent>
           </Card>
         </div>
       </div>
     </section>
-  )
+  );
 }

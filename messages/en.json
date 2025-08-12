@@ -1,0 +1,239 @@
+{
+  "navigation": {
+    "home": "Home",
+    "feed": "Feed",
+    "onchainProof": "Onchain Proof",
+    "discover": "Discover",
+    "create": "Create",
+    "profile": "Profile",
+    "language": "Language",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "header": {
+    "upload": "Upload",
+    "selectProfile": "Select Profile",
+    "logOut": "Log out",
+    "connect": "Connect",
+    "settings": "Settings",
+    "developing": "developing",
+    "disconnect": "Disconnect",
+    "anonymous": "Anonymous",
+    "fanworkLover": "Fanwork Lover"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "feed": {
+    "title": "Latest",
+    "subtitle": "on global feed",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "loadMore": "Load More",
+    "newPosts": "New posts available",
+    "noMore": "No More",
+    "lastUpdated": "Last updated: {time}"
+  },
+  "post": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "bookmark": "Bookmark",
+    "share": "Share",
+    "comment": "Comment"
+  },
+  "home": {
+    "title": "Ordinary",
+    "subtitle": "/ Decentralized ",
+    "subtitleFull": "Fandoms /",
+    "description": "Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.",
+    "connectWallet": "Connect Wallet",
+    "getStarted": "Start Here",
+    "readMore": "Read More",
+    "learnMore": "Explore",
+    "cta": "Go to the Chip Harbor! 》》",
+    "tagline": "A SAFE HARBOR FOR FANDOMS",
+    "explore": "Explore",
+    "principles": {
+      "antiCensorship": "Anti-Censorship",
+      "respectOriginality": "Respect Originality",
+      "decentralized": "Decentralized",
+      "poweredByLove": "Powered by Love"
+    }
+  },
+  "detail": {
+    "buildingFuture": "Building the Future",
+    "sectionTitle": "Decentralized Fandoms",
+    "mainTitle": "A Safe Harbor for",
+    "mainTitleHighlight": "Uploading & Sharing & Preserving Fanarts",
+    "platformDescription": "A nonprofit decentralized social platform for fanworks",
+    "protocolDescription": "Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart creators",
+    "features": {
+      "antiCensorship": {
+        "title": "Censorship Protection",
+        "description": "Decentralized storage based on blockchain technology ensures your creative content cannot be arbitrarily deleted or censored, truly guaranteeing creative freedom."
+      },
+      "dataProof": {
+        "title": "Onchain Proof",
+        "description": "When users publish content, the system automatically generates on-chain proof for that data, recording publication timestamps and data summaries."
+      },
+      "decentralized": {
+        "title": "Decentralized",
+        "description": "A decentralized community governed jointly by creators and users, where everyone has a voice in determining the community's development direction."
+      },
+      "poweredByLove": {
+        "title": "Powered by Love",
+        "description": "Supporting pure creative passion, allowing creators to focus on content they love without commercial constraints."
+      },
+      "coinExchange": {
+        "title": "Coin Exchange",
+        "description": "Fair anonymous stablecoin exchange mechanism ensuring quality creations receive deserved rewards and recognition, building a sustainable creative ecosystem."
+      },
+      "anonymousCommunity": {
+        "title": "Anonymous Community",
+        "description": "Encrypted login protects privacy identity, building an anonymous and free creative community, making cultural exchange more secure."
+      }
+    },
+    "techStack": {
+      "title": "Technical Architecture",
+      "subtitle": "Modern platform built on the latest Web3 technology stack",
+      "lens": {
+        "title": "Lens Protocol",
+        "description": "Decentralized social protocol building an open social graph"
+      },
+      "grove": {
+        "title": "Grove Storage",
+        "description": "Distributed content storage ensuring long-term data preservation"
+      },
+      "wallet": {
+        "title": "Family Wallet",
+        "description": "Secure and convenient wallet connection experience"
+      },
+      "nextjs": {
+        "title": "Next.js",
+        "description": "Modern web framework for ultimate user experience"
+      }
+    },
+    "roadmap": {
+      "title": "Development Roadmap",
+      "subtitle": "Building a complete decentralized creative ecosystem in phases",
+      "phase1": {
+        "title": "Foundation Platform",
+        "subtitle": "Building core functional modules",
+        "features": [
+          "User authentication system",
+          "Content creation tools",
+          "Data proof functionality",
+          "Community feed display"
+        ]
+      },
+      "phase2": {
+        "title": "Communication Layer",
+        "subtitle": "Building social interaction features",
+        "features": [
+          "Interactive feature mechanisms",
+          "Real-time notification push",
+          "Tag management exploration",
+          "Trending sort functionality"
+        ]
+      },
+      "phase3": {
+        "title": "Ecosystem Enhancement",
+        "subtitle": "Creating complete creative ecosystem",
+        "features": [
+          "Token reward system",
+          "Data protection mechanisms",
+          "Community governance features",
+          "Mobile application"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Join Ordinary Community",
+      "subtitle": "Create freely with global creators in a decentralized harbor",
+      "sectionTitle": "Ordinary",
+      "sectionSubtitle": "Decentralized Fandoms",
+      "description1": "On-chain records for publishing",
+      "description2": "On-chain hosting for fanworks",
+      "joinNow": "Join Now",
+      "exploreCommunity": "Explore Community"
+    }
+  },
+  "chips": {
+    "title": "Onchain Proof System",
+    "subtitle": "Onchain Proof",
+    "description": "A blockchain-based storage system that provides immutable ownership proof for every content",
+    "howItWorks": {
+      "step1": {
+        "title": "Data Submission",
+        "description": "When users publish content, the system automatically generates on-chain proof for that data, recording publication timestamps and data summaries"
+      },
+      "step2": {
+        "title": "Blockchain Record",
+        "description": "The unique ID, timestamp, and data summary of the on-chain proof are long-term recorded on the blockchain, ensuring publication records cannot be tampered with"
+      },
+      "step3": {
+        "title": "Public Verification",
+        "description": "Anyone can view and verify on-chain proofs, ensuring transparency and integrity of published data"
+      }
+    },
+    "learnMore": "Learn More",
+    "certificate": {
+      "verified": "Verified",
+      "certificateId": "Certificate ID",
+      "creator": "Creator",
+      "created": "Created",
+      "blockchain": "Blockchain",
+      "immutable": "Immutable",
+      "status": "Status",
+      "dataVerified": "Data Verified",
+      "viewOnBlockchain": "View on Grove Storage"
+    },
+    "benefits": {
+      "antiCounterfeit": {
+        "title": "Anti-Counterfeit Protection",
+        "description": "Blockchain technology ensures proofs cannot be forged or tampered with"
+      },
+      "uniqueId": {
+        "title": "Unique Identifier",
+        "description": "Each proof has a unique ID for easy tracking and verification"
+      },
+      "transparency": {
+        "title": "Public Transparency",
+        "description": "Everyone can view and verify the authenticity of proofs"
+      },
+      "permanentStorage": {
+        "title": "Long-term Storage",
+        "description": "Proof information is long-term stored and will not be lost or damaged"
+      }
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "A safe harbor for fandoms, protecting freedom of creativity and publishing rights for fanart creators."
+    },
+    "corePrinciples": {
+      "title": "Core Principles",
+      "fairExchange": "Fair Exchange"
+    },
+    "community": {
+      "title": "Community",
+      "feed": "Community Feed",
+      "creators": "Featured Creators",
+      "guidelines": "Community Guidelines",
+      "support": "Creator Support"
+    },
+    "resources": {
+      "title": "Resources",
+      "documentation": "Documentation",
+      "api": "API Reference",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "copyright": "© 2025 Ordinary. Built with ❤️ for the decentralized fanart networks.",
+    "poweredBy": "Powered by"
+  }
+}

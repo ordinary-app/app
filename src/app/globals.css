@@ -226,7 +226,7 @@ body {
   }
 
   .chip-button {
-    @apply bg-gradient-to-r from-chip-600 via-chip-500 to-chip-400 hover:shadow-lg hover:shadow-chip-500/25 transition-all duration-300;
+    @apply bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300;
   }
 
   .chip-badge {

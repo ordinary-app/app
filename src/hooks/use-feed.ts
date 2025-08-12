@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { PageSize, Post } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
-import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 
@@ -18,8 +17,7 @@ export function useFeed(options: useFeedOptions = {}) {
   const { type = "global", profileAddress, customFilter } = options;
   
   // Auth and client
-  const { client, sessionClient } = useLensAuthStore();
-  const { data: authenticatedUser, loading: authLoading } = useAuthenticatedUser();
+  const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
 
   // Post actions context
   const { 
@@ -41,7 +39,8 @@ export function useFeed(options: useFeedOptions = {}) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastPostIdRef = useRef<string | null>(null);
   
-  const isLoggedIn = !!authenticatedUser && !authLoading;
+  const isLoggedIn = !!currentProfile && !authStoreLoading;
+  const isAuthReady = !authStoreLoading;
   
   // Helper functions
   const getFilter = useCallback(() => {
@@ -165,22 +164,86 @@ export function useFeed(options: useFeedOptions = {}) {
     // Client should always be available for public posts
     if (!client) return;
     
-    // Reset posts when filter changes 在filter变化时重置posts状态，防止状态混乱
+    if (!isAuthReady) return;
+    
+    // Reset posts when filter changes
     setPosts([]);
     setLoading(true);
     setError(null);
     setCurrentCursor(null);
     setHasMore(true);
     
-    loadPostsFromLens();
+    const initializeAndLoadPosts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const result = await fetchPosts(sessionClient || client, {
+          filter: getFilter(),
+          pageSize: PageSize.Fifty,
+        });
+        
+        if (result.isErr()) {
+          setError(result.error.message || "Failed to fetch posts");
+          return;
+        }
+        
+        const { items, pageInfo } = result.value;
+        if (items.length === 0) {
+          setPosts([]);
+          setHasMore(false);
+          return;
+        }
+        
+        const filteredPosts = items.filter(item => item.__typename === 'Post') as Post[];
+
+        // Initialize post states for actions
+        filteredPosts.forEach(post => {
+          initPostState(post);
+        });
+        
+        if (filteredPosts.length > 0) {
+          lastPostIdRef.current = filteredPosts[0].id;
+        }
+        
+        setCurrentCursor(pageInfo.next);
+        setHasMore(!!pageInfo.next);
+        setPosts(filteredPosts);
+        setLastRefreshTime(new Date());
+        setNewPostsAvailable(false);
+      } catch (err) {
+        setError("Failed to fetch posts");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    initializeAndLoadPosts();
     
     // Set up polling for new posts
-    intervalRef.current = setInterval(checkForNewPosts, 45000);
+    const pollForNewPosts = async () => {
+      if (!client) return;
+
+      try {
+        const result = await fetchPosts(sessionClient || client, {
+          filter: getFilter(),
+        });
+        if (result.isErr()) return;
+        
+        const { items } = result.value;
+        const filteredPosts = items.filter(item => item.__typename === 'Post') as Post[];
+        if (filteredPosts.length > 0 && filteredPosts[0].id !== lastPostIdRef.current) {
+          setNewPostsAvailable(true);
+        }
+      } catch {}
+    };
+    
+    intervalRef.current = setInterval(pollForNewPosts, 45000);
     
     const handleFocus = () => {
       const timeSinceLastRefresh = Date.now() - lastRefreshTime.getTime();
       if (timeSinceLastRefresh > 120000) { // 2 minutes
-        checkForNewPosts();
+        pollForNewPosts();
       }
     };
     
@@ -190,7 +253,7 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, type, profileAddress, customFilter]);
+  }, [client, sessionClient, isAuthReady, type, profileAddress, customFilter]);
 
   // Feed interface
   return {

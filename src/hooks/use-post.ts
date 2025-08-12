@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Post, PageSize, PostReferenceType } from "@lens-protocol/client";
 import { fetchPost, fetchPostReferences } from "@lens-protocol/client/actions";
-import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 
@@ -52,8 +51,7 @@ export function usePost(options: UsePostOptions): UsePostReturn {
   const { postId, initialPost, autoFetch = true } = options;
   
   // Auth and client
-  const { client } = useLensAuthStore();
-  const { data: authenticatedUser, loading: authLoading } = useAuthenticatedUser();
+  const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
   
   // Post actions context
   const { 
@@ -81,7 +79,8 @@ export function usePost(options: UsePostOptions): UsePostReturn {
   const currentCommentCount = useRef<number>(0);
   const expectingNewComment = useRef<boolean>(false);
   
-  const isLoggedIn = !!authenticatedUser && !authLoading;
+  const isLoggedIn = !!currentProfile && !authStoreLoading;
+  const isAuthReady = !authStoreLoading;
   
   // Get post state from shared context
   const postState = useMemo(() => {
@@ -96,7 +95,8 @@ export function usePost(options: UsePostOptions): UsePostReturn {
       setLoading(true);
       setError(null);
       
-      const lensPost = await fetchPost(client, { post: postId }).unwrapOr(null);
+      // 获取帖子数据时，使用sessionClient可以获取与当前用户相关的操作数据
+      const lensPost = await fetchPost(sessionClient || client, { post: postId }).unwrapOr(null);
       if (!lensPost) {
         setError("Post not found");
         return;
@@ -118,7 +118,7 @@ export function usePost(options: UsePostOptions): UsePostReturn {
     } finally {
       setLoading(false);
     }
-  }, [client, postId, initPostState]);
+  }, [client, sessionClient, postId, initPostState]);
   
   // Fetch comments
   const fetchComments = useCallback(async (cursor?: string, isRefresh = false) => {
@@ -135,7 +135,8 @@ export function usePost(options: UsePostOptions): UsePostReturn {
         setCommentsError(null);
       }
       
-      const result = await fetchPostReferences(client, {
+      // 获取评论时，使用sessionClient可以获取与当前用户相关的操作数据
+      const result = await fetchPostReferences(sessionClient || client, {
         referencedPost: postId,
         referenceTypes: [PostReferenceType.CommentOn],
         pageSize: PageSize.Ten,
@@ -164,7 +165,7 @@ export function usePost(options: UsePostOptions): UsePostReturn {
       setCommentsLoading(false);
       setLoadingMoreComments(false);
     }
-  }, [client, postId]);
+  }, [client, sessionClient, postId]);
   
   // Public actions
   const refetchPost = useCallback(async () => {
@@ -214,24 +215,24 @@ export function usePost(options: UsePostOptions): UsePostReturn {
   
   // Initialize post data
   useEffect(() => {
-    if (autoFetch && !initialPost) {
+    if (autoFetch && !initialPost && isAuthReady) {
       fetchPostData();
     }
-  }, [autoFetch, initialPost, fetchPostData]);
+  }, [autoFetch, initialPost, isAuthReady]);
   
   // Initialize post state if we have initial post
   useEffect(() => {
-    if (initialPost) {
+    if (initialPost && isAuthReady) {
       initPostState(initialPost);
     }
-  }, [initialPost, initPostState]);
+  }, [initialPost, isAuthReady]);
   
   // Auto-load comments when post is available
   useEffect(() => {
-    if (post && autoFetch) {
+    if (post && autoFetch && isAuthReady) {
       loadComments();
     }
-  }, [post, autoFetch, loadComments]);
+  }, [post, autoFetch, isAuthReady]);
   
   return {
     // Post data

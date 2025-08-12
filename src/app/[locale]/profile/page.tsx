@@ -14,7 +14,7 @@ import { TokenIdDisplay } from "@/components/token-id-display"
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useLensAuthStore } from "@/stores/auth-store"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
+import { useAuthCheck } from "@/hooks/auth/use-auth-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard"
 import { PostList } from "@/components/feed/post-list";
@@ -22,7 +22,7 @@ import { useFeed } from "@/hooks/use-feed";
 
 export default function ProfilePage() {
   const { currentProfile } = useLensAuthStore();
-  const { checkWalletConnection } = useWalletCheck();
+  const { checkAuthentication } = useAuthCheck();
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [stats, setStats] = useState({
     posts: "n/a",
@@ -43,7 +43,7 @@ export default function ProfilePage() {
 
   return (
     <TooltipProvider>
-      <main className="container mx-auto px-4 py-8">
+      <main className="min-h-screen container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
           <Card className="mb-8">
@@ -103,9 +103,9 @@ export default function ProfilePage() {
                 </div>
 
                 <Button 
-                  className="self-start harbor-button" 
+                  className="self-start chip-button" 
                   onClick={() => {
-                    if (!checkWalletConnection("编辑个人资料")) {
+                    if (!checkAuthentication("编辑个人资料")) {
                       return;
                     }
                     setIsEditOpen(true);
