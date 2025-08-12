@@ -30,9 +30,8 @@ export const useFollow = (options: FollowingStateOptions = {}) => {
         return false;
       }
 
-      if (!walletClient) {
-        toast.error("请连接钱包进行操作");
-        return false;
+      if (!sessionClient?.isSessionClient()) {
+        throw Error("Failed to get public client");
       }
 
       // Prevent multiple simultaneous follow operations on the same address

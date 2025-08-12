@@ -219,13 +219,8 @@ export default function CreatePage() {
 
     try {
 
-      if (!client || !client.isSessionClient()) {
-        throw new Error("Failed to get public client");
-      }
-  
-      if (!walletClient) {
-        toast.error("请连接钱包进行操作");
-        return;
+      if (!client?.isSessionClient()) {
+        throw Error("Failed to get public client");
       }
 
       //license Metadata
@@ -333,7 +328,7 @@ export default function CreatePage() {
           account: address,
         });
         if (!result) return;
-        const txHash = await walletClient.writeContract(result.request);
+        const txHash = await walletClient?.writeContract(result.request);
        
         toast.success("CHIPS +1", {
           description: `View on explorer: ${explorerUrl}${txHash}`,
@@ -359,7 +354,7 @@ export default function CreatePage() {
       })
       .andThen(client.waitForTransaction);
       
-      router.push("/");
+      router.push("/feed");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create post. Please try again.")
     } finally {
