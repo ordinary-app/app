@@ -477,7 +477,6 @@ export default function WhatIsChipPage() {
                   >
                     <Link href="/feed" className="flex items-center space-x-2">
                       <span>立即加入</span>
-                      <div className="text-xl">🍟</div>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </Link>
                   </Button>

@@ -1,7 +1,6 @@
 "use client";
 
 import { LoggedInPostOperations, Post, PostStats } from "@lens-protocol/client";
-import { useAccount, useAuthenticatedUser } from "@lens-protocol/react";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useLensAuthStore } from "@/stores/auth-store";
 //import { CommentSheet } from "@/components/comment/comment-sheet";
@@ -40,36 +39,15 @@ interface PostActionsContextType {
 
 const PostActionsContext = createContext<PostActionsContextType | undefined>(undefined);
 
-// Safe hook wrapper that only uses Lens hooks when LensProvider is available
-function useSafeLensHooks() {
-  const { client } = useLensAuthStore();
-  
-  try {
-    // Only use Lens hooks when client is available (meaning LensProvider is active)
-    const authenticatedUser = client ? useAuthenticatedUser() : { data: null };
-    const account = client ? useAccount({
-      address: authenticatedUser.data?.address,
-    }) : { data: null };
-    
-    return { authenticatedUser, account };
-  } catch (error) {
-    // If LensProvider is not available, return null values
-    return { 
-      authenticatedUser: { data: null }, 
-      account: { data: null }
-    };
-  }
-}
-
 export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
-  //const { sessionClient } = useLensAuthStore();
+  const { sessionClient, currentProfile, loading } = useLensAuthStore();
   const [postStates, setPostStates] = useState<Map<string, PostActionState>>(new Map());
   const [visibleCommentPost, setVisibleCommentPost] = useState<Post | null>(null);
   const [visibleCollectPost, setVisibleCollectPost] = useState<Post | null>(null);
 
-  const { authenticatedUser, account } = useSafeLensHooks();
+  const isReady = !loading && sessionClient !== null;
 
-  const defaultOperations: BooleanPostOperations = {
+  const defaultOperations: BooleanPostOperations = useMemo(() => ({
     hasUpvoted: false,
     hasBookmarked: false,
     hasReposted: false,
@@ -81,7 +59,7 @@ export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
     canCollect: false,
     canTip: true,
     canDelete: false,
-  };
+  }), []);
 
   const convertToBooleanOperations = useCallback((operations: LoggedInPostOperations): BooleanPostOperations => {
     return {
@@ -102,26 +80,33 @@ export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
   const initPostState = useCallback(
     (post: Post) => {
       setPostStates((prevStates) => {
-        if (!prevStates.has(post.id)) {
-          const newStates = new Map(prevStates);
-          newStates.set(post.id, {
-            post: post,
-            stats: { ...post.stats },
-            operations: post.operations ? convertToBooleanOperations(post.operations) : { 
-              ...defaultOperations
-            },
-            isCommentSheetOpen: false,
-            isCollectSheetOpen: false,
-            initialCommentUrlSynced: false,
-            initialCollectUrlSynced: false,
-          });
-          return newStates;
+        const existingState = prevStates.get(post.id);
+        
+        // 如果状态已存在且用户会话状态没有变化，不要重复初始化
+        if (existingState && !isReady) {
+          return prevStates;
         }
-        // If state already exists, don't update it to prevent infinite loops
-        return prevStates;
+        
+        const newStates = new Map(prevStates);
+        
+        // 优先使用从sessionClient获取的operations，确保反映当前用户状态
+        const operations = (isReady && post.operations) 
+          ? convertToBooleanOperations(post.operations) 
+          : existingState?.operations || { ...defaultOperations };
+        
+        newStates.set(post.id, {
+          post: post,
+          stats: { ...post.stats },
+          operations,
+          isCommentSheetOpen: existingState?.isCommentSheetOpen || false,
+          isCollectSheetOpen: existingState?.isCollectSheetOpen || false,
+          initialCommentUrlSynced: existingState?.initialCommentUrlSynced || false,
+          initialCollectUrlSynced: existingState?.initialCollectUrlSynced || false,
+        });
+        return newStates;
       });
     },
-    [defaultOperations, convertToBooleanOperations],
+    [defaultOperations, convertToBooleanOperations, isReady],
   );
 
   const getPostState = useCallback(
@@ -264,9 +249,33 @@ export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
     updatePostOperations,
   };
 
+  // 添加useEffect来监听currentProfile变化，重新初始化所有帖子状态
+  useEffect(() => {
+    if (isReady && currentProfile) {
+      // 当用户登录状态或profile发生变化时，重新初始化所有帖子状态
+      setPostStates(prevStates => {
+        const newStates = new Map<string, PostActionState>();
+        
+        // 重新初始化所有已存在的帖子状态，确保operations反映当前用户状态
+        for (const [postId, state] of prevStates.entries()) {
+          const post = state.post;
+          newStates.set(postId, {
+            ...state,
+            // 重新计算operations以反映当前用户的权限和状态
+            operations: post.operations 
+              ? convertToBooleanOperations(post.operations) 
+              : { ...defaultOperations }
+          });
+        }
+        
+        return newStates;
+      });
+    }
+  }, [currentProfile, isReady, convertToBooleanOperations, defaultOperations]);
+
   const isCommentSheetCurrentlyOpen = activeCommentPostEntry !== undefined;
   const isCollectSheetCurrentlyOpen = activeCollectPostEntry !== undefined;
-  //if (sessionClient) {
+  
   return (
     <PostActionsContext.Provider value={value}>
       {children}
@@ -274,7 +283,6 @@ export const PostActionsProvider = ({ children }: { children: ReactNode }) => {
       {/*visibleCommentPost && (
         <CommentSheet
           post={visibleCommentPost}
-          account={account.data ?? undefined}
           forcedOpen={isCommentSheetCurrentlyOpen}
           onOpenChange={handleCommentSheetOpenChange}
         />

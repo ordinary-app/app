@@ -1,6 +1,5 @@
 import { Post, PostReactionType } from "@lens-protocol/client";
 import { addReaction, bookmarkPost, undoBookmarkPost, undoReaction } from "@lens-protocol/client/actions";
-import { useAuthenticatedUser } from "@lens-protocol/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
@@ -15,10 +14,8 @@ export const usePostActions = (post: Post) => {
   const { getPostState, initPostState, updatePostState, updatePostStats, updatePostOperations } =
     useSharedPostActions();
 
-  const { data: authenticatedUser, loading } = useAuthenticatedUser();
-  const isLoggedIn = !!authenticatedUser && !loading;
-
-  const { sessionClient } = useLensAuthStore();
+  const { sessionClient, currentProfile, loading } = useLensAuthStore();
+  const isLoggedIn = !!currentProfile && !loading;
 
   useEffect(() => {
     initPostState(post);
