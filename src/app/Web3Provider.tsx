@@ -7,9 +7,10 @@ import { LensProvider } from "@lens-protocol/react";
 import { config } from "@/lib/config";
 import { useLensAuthStore } from "@/stores/auth-store";
 
+const queryClient = new QueryClient();
+
 const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const { client } = useLensAuthStore();
-  const queryClient = new QueryClient();
 
   return (
     <WagmiProvider config={config}>
