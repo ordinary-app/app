@@ -3,6 +3,7 @@ import { PageSize, Post } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
+import { useFeedContext } from "@/contexts/feed-context";
 
 type FeedType = "global" | "profile" | "custom";
 
@@ -18,6 +19,9 @@ export function useFeed(options: useFeedOptions = {}) {
   
   // Auth and client
   const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
+
+  // Feed context for viewMode
+  const { viewMode } = useFeedContext();
 
   // Post actions context
   const { 
@@ -253,7 +257,7 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, sessionClient, isAuthReady, type, profileAddress, customFilter]);
+  }, [client, sessionClient, isAuthReady, type, profileAddress, customFilter, viewMode]);
 
   // Feed interface
   return {
