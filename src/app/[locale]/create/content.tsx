@@ -42,8 +42,7 @@ import { useLensAuthStore } from "@/stores/auth-store"
 import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
-import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet"
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check"
+import { useAuthCheck } from "@/hooks/auth/use-auth-check"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
@@ -163,8 +162,7 @@ export default function CreatePage() {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnected } = useAccount();
-  const reconnectWallet = useReconnectWallet();
-  const { checkWalletConnection } = useWalletCheck();
+  const { checkAuthentication } = useAuthCheck();
 
   // Toast state
   const [showDevelopmentToast, setShowDevelopmentToast] = useState(false)
@@ -203,9 +201,9 @@ export default function CreatePage() {
       return
     }
 
-    //if (!checkWalletConnection("发布内容")) {
-    //  return;
-    //}
+    if (!checkAuthentication("发布内容")) {
+      return;
+    }
 
     if (!content.trim()) {
     toast.error("Please enter some content !")
@@ -226,7 +224,7 @@ export default function CreatePage() {
       }
   
       if (!walletClient) {
-        reconnectWallet();
+        toast.error("请连接钱包进行操作");
         return;
       }
 

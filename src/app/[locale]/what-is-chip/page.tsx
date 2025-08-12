@@ -16,11 +16,11 @@ import {
   Heart,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
 import { ConnectKitButton } from "connectkit";
 
 export default function WhatIsChipPage() {
-  const { isConnected } = useWalletCheck();
+  const { isAuthenticated } = useAuthCheck();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-harbor-50/30">
@@ -48,7 +48,7 @@ export default function WhatIsChipPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {isConnected ? (
+              {isAuthenticated ? (
                 <Button
                   asChild
                   size="lg"
@@ -469,7 +469,7 @@ export default function WhatIsChipPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                {isConnected ? (
+                {isAuthenticated ? (
                   <Button
                     asChild
                     size="lg"

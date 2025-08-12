@@ -6,7 +6,7 @@ import { useWalletClient } from "wagmi";
 import { follow, unfollow } from "@lens-protocol/client/actions";
 import { handleOperationWith } from "@lens-protocol/client/viem";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
 
 interface FollowingStateOptions {
   onFollowChange?: (address: string, isFollowing: boolean) => void;
@@ -17,7 +17,7 @@ export const useFollow = (options: FollowingStateOptions = {}) => {
   const [pendingFollows, setPendingFollows] = useState<Set<string>>(new Set());
   const { data: walletClient } = useWalletClient();
   const { sessionClient } = useLensAuthStore();
-  const reconnectWallet = useReconnectWallet();
+  const { checkAuthentication } = useAuthCheck();
   const { onFollowChange, onError } = options;
 
   const handleFollow = useCallback(async (
@@ -26,14 +26,12 @@ export const useFollow = (options: FollowingStateOptions = {}) => {
     targetHandle?: string
   ) => {
     try {
-      if (!sessionClient) {
-        toast.error("Please connect your wallet first");
+      if (!checkAuthentication("关注用户")) {
         return false;
       }
 
       if (!walletClient) {
-        reconnectWallet();
-        toast.error("Please connect your wallet first");
+        toast.error("请连接钱包进行操作");
         return false;
       }
 
@@ -87,7 +85,7 @@ export const useFollow = (options: FollowingStateOptions = {}) => {
         return newSet;
       });
     }
-  }, [sessionClient, walletClient, reconnectWallet, onFollowChange, onError, pendingFollows]);
+  }, [sessionClient, walletClient, checkAuthentication, onFollowChange, onError, pendingFollows]);
 
   const isFollowPending = useCallback((address: string) => {
     return pendingFollows.has(address);

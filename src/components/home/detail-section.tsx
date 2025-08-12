@@ -14,13 +14,13 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { CHIPSSection } from "@/components/home/chips-section";
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
 import { ConnectKitButton } from "connectkit";
 import { useTranslations } from "next-intl";
 
 export function DetailSection() {
   const t = useTranslations("detail");
-  const { isConnected } = useWalletCheck();
+  const { isAuthenticated } = useAuthCheck();
 
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
@@ -424,7 +424,7 @@ export function DetailSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
-              {isConnected ? (
+              {isAuthenticated ? (
                 <Button
                   asChild
                   size="lg"

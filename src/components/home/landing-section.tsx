@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { useWalletCheck } from "@/hooks/wallet/use-wallet-check";
+import { useAuthCheck } from "@/hooks/auth/use-auth-check";
 import { ConnectKitButton } from "connectkit";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 
 export function LandingSection() {
   const t = useTranslations("home");
-  const { isConnected } = useWalletCheck();
+  const { isAuthenticated } = useAuthCheck();
   const [rotate, setRotate] = useState(false);
 
   return (
@@ -150,7 +150,7 @@ export function LandingSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full mt-8">
-              {isConnected ? (
+              {isAuthenticated ? (
                 <Button
                   asChild
                   size="lg"

@@ -18,7 +18,7 @@ import { account as accountMetadataBuilder } from "@lens-protocol/metadata";
 import { storageClient } from "@/lib/storage-client";
 import { handleOperationWith } from "@lens-protocol/client/viem";
 import { useLensAuthStore } from "@/stores/auth-store";
-import { useReconnectWallet } from "@/hooks/wallet/use-reconnect-wallet";
+import { useReconnectWallet } from "@/hooks/auth/use-reconnect-wallet";
 
 interface ProfileEditProps {
   open: boolean;

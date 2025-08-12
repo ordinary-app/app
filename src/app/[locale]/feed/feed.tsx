@@ -28,7 +28,6 @@ import {
 //import { Post as LensPost, AnyPost, Cursor, PageSize } from "@lens-protocol/client"
 //import { resolveUrl } from "@/utils/resolve-url"
 //import { useLensAuthStore } from "@/stores/auth-store"
-//import { useWalletCheck } from "@/hooks/use-wallet-check"
 //import { toast } from "sonner"
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
