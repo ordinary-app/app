@@ -47,7 +47,7 @@ export function LandingSection() {
                 }`}
               >
                 <Image
-                  src="/logo-0-1-0.jpg"
+                  src="/gull-on-gull.jpg"
                   alt="Logo-0-1-0"
                   width={800}
                   height={800}
