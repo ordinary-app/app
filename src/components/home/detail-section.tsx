@@ -23,7 +23,7 @@ export function DetailSection() {
   const { isAuthenticated } = useAuthCheck();
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
+    <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
 

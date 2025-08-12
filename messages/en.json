@@ -47,8 +47,8 @@
   },
   "home": {
     "title": "Ordinary",
-    "subtitle": "Decentralized ",
-    "subtitleFull": "Fandoms",
+    "subtitle": "/ Decentralized ",
+    "subtitleFull": "Fandoms /",
     "description": "Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.",
     "connectWallet": "Connect Wallet",
     "getStarted": "Start Here",
@@ -68,7 +68,7 @@
     "buildingFuture": "Building the Future",
     "sectionTitle": "Decentralized Fandoms",
     "mainTitle": "A Safe Harbor for",
-    "mainTitleHighlight": "Uploading & Sharing Artworks",
+    "mainTitleHighlight": "Uploading & Sharing & Preserving Fanarts",
     "platformDescription": "A nonprofit decentralized social platform for fanworks",
     "protocolDescription": "Powered by open-source blockchain protocol, protecting creative freedom and publishing rights for fanart creators",
     "features": {
@@ -155,17 +155,17 @@
       "title": "Join Ordinary Community",
       "subtitle": "Create freely with global creators in a decentralized harbor",
       "sectionTitle": "Ordinary",
-      "sectionSubtitle": "On-chain Fan Creation Safe Harbor",
-      "description1": "Providing on-chain records for creative activities",
-      "description2": "Providing on-chain hosting for works",
+      "sectionSubtitle": "Decentralized Fandoms",
+      "description1": "On-chain records for publishing",
+      "description2": "On-chain hosting for fanworks",
       "joinNow": "Join Now",
       "exploreCommunity": "Explore Community"
     }
   },
   "chips": {
-    "title": "CHIPS Proof System",
+    "title": "Onchain Proof System",
     "subtitle": "Onchain Proof",
-    "description": "A blockchain-based original work certification system that provides immutable ownership proof for every original content",
+    "description": "A blockchain-based storage system that provides immutable ownership proof for every content",
     "howItWorks": {
       "step1": {
         "title": "Data Submission",
@@ -173,7 +173,7 @@
       },
       "step2": {
         "title": "Blockchain Record",
-        "description": "The unique ID, timestamp, and data summary of the on-chain proof are permanently recorded on the blockchain, ensuring publication records cannot be tampered with"
+        "description": "The unique ID, timestamp, and data summary of the on-chain proof are long-term recorded on the blockchain, ensuring publication records cannot be tampered with"
       },
       "step3": {
         "title": "Public Verification",
@@ -190,7 +190,7 @@
       "immutable": "Immutable",
       "status": "Status",
       "dataVerified": "Data Verified",
-      "viewOnBlockchain": "View on Blockchain"
+      "viewOnBlockchain": "View on Grove Storage"
     },
     "benefits": {
       "antiCounterfeit": {
@@ -206,8 +206,8 @@
         "description": "Everyone can view and verify the authenticity of proofs"
       },
       "permanentStorage": {
-        "title": "Permanent Storage",
-        "description": "Proof information is permanently stored and will not be lost or damaged"
+        "title": "Long-term Storage",
+        "description": "Proof information is long-term stored and will not be lost or damaged"
       }
     }
   },

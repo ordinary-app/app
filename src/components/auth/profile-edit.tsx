@@ -213,7 +213,7 @@ export function ProfileEdit({ open, onClose }: ProfileEditProps) {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="chip-button">
               {isLoading ? "Saving..." : "Save Changes"}
             </Button>
           </div>

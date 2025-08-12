@@ -190,7 +190,7 @@
       "immutable": "Immutable",
       "status": "状态",
       "dataVerified": "数据已验证",
-      "viewOnBlockchain": "在区块链上查看"
+      "viewOnBlockchain": "在Grove Storage上查看"
     },
     "benefits": {
       "antiCounterfeit": {
@@ -206,8 +206,8 @@
         "description": "所有人都可以查看和验证证明的真实性"
       },
       "permanentStorage": {
-        "title": "永久保存",
-        "description": "证明信息永久存储，不会丢失或损坏"
+        "title": "长期保存",
+        "description": "证明信息长期存储，不易丢失或损坏"
       }
     }
   },

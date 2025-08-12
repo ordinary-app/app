@@ -103,7 +103,7 @@ export default function ProfilePage() {
                 </div>
 
                 <Button 
-                  className="self-start harbor-button" 
+                  className="self-start chip-button" 
                   onClick={() => {
                     if (!checkAuthentication("编辑个人资料")) {
                       return;

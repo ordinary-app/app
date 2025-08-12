@@ -105,7 +105,7 @@ export function Feed() {
             <Button
               onClick={handleLoadMore}
               disabled={loadingMore}
-              className="harbor-button text-white"
+              className="chip-button text-white"
             >
               {loadingMore ? <>Loading...</> : <>Load More</>}
             </Button>

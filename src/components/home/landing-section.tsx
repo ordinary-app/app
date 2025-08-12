@@ -21,7 +21,7 @@ export function LandingSection() {
 
       {/* Animated Harbor Elements */}
       <div className="absolute top-10 right-10 opacity-15 float-animation ">
-        <div className="text-6xl">⚓</div>
+        {/*<div className="text-6xl">⚓</div>*/}
       </div>
       <div className="absolute bottom-20 left-10 opacity-15 anchor-animation">
         <div className="text-4xl"></div>
@@ -47,8 +47,8 @@ export function LandingSection() {
                 }`}
               >
                 <Image
-                  src="/meme-en.png"
-                  alt="Seagulls at the dock - meme"
+                  src="/logo-0-1-0.jpg"
+                  alt="Logo-0-1-0"
                   width={800}
                   height={800}
                   className="rounded-lg w-full h-auto max-w-full"
@@ -73,11 +73,11 @@ export function LandingSection() {
           <div className="col-1 lg:col-1 w-full max-w-full sm:max-w-2xl sm:mx-auto space-y-8 mb-8">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-normal text-left">
-                <span className="font-sans bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
+                <span className="font-sans bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent">
                   {t("title")}
                 </span>
                 <br />
-                <span className="text-4xl text-harbor-600 leading-tight">
+                <span className="text-4xl text-orange-500 leading-tight">
                   {t("subtitle")}
                   <br className="block sm:hidden" />
                   {t("subtitleFull")}
@@ -154,7 +154,7 @@ export function LandingSection() {
                 <Button
                   asChild
                   size="lg"
-                  className="harbor-button text-white font-semibold w-full sm:w-auto"
+                  className="chip-button text-white font-semibold w-full sm:w-auto"
                 >
                   <Link href="/feed">{t("getStarted")}</Link>
                 </Button>
@@ -163,7 +163,7 @@ export function LandingSection() {
                   {({ show }) => (
                     <Button
                       size="lg"
-                      className="harbor-button text-white font-semibold w-full sm:w-auto"
+                      className="chip-button text-white font-semibold w-full sm:w-auto"
                       onClick={show}
                     >
                       {t("getStarted")}

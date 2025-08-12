@@ -82,7 +82,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="hidden md:flex items-center space-x-2">
             <div className="text-2xl"></div>
-            <div className="font-bold text-xl bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
+            <div className="font-bold text-xl bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent">
               Ordinary
             </div>
           </Link>
@@ -111,7 +111,7 @@ export default function Header() {
                 asChild
                 variant="default"
                 size="sm"
-                className="harbor-button text-white"
+                className="chip-button text-white"
               >
                 <Link href="/create">{t("upload")}</Link>
               </Button>
@@ -213,7 +213,7 @@ export default function Header() {
                   return (
                     <Button
                       onClick={show}
-                      className="harbor-button text-white font-semibold"
+                      className="chip-button text-white font-semibold"
                     >
                       {t("connect")}
                     </Button>
