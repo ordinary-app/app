@@ -239,6 +239,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
       }
 
       toast.dismiss(authToast);
+      */
       toast.success("Account created successfully!");
 
       await onSuccess();
@@ -246,7 +247,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
 
       // router.push(`/u/${username}`);
       // window.location.reload();
-      */
+    
 
     } catch (err: any) {
       console.error("Error during final account creation:", err);
