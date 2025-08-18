@@ -25,7 +25,7 @@ export function DetailSection() {
   return (
     <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800" />
 
       {/* Floating Harbor Elements */}
       <div className="absolute top-20 left-10 opacity-8 float-animation">
@@ -58,7 +58,7 @@ export function DetailSection() {
             {/*<div className="text-harbor-500">🚢</div>*/}
           </div>
 
-          <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
+          <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight dark:text-neutral-100">
             <p className="mb-4">{t("mainTitle")}</p>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               {t("mainTitleHighlight")}
@@ -66,10 +66,10 @@ export function DetailSection() {
           </h2>
 
           <div className="max-w-4xl mx-auto space-y-4">
-            <p className="text-2xl text-neutral-700 leading-relaxed">
+            <p className="text-2xl text-neutral-700 leading-relaxed dark:text-neutral-300">
               {t("platformDescription")}
             </p>
-            <p className="text-lg text-neutral-600 leading-relaxed">
+            <p className="text-lg text-neutral-600 leading-relaxed dark:text-neutral-400">
               {t("protocolDescription")}
             </p>
           </div>
@@ -99,7 +99,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.antiCensorship.description")}
               </p>
             </CardContent>
@@ -120,7 +120,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed mb-4">
+              <p className="text-neutral-700 leading-relaxed mb-4 dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.dataProof.description")}
               </p>
             </CardContent>
@@ -141,7 +141,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.decentralized.description")}
               </p>
             </CardContent>
@@ -162,7 +162,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.poweredByLove.description")}
               </p>
             </CardContent>
@@ -183,7 +183,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.coinExchange.description")}
               </p>
             </CardContent>
@@ -204,7 +204,7 @@ export function DetailSection() {
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.anonymousCommunity.description")}
               </p>
             </CardContent>

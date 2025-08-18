@@ -17,7 +17,7 @@ export function CHIPSSection() {
   const t = useTranslations("chips");
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-harbor-50/30">
+    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-harbor-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       {/* Background Elements */}
       <div className="absolute top-20 right-10 opacity-8 float-animation">
         {/*<div className="text-6xl">🍟</div>*/}
@@ -37,14 +37,14 @@ export function CHIPSSection() {
         </div>
         <div className="text-center mb-16">
           <div className="relative inline-block mb-6">
-            <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900">
+            <h2 className="text-4xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100">
               {t("title")}
             </h2>
-            <span className="absolute -top-0 -right-11 px-1.5 py-0.5 font-light text-xs bg-chip-gradient text-white rounded-full shadow-md">
+            <span className="absolute -top-0 -right-11 px-1.5 py-0.5 font-light text-xs bg-chip-gradient text-white rounded-full shadow-md dark:bg-chip-500 dark:text-white">
               Beta
             </span>
           </div>
-          <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed dark:text-neutral-300">
             {t("description")}
           </p>
         </div>
@@ -58,10 +58,10 @@ export function CHIPSSection() {
                   1
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     {t("howItWorks.step1.title")}
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     {t("howItWorks.step1.description")}
                   </p>
                 </div>
@@ -72,10 +72,10 @@ export function CHIPSSection() {
                   2
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     {t("howItWorks.step2.title")}
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     {t("howItWorks.step2.description")}
                   </p>
                 </div>
@@ -86,10 +86,10 @@ export function CHIPSSection() {
                   3
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     {t("howItWorks.step3.title")}
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     {t("howItWorks.step3.description")}
                   </p>
                 </div>

@@ -87,7 +87,7 @@ export default function WhatIsChipPage() {
                 <h2 className="text-3xl font-bold text-neutral-900 mb-6">
                   链上证明是什么？
                 </h2>
-                <div className="space-y-4 text-lg text-neutral-700 leading-relaxed">
+                <div className="space-y-4 text-lg text-neutral-700 leading-relaxed dark:text-neutral-300">
                   <p>
                     链上证明是 Ordinary
                     平台采用的区块链的发布数据认证系统。当用户发布内容时，系统将自动为该数据生成链上证明。
@@ -119,7 +119,7 @@ export default function WhatIsChipPage() {
             <div className="relative">
               <Card className="bg-white border-2 border-harbor-200 shadow-2xl transform hover:scale-105 transition-transform duration-300">
                 <CardHeader className="bg-gradient-to-r from-chip-500 to-chip-300 text-white rounded-t-lg">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between dark:text-white">
                     <div className="flex items-center space-x-3">
                       <div className="text-3xl">📜</div>
                       <div>
@@ -369,7 +369,7 @@ export default function WhatIsChipPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
-                  <p className="text-neutral-700 leading-relaxed">
+                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300">
                     Ordinary
                     未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
@@ -392,7 +392,7 @@ export default function WhatIsChipPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
-                  <p className="text-neutral-700 leading-relaxed">
+                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300">
                     我们的技术栈完全开源，任何人都可以审查代码、提出改进建议。透明的技术架构确保了平台的可信度和安全性。
                   </p>
                 </CardContent>
@@ -416,7 +416,7 @@ export default function WhatIsChipPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
-                  <p className="text-neutral-700 leading-relaxed">
+                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300">
                     作为非营利平台，我们的唯一目标是为创作者提供更好的服务。所有收入都将用于平台的维护和发展，绝不会为了商业利益而牺牲用户体验。
                   </p>
                 </CardContent>
@@ -438,7 +438,7 @@ export default function WhatIsChipPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
-                  <p className="text-neutral-700 leading-relaxed">
+                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300">
                     基于 Lens Protocol、Grove Storage
                     等先进的Web3技术构建，确保平台具有最佳的性能、安全性和用户体验。
                   </p>

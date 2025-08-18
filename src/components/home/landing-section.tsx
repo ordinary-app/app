@@ -17,7 +17,7 @@ export function LandingSection() {
   return (
     <section className="relative sm:py-20 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white max-auto mx-auto">
       {/* Harbor Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30 dark:from-black dark:via-gray-900 dark:to-gray-800" />
 
       {/* Animated Harbor Elements */}
       <div className="absolute top-10 right-10 opacity-15 float-animation ">
@@ -83,12 +83,12 @@ export function LandingSection() {
                   {t("subtitleFull")}
                 </span>
                 <br />
-                <span className="text-2xl text-neutral-600">
+                <span className="text-2xl text-neutral-600 dark:text-neutral-400">
                   {t("tagline")}
                 </span>
               </h1>
 
-              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline">
+              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline dark:text-neutral-400">
                 {t("description")}
               </p>
             </div>
@@ -101,7 +101,7 @@ export function LandingSection() {
                     <span className="text-sm font-mono text-harbor-600">
                       (001)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.antiCensorship")}
                     </span>
                   </div>
@@ -114,7 +114,7 @@ export function LandingSection() {
                     <span className="text-sm font-mono text-harbor-600">
                       (010)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.respectOriginality")}
                     </span>
                   </div>
@@ -127,7 +127,7 @@ export function LandingSection() {
                     <span className="text-sm font-mono text-harbor-500">
                       (011)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.decentralized")}
                     </span>
                   </div>
@@ -140,7 +140,7 @@ export function LandingSection() {
                     <span className="text-sm font-mono text-harbor-600">
                       (100)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.poweredByLove")}
                     </span>
                   </div>
