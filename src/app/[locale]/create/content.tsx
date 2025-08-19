@@ -383,18 +383,18 @@ export default function CreatePage() {
         onClose={handleCloseToast}
       />
 
-      <main className="container mx-auto px-4 py-3 pb-4">
+      <main className="container mx-auto px-4 py-3 pb-4 dark:bg-gray-900">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900">
+              <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900 dark:text-neutral-100 font-semibold">
                 <FileText className="h-5 w-5" />
                 <span>Upload New Work</span>
               </CardTitle>
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 dark:text-neutral-300">
                 
                 {/* Unified Editor */}
                 <div className="space-y-4">

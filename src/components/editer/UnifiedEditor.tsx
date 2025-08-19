@@ -117,7 +117,7 @@ export function UnifiedEditor({
   }
 
   return (
-    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden dark:bg-gray-800 dark:border-gray-700">
       {/* Title Input */}
       <div className="flex items-center gap-4 px-4 py-2 border-b border-dashed">
         <textarea
@@ -142,7 +142,7 @@ export function UnifiedEditor({
           placeholder="分享你的想法... ... (必填)"
           value={content}
           onChange={handleContentChange}
-          className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm"
+          className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm dark:text-gray-300"
           rows={5}
           maxLength={5000}
         />
@@ -177,7 +177,7 @@ export function UnifiedEditor({
         <button
           type="button"
           onClick={openTagModal}
-          className="flex items-center gap-2 p-3 rounded-lg border-gray-300 hover:border-gray-400 transition-colors text-gray-600 hover:text-gray-700 border w-fit border-solid py-1 px-1.5"
+          className="flex items-center gap-2 p-3 rounded-lg border-gray-300 hover:border-gray-400 transition-colors text-gray-600 hover:text-gray-700 border w-fit border-solid py-1 px-1.5 dark:text-gray-300 dark:hover:text-gray-200 dark:border-gray-600 dark:hover:border-gray-500"
         >
           <Plus className="h-4 w-4" />
           <span className="text-sm">添加标签</span>
@@ -291,7 +291,7 @@ export function UnifiedEditor({
       </Dialog>
 
       {/* Bottom Toolbar */}
-      <div className="px-4 py-1 border-t border-gray-100 bg-gray-50 leading-3">
+      <div className="px-4 py-1 border-t border-gray-100 bg-gray-50 leading-3 dark:bg-gray-800">
         <div className="flex items-center justify-between">
           {/* Left: Formatting Tools */}
           <div className="flex items-center space-x-1 sm:space-x-3">

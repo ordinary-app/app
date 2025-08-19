@@ -95,7 +95,7 @@ export function LandingSection() {
 
             {/* Core Principles */}
             <div className="grid grid-cols-2 gap-4 max-w-full w-full overflow-x-auto sm:gap-7 sm:max-w-xl sm:w-full mt-8 mb-8">
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
@@ -108,7 +108,7 @@ export function LandingSection() {
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
@@ -121,7 +121,7 @@ export function LandingSection() {
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-500">
@@ -134,7 +134,7 @@ export function LandingSection() {
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
@@ -176,7 +176,7 @@ export function LandingSection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto"
+                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto dark:bg-gray-800 dark:border-gray-700 dark:text-neutral-300 dark:hover:bg-gray-700"
               >
                 <Link href="/feed"> {t("explore")} </Link>
               </Button>

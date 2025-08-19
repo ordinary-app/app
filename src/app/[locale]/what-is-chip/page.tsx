@@ -24,11 +24,11 @@ export default function WhatIsChipPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-harbor-50/30">
-      <main className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
+      <main className="pt-12 pb-20 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-8 shadow-sm">
+            <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-8 shadow-sm dark:bg-gray-800 dark:border-gray-700">
               <div className="text-2xl"></div>
               <span className="text-chip-700 font-medium text-lg">
                 Onchain Proof
@@ -37,13 +37,13 @@ export default function WhatIsChipPage() {
             </div>
 
             <h1 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 whitespace-nowrap">
-              <span className="align-middle">什么是</span>
+              <span className="align-middle dark:text-neutral-300">什么是</span>
               <span className="bg-gradient-to-r from-chip-600 via-chip-500 to-chip-400 bg-clip-text text-transparent align-middle">
                 链上证明？
               </span>
             </h1>
 
-            <p className="text-xl text-neutral-700 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl text-neutral-700 max-w-4xl mx-auto leading-relaxed mb-8 dark:text-neutral-300">
               链上证明是基于区块链技术的发布数据认证系统，为每一份发布内容提供不可篡改的时间戳和数据完整性证明，确保发布记录的真实性和可追溯性。
             </p>
 
@@ -101,14 +101,14 @@ export default function WhatIsChipPage() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-harbor-50 to-harbor-100 border border-harbor-200 rounded-2xl p-6">
+              <div className="bg-gradient-to-r from-harbor-50 to-harbor-100 border border-harbor-200 rounded-2xl p-6 dark:from-gray-700 via-gray-200 to-gray-100 dark:border-gray-600">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="text-3xl">💡</div>
-                  <h3 className="text-xl font-semibold text-harbor-800">
+                  <h3 className="text-xl font-semibold text-harbor-800 dark:text-neutral-100">
                     核心理念
                   </h3>
                 </div>
-                <p className="text-harbor-700 leading-relaxed">
+                <p className="text-harbor-700 leading-relaxed dark:text-neutral-300">
                   "让每一份发布都有迹可循，让每一次数据都受到保护" ——
                   链上证明致力于在去中心化的世界中建立可信的数据认证体系。
                 </p>
@@ -117,7 +117,7 @@ export default function WhatIsChipPage() {
 
             {/* Certificate Visual */}
             <div className="relative">
-              <Card className="bg-white border-2 border-harbor-200 shadow-2xl transform hover:scale-105 transition-transform duration-300">
+              <Card className="bg-white border-2 border-harbor-200 shadow-2xl transform hover:scale-105 transition-transform duration-300 dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="bg-gradient-to-r from-chip-500 to-chip-300 text-white rounded-t-lg">
                   <div className="flex items-center justify-between dark:text-white">
                     <div className="flex items-center space-x-3">
@@ -133,40 +133,40 @@ export default function WhatIsChipPage() {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="p-8 space-y-6">
+                <CardContent className="p-8 space-y-6 dark:text-neutral-300 text-neutral-800 ">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">
+                      <span className="text-neutral-600 font-medium dark:text-neutral-300">
                         证明编号
                       </span>
                       <div className="flex items-center space-x-2">
                         <Hash className="w-4 h-4 text-harbor-500" />
-                        <span className="font-mono text-harbor-700 font-semibold">
+                        <span className="font-mono text-harbor-700 font-semibold dark:text-harbor-300">
                           CD-2024-001337
                         </span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">
+                      <span className="text-neutral-600 font-medium dark:text-neutral-300">
                         创作者
                       </span>
-                      <span className="font-semibold text-neutral-900">
+                      <span className="font-semibold text-neutral-900 dark:text-neutral-100">
                         @seagull_artist
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">
+                      <span className="text-neutral-600 font-medium dark:text-neutral-300">
                         认证时间
                       </span>
-                      <span className="text-neutral-700">
+                      <span className="text-neutral-700 dark:text-neutral-300">
                         2024-01-15 14:30 UTC
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between py-2 border-b border-harbor-100">
-                      <span className="text-neutral-600 font-medium">
+                      <span className="text-neutral-600 font-medium dark:text-neutral-300">
                         区块链状态
                       </span>
                       <div className="flex items-center space-x-2">
@@ -178,7 +178,7 @@ export default function WhatIsChipPage() {
                     </div>
 
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-neutral-600 font-medium">
+                      <span className="text-neutral-600 font-medium dark:text-neutral-300">
                         验证状态
                       </span>
                       <div className="flex items-center space-x-2">
@@ -192,7 +192,7 @@ export default function WhatIsChipPage() {
 
                   <Button
                     variant="outline"
-                    className="w-full border-harbor-200 text-harbor-700 hover:bg-harbor-50 bg-transparent font-medium"
+                    className="w-full border-harbor-200 text-harbor-700 hover:bg-harbor-50 bg-transparent font-medium dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-700"
                   >
                     <Eye className="w-4 h-4 mr-2" />
                     在区块链上查看
@@ -213,55 +213,55 @@ export default function WhatIsChipPage() {
           {/* How It Works */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4 dark:text-neutral-100">
                 链上证明如何工作？
               </h2>
-              <p className="text-lg text-neutral-600">
+              <p className="text-lg text-neutral-600 dark:text-neutral-300">
                 简单三步，为您的发布数据获得区块链认证
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="group border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardContent className="p-8 text-center relative z-10">
                   <div className="w-16 h-16 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">1</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4 dark:text-neutral-100">
                     数据提交
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     当您发布内容时，系统将自动为该数据生成独特的链上证明，记录发布时间和数据摘要。
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-success-50/50 to-success-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardContent className="p-8 text-center relative z-10">
                   <div className="w-16 h-16 bg-gradient-to-br from-success-500 to-success-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">2</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4 dark:text-neutral-100">
                     区块链记录
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     系统自动生成唯一的证明ID，并将数据摘要、发布者信息、时间戳等关键信息记录到区块链上。
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-warning-50/50 to-warning-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardContent className="p-8 text-center relative z-10">
                   <div className="w-16 h-16 bg-gradient-to-br from-warning-500 to-warning-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-bold text-2xl">3</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-4 dark:text-neutral-100">
                     获得认证
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed">
+                  <p className="text-neutral-600 leading-relaxed dark:text-neutral-300">
                     您的数据获得链上证明，任何人都可以通过证明ID验证发布数据的完整性和真实性。
                   </p>
                 </CardContent>
@@ -272,66 +272,66 @@ export default function WhatIsChipPage() {
           {/* Benefits */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4 dark:text-neutral-100">
                 链上证明的优势
               </h2>
-              <p className="text-lg text-neutral-600">
+              <p className="text-lg text-neutral-600 dark:text-neutral-300">
                 为什么选择链上证明来认证您的发布数据？
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="group border border-harbor-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Card className="group border border-harbor-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Shield className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">
+                  <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     防伪保护
                   </h3>
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     区块链技术确保证明无法被伪造或篡改
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-success-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Card className="group border border-success-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Hash className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">
+                  <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     唯一标识
                   </h3>
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     每个证明都有独特的ID，便于追踪和验证
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-warning-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Card className="group border border-warning-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Eye className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">
+                  <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     公开透明
                   </h3>
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     所有人都可以查看和验证证明的真实性
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-seagull-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <Card className="group border border-seagull-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-seagull-500 to-seagull-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Lock className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-neutral-900 mb-2">
+                  <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                     永久保存
                   </h3>
-                  <p className="text-sm text-neutral-600">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     证明信息永久存储，不会丢失或损坏
                   </p>
                 </CardContent>
@@ -342,16 +342,16 @@ export default function WhatIsChipPage() {
           {/* Why Ordinary */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-4xl font-bold text-neutral-900 mb-4 dark:text-neutral-100">
                 为什么选择 Ordinary？
               </h2>
-              <p className="text-lg text-neutral-600">
+              <p className="text-lg text-neutral-600 dark:text-neutral-300">
                 我们致力于为创作者社区提供最佳的创作与社交体验
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="group border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10">
                   <div className="flex items-center space-x-4">
@@ -359,24 +359,24 @@ export default function WhatIsChipPage() {
                       <Users className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">
+                      <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                         社区驱动
                       </CardTitle>
-                      <p className="text-neutral-600">
+                      <p className="text-neutral-600 dark:text-neutral-300">
                         由创作者社区共同治理和发展
                       </p>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="relative z-10">
-                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300">
+                  <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:text-neutral-300">
                     Ordinary
                     未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="group border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-success-50/50 to-success-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10">
                   <div className="flex items-center space-x-4">
@@ -384,10 +384,10 @@ export default function WhatIsChipPage() {
                       <Globe className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">
+                      <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                         开源透明
                       </CardTitle>
-                      <p className="text-neutral-600">基于开源区块链协议构建</p>
+                      <p className="text-neutral-600 dark:text-neutral-300">基于开源区块链协议构建</p>
                     </div>
                   </div>
                 </CardHeader>
@@ -398,7 +398,7 @@ export default function WhatIsChipPage() {
                 </CardContent>
               </Card>
 
-              <Card className="group border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-warning-50/50 to-warning-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10">
                   <div className="flex items-center space-x-4">
@@ -406,10 +406,10 @@ export default function WhatIsChipPage() {
                       <Heart className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">
+                      <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                         非营利性质
                       </CardTitle>
-                      <p className="text-neutral-600">
+                      <p className="text-neutral-600 dark:text-neutral-300">
                         专注于服务创作者，不以盈利为目的
                       </p>
                     </div>
@@ -422,7 +422,7 @@ export default function WhatIsChipPage() {
                 </CardContent>
               </Card>
 
-              <Card className="group border border-seagull-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden">
+              <Card className="group border border-seagull-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:shadow-lg dark:hover:scale-110">
                 <div className="absolute inset-0 bg-gradient-to-br from-seagull-50/50 to-seagull-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10">
                   <div className="flex items-center space-x-4">
@@ -430,10 +430,10 @@ export default function WhatIsChipPage() {
                       <Zap className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-neutral-900 text-xl">
+                      <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                         技术先进
                       </CardTitle>
-                      <p className="text-neutral-600">采用最新的Web3技术栈</p>
+                      <p className="text-neutral-600 dark:text-neutral-300">采用最新的Web3技术栈</p>
                     </div>
                   </div>
                 </CardHeader>

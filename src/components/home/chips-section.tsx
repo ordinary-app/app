@@ -29,7 +29,7 @@ export function CHIPSSection() {
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center">
-          <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-5 shadow-sm">
+          <div className="inline-flex items-center space-x-2 bg-white border border-chip-200 px-6 py-3 rounded-full mb-5 shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="text-harbor-500"></div>
             <span className="text-chip-600 font-medium">{t("subtitle")}</span>
             <div className="text-harbor-500"></div>
@@ -113,7 +113,7 @@ export function CHIPSSection() {
 
           {/* Certificate Preview */}
           <div className="relative">
-            <Card className="bg-white border-2 border-harbor-200 shadow-2xl transform rotate-0 hover:rotate-1 transition-transform duration-300">
+            <Card className="bg-white border-2 border-harbor-200 shadow-2xl transform rotate-0 hover:rotate-1 transition-transform duration-300 dark:bg-gray-800 dark:border-gray-700">
               <CardHeader className="bg-gradient-to-r from-chip-500 to-chip-300 text-white rounded-t-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
@@ -128,42 +128,42 @@ export function CHIPSSection() {
               <CardContent className="p-6 space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-100">
                       {t("certificate.certificateId")}
                     </span>
                     <div className="flex items-center space-x-2">
                       <Hash className="w-4 h-4 text-harbor-500" />
-                      <span className="font-mono text-sm text-harbor-700">
+                      <span className="font-mono text-sm text-harbor-700 dark:text-harbor-400">
                         Storage-ID
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-100">
                       {t("certificate.creator")}
                     </span>
-                    <span className="font-medium text-neutral-900">
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">
                       @artist
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-100">
                       {t("certificate.created")}
                     </span>
-                    <span className="text-sm text-neutral-700">
+                    <span className="text-sm text-neutral-700 dark:text-neutral-300">
                       2025-08-08 09:30 UTC
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-100">
                       {t("certificate.blockchain")}
                     </span>
                     <div className="flex items-center space-x-2">
                       <Lock className="w-4 h-4 text-success-500" />
-                      <span className="text-sm text-success-600">
+                      <span className="text-sm text-success-600 dark:text-success-400">
                         {t("certificate.immutable")}
                       </span>
                     </div>
@@ -172,12 +172,12 @@ export function CHIPSSection() {
 
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-100">
                       {t("certificate.status")}
                     </span>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-success-500" />
-                      <span className="text-sm text-success-600 font-medium">
+                      <span className="text-sm text-success-600 font-medium dark:text-success-400">
                         {t("certificate.dataVerified")}
                       </span>
                     </div>
@@ -187,7 +187,7 @@ export function CHIPSSection() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full border-harbor-200 text-harbor-700 hover:bg-harbor-50 bg-transparent"
+                  className="w-full border-harbor-200 text-harbor-700 hover:bg-harbor-50 bg-transparent dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   {t("certificate.viewOnBlockchain")}
@@ -203,57 +203,57 @@ export function CHIPSSection() {
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="group border border-harbor-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">
+              <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                 {t("benefits.antiCounterfeit.title")}
               </h3>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 {t("benefits.antiCounterfeit.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-success-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <Card className="group border border-success-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Hash className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">
+              <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                 {t("benefits.uniqueId.title")}
               </h3>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 {t("benefits.uniqueId.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-warning-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <Card className="group border border-warning-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Eye className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">
+              <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                 {t("benefits.transparency.title")}
               </h3>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 {t("benefits.transparency.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-seagull-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+          <Card className="group border border-seagull-200 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <CardContent className="p-6 text-center">
               <div className="w-12 h-12 bg-gradient-to-br from-seagull-500 to-seagull-700 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Lock className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-neutral-900 mb-2">
+              <h3 className="font-semibold text-neutral-900 mb-2 dark:text-neutral-100">
                 {t("benefits.permanentStorage.title")}
               </h3>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 {t("benefits.permanentStorage.description")}
               </p>
             </CardContent>
