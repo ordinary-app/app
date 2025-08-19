@@ -41,7 +41,9 @@
       "title": "Filter"
     },
     "tagSearch": {
-      "category": "Tag Categories"
+      "category": "Tag Categories",
+      "activeFilters": "Active filters",
+      "clear": "Clear"
     }
   },
   "post": {

@@ -41,7 +41,9 @@
       "title": "筛选"
     },
     "tagSearch": {
-      "category": "标签分类"
+      "category": "标签分类",
+      "activeFilters": "激活筛选",
+      "clear": "清除"
     }
   },
   "post": {

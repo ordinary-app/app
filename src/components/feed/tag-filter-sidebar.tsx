@@ -53,7 +53,7 @@ export function TagFilterSidebar({
         {selectedTags.length > 0 && (
           <div className="bg-harbor-50 border border-harbor-100 rounded-lg p-2">
             <div className="text-xs text-gray-500 mb-2">
-              {t("tagSearch.activeFilters") || "激活筛选"} ({selectedTags.length})
+              {t("tagSearch.activeFilters")} ({selectedTags.length})
             </div>
             <div className="flex flex-wrap gap-2">
               {selectedTags.map((tag) => (
