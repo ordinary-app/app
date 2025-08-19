@@ -36,7 +36,13 @@
     "loadMore": "加载更多",
     "newPosts": "有新内容",
     "noMore": "没有更多了",
-    "lastUpdated": "最后更新：{time}"
+    "lastUpdated": "最后更新：{time}",
+    "smartFilter": {
+      "title": "筛选"
+    },
+    "tagSearch": {
+      "category": "标签分类"
+    }
   },
   "post": {
     "like": "点赞",

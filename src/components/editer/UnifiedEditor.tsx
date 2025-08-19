@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, Plus, X, Search, Expand, Globe } from "lucide-react"
+import { useAvailableTags } from "@/hooks/use-available-tags"
 //import { Input } from "@/components/ui/input"
 
 
@@ -40,20 +41,11 @@ export function UnifiedEditor({
   const [tagInput, setTagInput] = useState("")
   const [showTagModal, setShowTagModal] = useState(false)
   const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const { tags: availableTags, loading: loadingTags } = useAvailableTags()
   const titleRef = useRef<HTMLTextAreaElement>(null)
   const contentRef = useRef<HTMLTextAreaElement>(null)
 
-  const suggestedTags: Tag[] = [
-    { name: "彩虹" },
-    { name: "彩虹六号" },
-    { name: "刺客信条" },
-    { name: "刺客信条I" },
-    { name: "rwby" },
-    { name: "刺客信条II" },
-    { name: "刺客信条III" },
-    { name: "刺客信条IV" },
-    { name: "刺客信条V" },
-  ]
+  const suggestedTags: Tag[] = availableTags.map((t) => ({ name: t }))
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
@@ -232,7 +224,7 @@ export function UnifiedEditor({
             {/* Tag Suggestions */}
             {tagInput.length > 0 && (
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-700">搜索结果:</p>
+                <p className="text-sm font-medium text-gray-700">{loadingTags ? "正在加载标签..." : "搜索结果:"}</p>
                 <div className="max-h-48 overflow-y-auto custom-scrollbar space-y-1">
                   {suggestedTags
                     .filter((tag) => tag.name.toLowerCase().includes(tagInput.toLowerCase()))

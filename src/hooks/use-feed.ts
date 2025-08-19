@@ -4,18 +4,21 @@ import { fetchPosts } from "@lens-protocol/client/actions";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { useFeedContext } from "@/contexts/feed-context";
+import { useAvailableTags } from "@/hooks/use-available-tags";
 
-type FeedType = "global" | "profile" | "custom";
+type FeedType = "global" | "profile" | "custom" | "tag";
 
 interface useFeedOptions {
   type?: FeedType;
   profileAddress?: string;
   customFilter?: any;
+  tag?: string;
 }
 
+//
 
 export function useFeed(options: useFeedOptions = {}) {
-  const { type = "global", profileAddress, customFilter } = options;
+  const { type: initialType = "global", profileAddress, customFilter, tag } = options;
   
   // Auth and client
   const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
@@ -39,6 +42,19 @@ export function useFeed(options: useFeedOptions = {}) {
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   
+  // Tag search state (compact)
+  
+  // Multi-tag selection state
+  const [selectedTags, setSelectedTags] = useState<string[]>(tag ? [tag] : []);
+  
+  // Dynamic tag list state via shared hook
+  const { tags: availableTags, loading: tagsLoading, error: tagsError, refresh: fetchAvailableTags } = useAvailableTags();
+  
+  // Determine feed type based on current tag
+  const [feedType, setFeedType] = useState<FeedType>(initialType);
+  
+
+  
   // Refs for polling
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastPostIdRef = useRef<string | null>(null);
@@ -48,15 +64,25 @@ export function useFeed(options: useFeedOptions = {}) {
   
   // Helper functions
   const getFilter = useCallback(() => {
-    if (type === "global") {
+    if (feedType === "global") {
       return { feeds: [{ globalFeed: true }] };
-    } else if (type === "profile" && profileAddress) {
+    } else if (feedType === "profile" && profileAddress) {
       return { authors: [profileAddress] };
-    } else if (type === "custom" && customFilter) {
+    } else if (feedType === "tag" && selectedTags.length > 0) {
+      // Multi-tag filtering - search in post content and metadata
+      return {
+        metadata: {
+          tags: {
+            oneOf: selectedTags
+          }
+        }
+      };
+    } else if (feedType === "custom" && customFilter) {
       return customFilter;
     }
     return { feeds: [{ globalFeed: true }] };
-  }, [type, profileAddress, customFilter]);
+  }, [feedType, profileAddress, customFilter, selectedTags]);
+
 
 
 
@@ -126,6 +152,15 @@ export function useFeed(options: useFeedOptions = {}) {
     }
   }, [client, sessionClient, getFilter, initPostState]);
 
+  // Update feed type when tag changes
+  useEffect(() => {
+    if (selectedTags.length > 0) {
+      setFeedType("tag");
+    } else {
+      setFeedType("global");
+    }
+  }, [selectedTags]);
+
   const checkForNewPosts = useCallback(async () => {
     // Client should always be available for public posts
     if (!client) return;
@@ -161,6 +196,40 @@ export function useFeed(options: useFeedOptions = {}) {
     loadPostsFromLens(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [loadPostsFromLens]);
+
+
+
+  // Multi-tag selection functions
+  const toggleTagSelection = useCallback((tag: string) => {
+    setSelectedTags(prev => (
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    ));
+  }, []);
+
+  // Select only one tag (radio-style)
+  const selectOnlyTag = useCallback((tag: string) => {
+    setSelectedTags([tag]);
+  }, []);
+  // Dropdown confirm/cancel removed in favor of immediate apply
+
+  const clearTagSearch = useCallback(() => {
+    setSelectedTags([]);
+    
+    // Reset to global feed
+    setFeedType("global");
+    
+    setCurrentCursor(null);
+    setHasMore(true);
+    setPosts([]);
+    
+    // Trigger search immediately
+    if (client && isAuthReady) {
+      setTimeout(() => {
+        loadPostsFromLens(true);
+      }, 0);
+    }
+  }, [client, isAuthReady, loadPostsFromLens]);
+
 
   // Initialize feed
   useEffect(() => {
@@ -224,6 +293,9 @@ export function useFeed(options: useFeedOptions = {}) {
     
     initializeAndLoadPosts();
     
+    // Fetch available tags
+    fetchAvailableTags();
+    
     // Set up polling for new posts
     const pollForNewPosts = async () => {
       if (!client) return;
@@ -257,7 +329,7 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, sessionClient, isAuthReady, type, profileAddress, customFilter, viewMode]);
+  }, [client, sessionClient, isAuthReady, feedType, profileAddress, customFilter, viewMode, selectedTags]);
 
   // Feed interface
   return {
@@ -275,8 +347,21 @@ export function useFeed(options: useFeedOptions = {}) {
     handleRefresh,
     handleLoadMore,
     handleLoadNewPosts,
+    clearTagSearch,
+    
+    // Tag selector actions
+    toggleTagSelection,
+    selectOnlyTag,
+    
     
     // State
     isLoggedIn,
+    selectedTags,
+    availableTags,
+    tagsLoading,
+    tagsError,
+    
+    // Tag actions
+    fetchAvailableTags,
   };
 }

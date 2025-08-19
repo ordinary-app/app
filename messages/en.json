@@ -36,7 +36,13 @@
     "loadMore": "Load More",
     "newPosts": "New posts available",
     "noMore": "No More",
-    "lastUpdated": "Last updated: {time}"
+    "lastUpdated": "Last updated: {time}",
+    "smartFilter": {
+      "title": "Filter"
+    },
+    "tagSearch": {
+      "category": "Tag Categories"
+    }
   },
   "post": {
     "like": "Like",

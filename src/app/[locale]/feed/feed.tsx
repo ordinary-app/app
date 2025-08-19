@@ -3,6 +3,7 @@
 //import { useState, useEffect, useCallback, useRef } from "react"
 //import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 //import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 //import { Badge } from "@/components/ui/badge"
 import {
@@ -22,6 +23,9 @@ import {
   Star,
   RefreshCw,
   ChevronUp,
+  X,
+  Hash,
+  ChevronDown,
 } from "lucide-react";
 //import { TokenIdDisplay } from "@/components/token-id-display"
 //import { fetchPosts } from "@lens-protocol/client/actions"
@@ -30,9 +34,14 @@ import {
 //import { useLensAuthStore } from "@/stores/auth-store"
 //import { toast } from "sonner"
 import { PostList } from "@/components/feed/post-list";
+import { TagFilterSidebar } from "@/components/feed/tag-filter-sidebar";
+import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
 import { useFeed } from "@/hooks/use-feed";
+import { useTranslations } from "next-intl";
 
 export function Feed() {
+  const t = useTranslations("feed");
+  
   const {
     posts,
     loading,
@@ -45,17 +54,26 @@ export function Feed() {
     handleRefresh,
     handleLoadMore,
     handleLoadNewPosts,
+    clearTagSearch,
+    toggleTagSelection,
+    selectOnlyTag,
+    selectedTags,
+    availableTags,
+    tagsLoading,
+    tagsError,
+    fetchAvailableTags,
   } = useFeed();
 
   return (
     <TooltipProvider>
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* 错误信息显示 */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
           </div>
         )}
+        
         {/* 新帖子提示 */}
         {newPostsAvailable && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
@@ -69,9 +87,17 @@ export function Feed() {
             </Button>
           </div>
         )}
+        
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Latest</h1>
-          <p className="text-gray-600">on global feed</p>
+          <h1 className="text-3xl font-bold mb-2">
+            {selectedTags.length > 0 
+              ? selectedTags.map(tag => `#${tag}`).join(' ')
+              : "Latest"
+            }
+          </h1>
+          <p className="text-gray-600">
+            {selectedTags.length > 0 ? t("tagSearch.tagResults") : "on global feed"}
+          </p>
           {/* 第一条帖子上方的信息栏 */}
           {posts && posts.length > 0 && (
             <div className="flex justify-center items-center gap-4 mt-4 text-sm">
@@ -93,12 +119,40 @@ export function Feed() {
             </div>
           )}
         </div>
-        <PostList
-          posts={posts || []}
-          loading={loading || loadingMore}
-          emptyText="No More"
-          skeletonCount={6}
-        />
+        
+        {/* 主内容布局：左侧标签过滤，右侧视图切换+内容 */}
+        <div className="flex gap-6">
+          <TagFilterSidebar
+            availableTags={availableTags}
+            selectedTags={selectedTags}
+            loading={tagsLoading}
+            error={tagsError || null}
+            onToggleTag={toggleTagSelection}
+            onSelectOnly={selectOnlyTag}
+            onClear={clearTagSearch}
+            onRefresh={fetchAvailableTags}
+          />
+
+          <div className="flex-1 space-y-4">
+            <div className="flex justify-end">
+              <FeedViewToggle />
+            </div>
+
+            <PostList
+              posts={posts || []}
+              loading={loading || loadingMore}
+              emptyText={selectedTags.length > 0 
+                ? `${t("tagSearch.noResults")} ${selectedTags.map(tag => `#${tag}`).join(', ')}`
+                : "No More"
+              }
+              showToggle={false}
+              skeletonCount={6}
+            />
+          </div>
+        </div>
+        
+        
+        
         {/* 加载更多按钮 */}
         {hasMore && (
           <div className="flex justify-center mt-6 mb-12">
