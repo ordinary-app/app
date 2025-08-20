@@ -331,10 +331,10 @@ export default function CreatePage() {
         const txHash = await walletClient?.writeContract(result.request);
        
         toast.success("CHIPS +1", {
-          description: `View on explorer: ${explorerUrl}${txHash}`,
+          description: `View on explorer: ${explorerUrl}tx/${txHash}`,
             action: {
               label: 'copy',
-              onClick: () => copy(`${explorerUrl}${txHash}`)
+              onClick: () => copy(`${explorerUrl}tx/${txHash}`)
             },
         })
       }
