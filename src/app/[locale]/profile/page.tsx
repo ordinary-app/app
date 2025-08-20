@@ -19,6 +19,7 @@ import { toast } from "sonner"
 import copy from "copy-to-clipboard"
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
+import { getLicenseType } from "@/utils/post-helpers";
 
 export default function ProfilePage() {
   const { currentProfile } = useLensAuthStore();
@@ -160,8 +161,7 @@ export default function ProfilePage() {
                       
                       // Check if post has token-bound-nft license
                       const metadata = post.metadata;
-                      const licenseAttr = metadata?.attributes?.find((attr: any) => attr.key === "license");
-                      const licenseType = licenseAttr?.value;
+                      const licenseType = getLicenseType(metadata);
                       const isTokenBoundNFT = licenseType === "token-bound-nft";
                       
                       return (

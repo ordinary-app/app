@@ -27,6 +27,7 @@ export function formatTimestamp(timestamp: string): string {
 
 /**
  * Checks if a post is original content based on license attribute
+ * TBNL (Token-Bound NFT License) indicates this is a token-bound NFT
  */
 export function checkIfOriginal(metadata: any): boolean {
   if (!metadata?.attributes) return false;
@@ -61,4 +62,28 @@ export function extractAttachments(metadata: any): Array<{ item: string; type: s
   }
   
   return attachments;
+}
+
+/**
+ * Gets the license type from post metadata
+ * Returns "token-bound-nft" if license starts with "TBNL", otherwise returns "standard"
+ */
+export function getLicenseType(metadata: any): string {
+  
+  if (!metadata?.attributes) {
+    return "standard";
+  }
+  
+  const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
+  
+  if (licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "") {
+    const licenseValue = licenseAttr.value.toString();
+    
+    if (licenseValue.startsWith("TBNL")) {
+      //console.log('✅ getLicenseType: token-bound-nft');
+      return "token-bound-nft";
+    }
+  }
+  
+  return "standard";
 }

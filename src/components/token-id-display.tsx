@@ -35,7 +35,7 @@ export function TokenIdDisplay({ uri, isOriginal, licenseType }: TokenIdDisplayP
               className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs flex items-center gap-1"
             >
               <Loader2 className="h-3 w-3 animate-spin" />
-              Loading...
+              Token ID
             </Badge>
           </button>
         </TooltipTrigger>
@@ -71,7 +71,7 @@ export function TokenIdDisplay({ uri, isOriginal, licenseType }: TokenIdDisplayP
               variant="secondary"
               className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
             >
-              Original
+              Token ID
             </Badge>
           </button>
         </TooltipTrigger>
@@ -106,7 +106,7 @@ export function TokenIdDisplay({ uri, isOriginal, licenseType }: TokenIdDisplayP
             variant="secondary"
             className="bg-[linear-gradient(135deg,#fdf6e3,#f5deb3)] text-neutral-800 w-auto h-5 mr-1 px-2 py-[2px] rounded-md border border-yellow-200 shadow-sm text-xs"
           >
-            Original
+            Token ID
           </Badge>
         </button>
       </TooltipTrigger>
