@@ -39,7 +39,7 @@ export function PostCard({ post }: PostCardProps) {
           <div className="flex-1 min-w-0">
             {/* Author name and handle */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-              <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
+              <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base dark:text-gray-100">
                 {displayName}
               </h3>
               <div className="flex items-center gap-2">
@@ -61,7 +61,7 @@ export function PostCard({ post }: PostCardProps) {
       {/* Content */}
       <CardContent className="pt-0 pb-2 space-y-4">
         {/* Post text content */}
-        <div className="text-gray-800 leading-relaxed text-sm sm:text-base break-words">
+        <div className="text-gray-800 leading-relaxed text-sm sm:text-base break-words dark:text-gray-200">
           {content}
         </div>
         

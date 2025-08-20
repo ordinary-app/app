@@ -183,7 +183,7 @@ export function ImageUpload({ images, onImagesChange, maxImages = 12 }: ImageUpl
         </div>
       )}
 
-      <div className="border-dashed border-gray-300 rounded-lg p-4 md:p-6 text-center hover:border-gray-400 transition-colors border md:px-3.5 md:py-3.5">
+      <div className="border-dashed border-gray-300 rounded-lg p-4 md:p-6 text-center hover:border-gray-400 transition-colors border md:px-3.5 md:py-3.5 dark:border-gray-200 dark:hover:border-gray-500">
         <input
           ref={fileInputRef}
           type="file"
@@ -198,9 +198,9 @@ export function ImageUpload({ images, onImagesChange, maxImages = 12 }: ImageUpl
           className="w-full p-2 rounded-lg hover:bg-accent transition-colors py-2.5"
         >
           <div className="space-y-2">
-            <Upload className="h-8 w-8 mx-auto text-gray-400" />
-            <p className="text-sm md:text-sm text-gray-500">点击上传图片 (可选)</p>
-            <p className="text-xs text-gray-500">支持 PNG、JPG 格式，单个文件不超过 8MB，最多 {maxImages} 张</p>
+            <Upload className="h-8 w-8 mx-auto text-gray-400 dark:text-gray-100" />
+            <p className="text-sm md:text-sm text-gray-500 dark:text-gray-100">点击上传图片 (可选)</p>
+            <p className="text-xs text-gray-500 dark:text-gray-100">支持 PNG、JPG 格式，单个文件不超过 8MB，最多 {maxImages} 张</p>
           </div>
         </button>
       </div>

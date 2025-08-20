@@ -71,7 +71,7 @@ export function Feed() {
         )}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Latest</h1>
-          <p className="text-gray-600">on global feed</p>
+          <p className="text-gray-600 dark:text-gray-300">on global feed</p>
           {/* 第一条帖子上方的信息栏 */}
           {posts && posts.length > 0 && (
             <div className="flex justify-center items-center gap-4 mt-4 text-sm">

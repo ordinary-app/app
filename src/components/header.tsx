@@ -63,9 +63,9 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:bg-gray-900 dark:border-gray-800 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12 md:h-14">
+        <div className="flex items-center justify-between h-12 md:h-14 ">
           {/* Mobile menu button */}
           <Button
             variant="ghost"
@@ -94,7 +94,7 @@ export default function Header() {
                 <Link
                   key={href}
                   href={href}
-                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 cursor-pointer ${
+                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 cursor-pointer dark:text-gray-300 ${
                     isActive ? "text-harbor-600" : ""
                   }`}
                 >
@@ -143,10 +143,10 @@ export default function Header() {
                 >
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">
+                      <p className="font-medium dark:text-neutral-100 text-gray-800">
                         @{currentProfile?.username?.localName || t("anonymous")}
                       </p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      <p className="w-[200px] truncate text-sm text-muted-foreground dark:text-neutral-400">
                         {currentProfile?.metadata?.bio || t("fanworkLover")}
                       </p>
                     </div>

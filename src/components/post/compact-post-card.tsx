@@ -52,7 +52,7 @@ export function CompactPostCard({ post }: CompactPostCardProps) {
         ) : (
           // Text-only post
           <div className="p-4 min-h-[120px] flex items-center">
-            <p className="text-gray-800 text-sm leading-relaxed line-clamp-4">
+            <p className="text-gray-800 text-sm leading-relaxed line-clamp-4 dark:text-gray-200">
               {content}
             </p>
           </div>
@@ -68,7 +68,7 @@ export function CompactPostCard({ post }: CompactPostCardProps) {
                   {displayName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-xs font-medium text-gray-700 truncate">
+              <span className="text-xs font-medium text-gray-700 truncate dark:text-gray-300">
                 {displayName}
               </span>
             </div>
