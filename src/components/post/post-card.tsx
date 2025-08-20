@@ -5,7 +5,7 @@ import { TokenIdDisplay } from "@/components/token-id-display";
 import { Post } from "@lens-protocol/client";
 import { PostActionsBar } from "./post-actions-bar";
 import { resolveUrl } from "@/utils/resolve-url";
-import { formatTimestamp, checkIfOriginal, extractAttachments } from "@/utils/post-helpers";
+import { formatTimestamp, checkIfOriginal, extractAttachments, getLicenseType } from "@/utils/post-helpers";
 
 interface PostCardProps {
   post: Post;
@@ -21,6 +21,7 @@ export function PostCard({ post }: PostCardProps) {
     : "No content available";
   const timestamp = formatTimestamp(post.timestamp);
   const isOriginal = checkIfOriginal(post.metadata);
+  const licenseType = getLicenseType(post.metadata);
   const attachments = extractAttachments(post.metadata);
   
   return (
@@ -45,7 +46,7 @@ export function PostCard({ post }: PostCardProps) {
                 <p className="text-xs sm:text-sm text-gray-500 truncate">
                   @{handle}
                 </p>
-                <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} />
+                <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
               </div>
             </div>
             

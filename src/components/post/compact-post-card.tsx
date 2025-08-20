@@ -3,8 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Post } from "@lens-protocol/client";
 import { resolveUrl } from "@/utils/resolve-url";
-import { formatTimestamp, checkIfOriginal, extractAttachments } from "@/utils/post-helpers";
+import { formatTimestamp, checkIfOriginal, extractAttachments, getLicenseType } from "@/utils/post-helpers";
 import { PostActionsBar } from "./post-actions-bar";
+import { TokenIdDisplay } from "@/components/token-id-display";
+
 
 interface CompactPostCardProps {
   post: Post;
@@ -19,6 +21,9 @@ export function CompactPostCard({ post }: CompactPostCardProps) {
     ? post.metadata.content
     : "No content available";
   const attachments = extractAttachments(post.metadata);
+  const isOriginal = checkIfOriginal(post.metadata);
+  const licenseType = getLicenseType(post.metadata);
+  
   
   // Get the primary image for display
   const primaryImage = attachments.length > 0 ? attachments[0].item : null;
@@ -53,9 +58,7 @@ export function CompactPostCard({ post }: CompactPostCardProps) {
           </div>
         )}
         
-        {/* Bottom section with user info and actions 
-        // TODO: checkIfOriginal if true, show original badge.
-        */}
+        {/* Bottom section with user info and actions */}
         <div className="p-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -73,6 +76,7 @@ export function CompactPostCard({ post }: CompactPostCardProps) {
             {/* Actions bar - only heart */}
             <PostActionsBar post={post} />
           </div>
+          <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
         </div>
       </CardContent>
     </Card>
