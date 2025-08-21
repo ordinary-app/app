@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useAuthCheck } from "@/hooks/auth/use-auth-check";
+import { useTheme } from "next-themes";
 
 export type DropdownItem = {
   icon: any;
@@ -80,6 +81,8 @@ export const ActionButton = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { checkAuthentication } = useAuthCheck();
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
 
   const showLoginActions = !isUserLoggedIn;
   const formattedCount = formatNumber(initialCount);
@@ -99,7 +102,8 @@ export const ActionButton = ({
     }
   };
 
-  const baseGray = "#4B5563"; // tailwind gray-600
+  // dark: gray-200, light: gray-600
+  const baseGray = isDarkMode ? "#E5E7EB" : "#4B5563"; 
   let iconStyleColor: string | undefined;
   let iconStyleFill: string | undefined;
   let iconOpacityStyle: number | undefined;
