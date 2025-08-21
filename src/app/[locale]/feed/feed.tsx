@@ -31,6 +31,7 @@ import {
 //import { toast } from "sonner"
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
+import { FeedHeader } from "@/components/feed/feed-header";
 
 export function Feed() {
   const {
@@ -50,14 +51,14 @@ export function Feed() {
   return (
     <TooltipProvider>
       <div className="max-w-3xl mx-auto space-y-6">
-        {/* 错误信息显示 */}
+        {/* "出错了" */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
           </div>
         )}
         {/* 新帖子提示 */}
-        {newPostsAvailable && (
+        {/*newPostsAvailable && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
             <Button
               onClick={handleLoadNewPosts}
@@ -68,11 +69,10 @@ export function Feed() {
               New posts available
             </Button>
           </div>
-        )}
+        )*/}
+        {/* 帖子导航栏 */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Latest</h1>
-          <p className="text-gray-600 dark:text-gray-300">on global feed</p>
-          {/* 第一条帖子上方的信息栏 */}
+          <FeedHeader />
           {posts && posts.length > 0 && (
             <div className="flex justify-center items-center gap-4 mt-4 text-sm">
               <div className="text-gray-400">
@@ -93,6 +93,7 @@ export function Feed() {
             </div>
           )}
         </div>
+        {/* 帖子列表 */}
         <PostList
           posts={posts || []}
           loading={loading || loadingMore}
