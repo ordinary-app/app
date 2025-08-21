@@ -44,7 +44,7 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
           <MasonryGrid
             loading={true}
             skeletonCount={skeletonCount}
-            columns={{ base: 2, xs: 2, sm: 3, md: 4, lg: 4 }}
+            columns={{ base: 2, xs: 2, sm: 3, md: 5, lg: 5 }}
           >
             {[]}
           </MasonryGrid>
@@ -87,7 +87,7 @@ export function PostList({ posts, loading, emptyText, showToggle = true, skeleto
         <MasonryGrid
           loading={loading && items.length > 0}
           skeletonCount={skeletonCount}
-          columns={{ base: 2, xs: 2, sm: 3, md: 4, lg: 4 }}
+          columns={{ base: 2, xs: 2, sm: 3, md: 5, lg: 5 }}
         >
           {items.map((post) => (
             <CompactPostCard key={post?.id} post={post} />

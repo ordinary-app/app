@@ -32,8 +32,10 @@ import {
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
 import { FeedHeader } from "@/components/feed/feed-header";
+import { useFeedContext } from "@/contexts/feed-context";
 
 export function Feed() {
+  const { viewMode } = useFeedContext();
   const {
     posts,
     loading,
@@ -50,7 +52,7 @@ export function Feed() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className={`${viewMode === 'list' ? 'max-w-xl' : 'max-w-5xl'} mx-auto space-y-6`}>
         {/* "出错了" */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
