@@ -102,7 +102,8 @@ export const ActionButton = ({
     }
   };
 
-  const baseGray = isDarkMode ? "#E5E7EB" : "#4B5563"; // dark: gray-200, light: gray-600
+  // dark: gray-200, light: gray-600
+  const baseGray = isDarkMode ? "#E5E7EB" : "#4B5563"; 
   let iconStyleColor: string | undefined;
   let iconStyleFill: string | undefined;
   let iconOpacityStyle: number | undefined;
