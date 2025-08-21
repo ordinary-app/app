@@ -31,8 +31,12 @@ import {
 //import { toast } from "sonner"
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
+import { FeedHeader } from "@/components/feed/feed-header";
+import { useFeedContext } from "@/contexts/feed-context";
+import { FeedFloatingActions } from "@/components/feed/feed-floating-actions";
 
 export function Feed() {
+  const { viewMode } = useFeedContext();
   const {
     posts,
     loading,
@@ -49,15 +53,15 @@ export function Feed() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-3xl mx-auto space-y-6">
-        {/* 错误信息显示 */}
+      <div className={`${viewMode === 'list' ? 'max-w-xl' : 'max-w-5xl'} mx-auto space-y-6`}>
+        {/* 出错提示 */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
           </div>
         )}
         {/* 新帖子提示 */}
-        {newPostsAvailable && (
+        {/*newPostsAvailable && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
             <Button
               onClick={handleLoadNewPosts}
@@ -68,31 +72,12 @@ export function Feed() {
               New posts available
             </Button>
           </div>
-        )}
+        )*/}
+        {/* 帖子导航栏 */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Latest</h1>
-          <p className="text-gray-600 dark:text-gray-300">on global feed</p>
-          {/* 第一条帖子上方的信息栏 */}
-          {posts && posts.length > 0 && (
-            <div className="flex justify-center items-center gap-4 mt-4 text-sm">
-              <div className="text-gray-400">
-                Last updated: {lastRefreshTime?.toLocaleTimeString()}
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={refreshing}
-                className="flex items-center h-9"
-              >
-                <RefreshCw
-                  className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`}
-                />
-                {/*refreshing ? 'Refreshing...' : 'Refresh'*/}
-              </Button>
-            </div>
-          )}
+          <FeedHeader />
         </div>
+        {/* 帖子列表 */}
         <PostList
           posts={posts || []}
           loading={loading || loadingMore}
@@ -111,6 +96,12 @@ export function Feed() {
             </Button>
           </div>
         )}
+        {/* 浮动操作栏 */}
+        <FeedFloatingActions
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
+          lastRefreshTime={lastRefreshTime}
+        />
       </div>
     </TooltipProvider>
   );

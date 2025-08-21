@@ -20,6 +20,7 @@ import copy from "copy-to-clipboard"
 import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
 import { getLicenseType } from "@/utils/post-helpers";
+import { FeedFloatingActions } from "@/components/feed/feed-floating-actions"
 
 export default function ProfilePage() {
   const { currentProfile } = useLensAuthStore();
@@ -40,6 +41,9 @@ export default function ProfilePage() {
     posts: userPosts,
     loading,
     error,
+    refreshing,
+    lastRefreshTime,
+    handleRefresh,
   } = useFeed({ type: "profile", profileAddress });
 
   return (
@@ -224,6 +228,12 @@ export default function ProfilePage() {
       <ProfileEdit 
         open={isEditOpen} 
         onClose={() => setIsEditOpen(false)} 
+      />
+
+      <FeedFloatingActions
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
+        lastRefreshTime={lastRefreshTime}
       />
     </TooltipProvider>
   )
