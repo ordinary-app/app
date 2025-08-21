@@ -81,7 +81,7 @@ export function FeedHeader() {
 
           {/* Right: Search Icon */}
           <ActionIcon variant="transparent" size="lg" className="text-gray-800 dark:text-gray-200">
-            <Search size={20} color="#333" onClick={() => router.push("/discover")} />
+            <Search size={20} onClick={() => router.push("/discover")} />
           </ActionIcon>
         </Group>
       </Box>
