@@ -33,6 +33,7 @@ import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
 import { FeedHeader } from "@/components/feed/feed-header";
 import { useFeedContext } from "@/contexts/feed-context";
+import { FeedFloatingActions } from "@/components/feed/feed-floating-actions";
 
 export function Feed() {
   const { viewMode } = useFeedContext();
@@ -53,7 +54,7 @@ export function Feed() {
   return (
     <TooltipProvider>
       <div className={`${viewMode === 'list' ? 'max-w-xl' : 'max-w-5xl'} mx-auto space-y-6`}>
-        {/* "出错了" */}
+        {/* 出错提示 */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
@@ -75,25 +76,6 @@ export function Feed() {
         {/* 帖子导航栏 */}
         <div className="text-center mb-8">
           <FeedHeader />
-          {posts && posts.length > 0 && (
-            <div className="flex justify-center items-center gap-4 mt-4 text-sm">
-              <div className="text-gray-400">
-                Last updated: {lastRefreshTime?.toLocaleTimeString()}
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={refreshing}
-                className="flex items-center h-9"
-              >
-                <RefreshCw
-                  className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`}
-                />
-                {/*refreshing ? 'Refreshing...' : 'Refresh'*/}
-              </Button>
-            </div>
-          )}
         </div>
         {/* 帖子列表 */}
         <PostList
@@ -114,6 +96,12 @@ export function Feed() {
             </Button>
           </div>
         )}
+        {/* 浮动操作栏 */}
+        <FeedFloatingActions
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
+          lastRefreshTime={lastRefreshTime}
+        />
       </div>
     </TooltipProvider>
   );

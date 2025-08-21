@@ -1,40 +1,41 @@
 "use client";
 
+import { ActionIcon, Tooltip } from "@mantine/core";
 import { LayoutDashboard, List } from "lucide-react";
 import { useFeedContext } from "@/contexts/feed-context";
-import { cn } from "@/lib/utils";
 
 export function FeedViewToggle() {
   const { viewMode, setViewMode } = useFeedContext();
   
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "list" ? "masonry" : "list");
+  };
+
   return (
-    <div className="flex justify-center items-center">
-      <div className="flex rounded-lg bg-muted p-1">
-        <button
-          onClick={() => setViewMode("masonry")}
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
-            viewMode === "masonry" 
-              ? "bg-background text-foreground shadow-sm" 
-              : "text-muted-foreground hover:text-foreground hover:bg-background/50"
-          )}
-          aria-label="瀑布流视图"
-        >
-          <LayoutDashboard strokeWidth={2} className="h-4 w-4" />
-        </button>
-        <button
-          onClick={() => setViewMode("list")}
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
-            viewMode === "list" 
-              ? "bg-background text-foreground shadow-sm" 
-              : "text-muted-foreground hover:text-foreground hover:bg-background/50"
-          )}
-          aria-label="列表视图"
-        >
-          <List strokeWidth={2} className="h-4 w-4" />
-        </button>
-      </div>
-    </div>
+    <Tooltip
+      label={viewMode === "list" ? "切换到瀑布流视图" : "切换到列表视图"}
+      position="left"
+      withArrow
+      transitionProps={{ transition: 'fade', duration: 200 }}
+    >
+      <ActionIcon
+        variant="light"
+        size={42}
+        radius="xl"
+        color="gray"
+        onClick={toggleViewMode}
+        aria-label={viewMode === "list" ? "切换到瀑布流视图" : "切换到列表视图"}
+        style={{
+          backgroundColor: "var(--mantine-color-white)",
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {viewMode === "list" ? (
+          <LayoutDashboard strokeWidth={1.5} size={24} />
+        ) : (
+          <List strokeWidth={1.5} size={24} />
+        )}
+      </ActionIcon>
+    </Tooltip>
   );
-} 
+}

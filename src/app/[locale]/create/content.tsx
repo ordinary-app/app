@@ -489,7 +489,7 @@ export default function CreatePage() {
                                   <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
                                   <span className="font-semibold text-sm">Token Bound NFT License</span>
                                 </div>
-                                <p className="text-xs text-gray-600">基于区块链的许可证(将铸造NFT TOKEN(sepolia)，功能测试中🍟)</p>
+                                <p className="text-xs text-gray-600">基于区块链的许可证，铸造稿件为 NFT (消耗sepolia测试币)</p>
                               </button>
 
                               <button

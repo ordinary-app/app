@@ -23,11 +23,11 @@ export function FeedHeader() {
         h={60}
         px="md"
         style={{
-          borderBottom: "1px solid #f0f0f0",
-          backgroundColor: "white",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
+          //borderBottom: "1px solid #f0f0f0",
+          backgroundColor: "transparent",
+          //position: "sticky",
+          //top: 0,
+          //zIndex: 100,
           borderRadius: "10px",
         }}
       >
