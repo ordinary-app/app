@@ -35,8 +35,8 @@ export function FeedHeader() {
           {/* Left: Filter Icon */}
           <FilterDialog
             trigger={
-              <ActionIcon variant="transparent" size="lg">
-                <Filter size={20} color="#333" />
+              <ActionIcon variant="transparent" size="lg" className="text-gray-800 dark:text-gray-200">
+                <Filter size={20} />
               </ActionIcon>
             }
             onFiltersChange={(filters) => {
@@ -56,7 +56,6 @@ export function FeedHeader() {
                       baseStyles: {
                         fontSize: "16px",
                         fontWeight: 500,
-                        color: activeTab === tab.value ? "#ff6b35" : "#333",
                         padding: "8px 3px",
                         borderBottom: activeTab === tab.value ? "2px solid #ff6b35 " : "none",
                         backgroundColor: "transparent",
@@ -65,6 +64,11 @@ export function FeedHeader() {
                       }
                     }
                   )}
+                  className={
+                    `${activeTab === tab.value
+                      ? 'text-orange-600 dark:text-orange-400'
+                      : 'text-gray-800 dark:text-gray-200'} transition-colors`
+                  }
                 >
                   {tab.label}
                 </Tabs.Tab>
@@ -73,8 +77,8 @@ export function FeedHeader() {
           </Tabs>
 
           {/* Right: Search Icon */}
-          <ActionIcon variant="transparent" size="lg">
-            <Search {...useDisabled({ isDisabled: true })} size={20} color="#333" />
+          <ActionIcon variant="transparent" size="lg" className="text-gray-800 dark:text-gray-200">
+            <Search {...useDisabled({ isDisabled: true })} size={20} />
           </ActionIcon>
         </Group>
       </Box>

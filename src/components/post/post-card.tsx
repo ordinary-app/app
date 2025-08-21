@@ -43,7 +43,7 @@ export function PostCard({ post }: PostCardProps) {
                 {displayName}
               </h3>
               <div className="flex items-center gap-2">
-                <p className="text-xs sm:text-sm text-gray-500 truncate">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-200 truncate">
                   @{handle}
                 </p>
                 <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
