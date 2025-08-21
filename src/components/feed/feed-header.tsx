@@ -5,6 +5,7 @@ import { Search, Filter } from "lucide-react"
 import { useState } from "react"
 import { useDisabled } from "@/utils/disabled"
 import { FilterDialog } from "@/components/dialogs/filter-dialog"
+import { useRouter } from "next/navigation"
 
 export function FeedHeader() {
   //const [opened, { toggle }] = useDisclosure(false)
@@ -15,6 +16,8 @@ export function FeedHeader() {
     { value: "home", label: "发现", disabled: true },
     { value: "latest", label: "最新", disabled: false },
   ]
+
+  const router = useRouter()
 
   return (
     <Box>
@@ -78,7 +81,7 @@ export function FeedHeader() {
 
           {/* Right: Search Icon */}
           <ActionIcon variant="transparent" size="lg" className="text-gray-800 dark:text-gray-200">
-            <Search {...useDisabled({ isDisabled: true })} size={20} />
+            <Search size={20} color="#333" onClick={() => router.push("/discover")} />
           </ActionIcon>
         </Group>
       </Box>
