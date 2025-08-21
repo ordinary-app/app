@@ -187,17 +187,17 @@ export default function CreatePage() {
     }
 
     if (!selectedRating) {
-      toast.error("请选择作品分类-分级")
+      toast.error("请选择投稿分类-分级")
       return
     }
 
     if (!selectedWarnings) {
-      toast.error("请选择作品分类-警告")
+      toast.error("请选择投稿分类-警告")
       return
     }
     
     if (!selectedCategories) {
-      toast.error("请选择作品分类-频道")
+      toast.error("请选择投稿分类-频道")
       return
     }
 
@@ -761,7 +761,7 @@ export default function CreatePage() {
                           <Settings className="h-5 w-5 text-zinc-700 group-hover:rotate-180 transition-transform " />
                         </div>
                         <div className="flex gap-1 text-sm font-medium text-zinc-700">
-                          作品分类<div className="text-destructive">*</div>
+                          投稿分类<div className="text-destructive">*</div>
                         </div>
                       </div>
                     </Button>
@@ -771,7 +771,7 @@ export default function CreatePage() {
                     <DialogHeader className="border-b border-gray-100 pb-4">
                       <div className="flex items-center justify-center gap-2">
                         <Settings className="h-4 w-4 text-zinc-900" />
-                        <DialogTitle className="text-l font-semibold text-gray-800 text-center">作品分类</DialogTitle>
+                        <DialogTitle className="text-l font-semibold text-gray-800 text-center">投稿分类</DialogTitle>
                       </div>
                     </DialogHeader>
 

@@ -1,10 +1,10 @@
 "use client"
 
 import { Group, ActionIcon, Tabs, Box } from "@mantine/core"
-//import { useDisclosure } from "@mantine/hooks"
 import { Search, Filter } from "lucide-react"
 import { useState } from "react"
 import { useDisabled } from "@/utils/disabled"
+import { FilterDialog } from "@/components/dialogs/filter-dialog"
 
 export function FeedHeader() {
   //const [opened, { toggle }] = useDisclosure(false)
@@ -33,9 +33,15 @@ export function FeedHeader() {
       >
         <Group justify="space-between" h="100%" align="center">
           {/* Left: Filter Icon */}
-          <ActionIcon variant="transparent" size="lg" onClick={() => {}}>
-            <Filter size={20} color="#333" />
-          </ActionIcon>
+          <FilterDialog
+            trigger={
+              <ActionIcon variant="transparent" size="lg">
+                <Filter size={20} color="#333" />
+              </ActionIcon>
+            }
+            onFiltersChange={(filters) => {
+            }}
+          />
 
           {/* Center: Main Navigation Tabs */}
           <Tabs value={activeTab} onChange={(value) => setActiveTab(value || "latest")} variant="unstyled">
