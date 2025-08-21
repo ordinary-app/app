@@ -51,7 +51,7 @@ export default function Header() {
   const navItems = [
     { href: "/", label: navT("home") },
     { href: "/feed", label: navT("feed") },
-    //{ href: '/discover', label: navT('discover') },
+    { href: '/discover', label: navT('discover') },
     { href: "/what-is-chip", label: navT("onchainProof") },
   ];
 
@@ -94,8 +94,8 @@ export default function Header() {
                 <Link
                   key={href}
                   href={href}
-                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 cursor-pointer dark:text-gray-300 ${
-                    isActive ? "text-harbor-600" : ""
+                  className={`font-medium transition-colors text-gray-600 hover:text-orange-600 cursor-pointer dark:text-gray-300 ${
+                    isActive ? "text-orange-600" : ""
                   }`}
                 >
                   {label}
@@ -249,6 +249,13 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {navT("onchainProof")}
+              </Link>
+              <Link
+                href="/discover"
+                className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {navT("discover")}
               </Link>
 
               {/* {!currentProfile && (
