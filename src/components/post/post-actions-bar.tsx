@@ -39,7 +39,7 @@ export const PostActionsBar = ({ post }: { post: Post }) => {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div ref={actionBarRef} className="flex items-center justify-between w-full pt-2 pb-1 border-t border-gray-100">
+      <div ref={actionBarRef} className="flex items-center justify-between w-full border-t border-gray-100">
         {/* Left side - Interactive buttons */}
         <div className="flex items-center gap-2 sm:gap-4">
           {leftButtons.map((button) => (

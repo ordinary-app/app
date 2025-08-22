@@ -372,7 +372,7 @@ export default function CreatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Development Toast */}
       <Toast
         show={showDevelopmentToast}
@@ -383,9 +383,9 @@ export default function CreatePage() {
         onClose={handleCloseToast}
       />
 
-      <main className="container mx-auto px-4 py-3 pb-4 dark:bg-gray-900">
+      <main className="container mx-auto px-4 py-3 pb-4">
         <div className="max-w-2xl mx-auto">
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900 dark:text-neutral-100 font-semibold">
                 <FileText className="h-5 w-5" />
