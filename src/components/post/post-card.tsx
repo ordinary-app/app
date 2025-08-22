@@ -39,6 +39,7 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
       pr="lg" 
       radius="md" 
       withBorder
+      className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-800 transition-colors duration-200"
       style={{
         cursor: !disableNavigation ? 'pointer' : 'default'
       }}
@@ -56,7 +57,7 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
             router.push(`/u/${handle}`);
           }}
           style={{ cursor: 'pointer' }}
-          className="hover:shadow-lg hover:ring-2 hover:ring-gray-400/50 transition-all duration-200"
+          className="hover:shadow-lg hover:ring-2 hover:ring-gray-400/50 dark:hover:ring-gray-500/50 transition-all duration-200"
         >
           {displayName.charAt(0)}
         </Avatar>
@@ -72,10 +73,7 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
             <Text 
               size="sm" 
               fw={600} 
-              c="dark.9" 
-              truncate 
-              style={{ cursor: 'pointer' }}
-              className="hover:underline transition-all duration-200"
+              className="text-gray-900 dark:text-gray-100 truncate cursor-pointer hover:underline transition-all duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 router.push(`/u/${handle}`);
@@ -85,10 +83,7 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
             </Text>
             <Text 
               size="xs" 
-              c="dimmed" 
-              truncate 
-              style={{ cursor: 'pointer' }}
-              className="hover:underline transition-all duration-200"
+              className="text-gray-500 dark:text-gray-400 truncate cursor-pointer hover:underline transition-all duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 router.push(`/u/${handle}`);
@@ -99,7 +94,7 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
           </Group>
           
           {/* Timestamp */}
-          <Text size="xs" c="dimmed">
+          <Text size="xs" className="text-gray-500 dark:text-gray-400">
             {timestamp}  
             <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
           </Text>
@@ -109,21 +104,21 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
 
       {/* Post Title */}
       {title !== "No title available" && (
-        <Text size="lg" fw={600} c="dark.9" mb="sm" lineClamp={2}>
+        <Text size="lg" fw={600} className="text-gray-900 dark:text-gray-100 mb-sm" lineClamp={2}>
           {title}
         </Text>
       )}
 
       {/* Post Content */}
       <Box mb="md">
-        <Text size="sm" c="dark.7" lineClamp={5}>
+        <Text size="sm" className="text-gray-700 dark:text-gray-300 line-clamp-5">
           {content}
         </Text>
       </Box>
       
       {/* Media attachments */}
       {attachments.length > 0 && (
-        <Box mb="md" style={{ display: 'flex', alignItems: 'center' }}>
+        <Box mb="md" className="flex items-center">
           <Group gap="xs" justify="left" wrap="wrap">
             {attachments.map((attachment, index) => (
               <Image
@@ -133,17 +128,10 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
                 radius="md"
                 w={{ base: '80px', sm: '170px', md: '170px' }}
                 h={{ base: '80px', sm: '170px', md: '170px' }}
+                className="transition-transform duration-300 cursor-pointer hover:scale-105"
                 style={{ 
                   objectFit: 'cover',
                   flexShrink: 0,
-                  transition: 'transform 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               />
             ))}
