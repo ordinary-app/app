@@ -89,7 +89,7 @@ export default function WhatIsChipPage() {
                 </h2>
                 <div className="space-y-4 text-lg text-neutral-700 leading-relaxed dark:text-neutral-300">
                   <p>
-                    链上证明是 Ordinary
+                    链上证明是 o-kitchen
                     平台采用的区块链的发布数据认证系统。当用户发布内容时，系统将自动为该数据生成链上证明。
                   </p>
                   <p>
@@ -339,11 +339,11 @@ export default function WhatIsChipPage() {
             </div>
           </div>
 
-          {/* Why Ordinary */}
+          {/* Why o-kitchen */}
           <div className="mb-20">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-neutral-900 mb-4 dark:text-neutral-100">
-                为什么选择 Ordinary？
+                为什么选择 o-kitchen ？
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-300">
                 我们致力于为创作者社区提供最佳的创作与社交体验
@@ -370,7 +370,7 @@ export default function WhatIsChipPage() {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:text-neutral-300">
-                    Ordinary
+                    o-kitchenn
                     未来将是一个完全由创作者社区驱动的平台，所有重要决策都由社区成员共同参与制定，确保平台始终服务于创作者的真实需求。
                   </p>
                 </CardContent>

@@ -12,7 +12,7 @@ export function Footer() {
         {/* <div className="space-y-4">
             <div className="flex items-center space-x-2">
               {/*<div className="text-2xl">⚓</div>*/}
-        {/* <span className="font-bold text-xl">Ordinary</span>
+        {/* <span className="font-bold text-xl">o-kitchen</span>
             </div>
             <p className="text-gray-400 text-sm">{t("brand.description")}</p>
             <div className="flex space-x-4 text-2xl">
@@ -115,11 +115,11 @@ export function Footer() {
 
         <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
           <p className="text-gray-400 text-sm text-center">
-            © 2025 Ordinary Labs. Built with ❤️ for the decentralized fandoms.
+            © 2025 o-kitchen Labs. Built with ❤️ for the decentralized fandoms.
           </p>
           <div className="flex items-center space-x-4">
             <Link
-              href="https://github.com/ordinary-app/app"
+              href="https://github.com/o-kitchen/app"
               target="_blank"
               className="flex items-center text-gray-400 hover:text-white transition-colors group"
             >
@@ -134,7 +134,7 @@ export function Footer() {
             </Link>
 
             <Link 
-              href="https://hey.xyz/u/ord_proj" 
+              href="https://hey.xyz/u/o_kitchen" 
               className="flex items-center text-gray-400 hover:text-white transition-colors group"
               target="_blank"
             >
@@ -147,7 +147,7 @@ export function Footer() {
             </Link>
 
             <Link
-              href="https://x.com/ORD_lens"
+              href="https://x.com/o_kitchen_labs"
               target="_blank"
               className="flex items-center text-gray-400 hover:text-white transition-colors group"
             >

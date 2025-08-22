@@ -83,7 +83,7 @@ export default function Header() {
           <Link href="/" className="hidden md:flex items-center space-x-2">
             <div className="text-2xl"></div>
             <div className="font-bold text-xl bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent">
-              Ordinary
+              o-kitchen
             </div>
           </Link>
           {/* Desktop Navigation */}

@@ -13,7 +13,7 @@ const getChains = () => {
 
 export const config = createConfig(
   getDefaultConfig({
-    appName: 'Ordinary',
+    appName: 'o-kitchen',
     appDescription: "Decentralized fandoms",
     appUrl: "https://o-harbor.vercel.app",
     appIcon: "https://o-harbor.vercel.app/logo.jpg",

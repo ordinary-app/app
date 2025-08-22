@@ -1,7 +1,7 @@
 > [!WARNING]
->  The Ordinary app is still in prototyping and early development.
+>  The o-kitchen app is still in prototyping and early development.
 
-## Ordinary app
+## o-kitchen app
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.16-blue.svg)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22.16.0-green.svg)](https://nodejs.org/)

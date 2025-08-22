@@ -46,15 +46,15 @@
     "comment": "评论"
   },
   "home": {
-    "title": "Ordinary",
-    "subtitle": "薯条码头:",
+    "title": "o-kitchen",
+    "subtitle": "o厨房:",
     "subtitleFull": "为爱发电的自由创作港",
-    "description": "Ordinary是一个非营利的去中心化社交平台，基于开源区块链协议，专为同人作品创作而生。保护创作者的创作自由和发布权利。",
+    "description": "o-kitchen是一个非营利的去中心化社交平台，基于开源区块链协议，专为同人作品创作而生。保护创作者的创作自由和发布权利。",
     "connectWallet": "连接钱包",
     "getStarted": "开始体验",
     "readMore": "了解更多",
     "learnMore": "探索更多",
-    "cta": "去码头整点薯条! 》》",
+    "cta": "去厨房整点吃的! 》》",
     "tagline": "同人创作的避风港",
     "explore": "探索",
     "principles": {
@@ -152,9 +152,9 @@
       }
     },
     "cta": {
-      "title": "加入 Ordinary 社区",
+      "title": "加入 o-kitchen 社区",
       "subtitle": "与全球创作者一起，在去中心化的港口自由创作",
-      "sectionTitle": "Ordinary",
+      "sectionTitle": "o-kitchen",
       "sectionSubtitle": "链上同人创作安全港",
       "description1": "为创作行为提供链上记录",
       "description2": "为作品提供链上托管",
@@ -163,7 +163,7 @@
     }
   },
   "chips": {
-    "title": "薯条证明系统",
+    "title": "链上证明系统",
     "subtitle": "链上证明",
     "description": "基于区块链技术的原创作品认证系统，为每一份原创内容提供不可篡改的所有权证明",
     "howItWorks": {
@@ -233,7 +233,7 @@
       "privacy": "隐私政策",
       "terms": "服务条款"
     },
-    "copyright": "© 2025 Ordinary. 为去中心化同人创作网络倾情打造 ❤️",
+    "copyright": "© 2025 o-kitchen. 为去中心化同人创作网络倾情打造 ❤️",
     "poweredBy": "技术支持"
   }
 }
