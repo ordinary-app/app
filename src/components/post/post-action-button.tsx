@@ -87,7 +87,9 @@ export const ActionButton = ({
   const showLoginActions = !isUserLoggedIn;
   const formattedCount = formatNumber(initialCount);
 
-  const handleClick = async () => {
+  const handleClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
     if (showLoginActions) {
       if (!checkAuthentication(label)) {
         return;

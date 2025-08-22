@@ -1,22 +1,28 @@
 import React from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, Avatar, Text, Group, Stack, Box, Image, ActionIcon, Tooltip } from '@mantine/core';
 import { TokenIdDisplay } from "@/components/token-id-display";
 import { Post } from "@lens-protocol/client";
 import { PostActionsBar } from "./post-actions-bar";
 import { resolveUrl } from "@/utils/resolve-url";
 import { formatTimestamp, checkIfOriginal, extractAttachments, getLicenseType } from "@/utils/post-helpers";
+import { useRouter } from "next/navigation";
 
 interface PostCardProps {
   post: Post;
+  disableNavigation?: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, disableNavigation = false }: PostCardProps) {
+  const router = useRouter();
+
   // Extract data from original Post structure
   const displayName = post.author.metadata?.name || post.author.username?.localName || "Unknown User";
   const handle = post.author.username?.localName || "unknown";
   const avatar = post.author.metadata?.picture ? resolveUrl(post.author.metadata.picture) : "/gull.jpg";
-  const content ="content" in post.metadata && typeof post.metadata.content === "string"
+  const title = "title" in post.metadata && typeof post.metadata.title === "string" && post.metadata.title.trim() !== ""
+    ? post.metadata.title 
+    : "No title available";
+  const content = "content" in post.metadata && typeof post.metadata.content === "string" && post.metadata.content.trim() !== ""
     ? post.metadata.content
     : "No content available";
   const timestamp = formatTimestamp(post.timestamp);
@@ -25,74 +31,128 @@ export function PostCard({ post }: PostCardProps) {
   const attachments = extractAttachments(post.metadata);
   
   return (
-    <Card className="overflow-hidden border border-gray-200 hover:border-gray-300 transition-colors duration-200">
-      {/* Header - Author info */}
-      <CardHeader className="pb-3">
-        <div className="flex items-start gap-3">
-          <Avatar className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">
-            <AvatarImage src={avatar} />
-            <AvatarFallback className="text-sm font-medium">
-              {displayName.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
+    <Card 
+      shadow="sm" 
+      pt="lg" 
+      pb="xs" 
+      pl="lg" 
+      pr="lg" 
+      radius="md" 
+      withBorder
+      style={{
+        cursor: !disableNavigation ? 'pointer' : 'default'
+      }}
+      onClick={() => !disableNavigation && router.push(`/p/${post.id}`)}
+    >
+      {/* Header - Author info with dynamic sizing */}
+      <Group gap="sm" align="flex-start" mb="md">
+        {/* Avatar */}
+        <Avatar 
+          src={avatar} 
+          size="md" 
+          radius="xl"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/u/${handle}`);
+          }}
+          style={{ cursor: 'pointer' }}
+          className="hover:shadow-lg hover:ring-2 hover:ring-gray-400/50 transition-all duration-200"
+        >
+          {displayName.charAt(0)}
+        </Avatar>
+        
+        {/* Author info */}
+        <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
+          {/* Author name and handle */}
+          <Group 
+            gap="xs" 
+            w="nowrap"
+            align="center" 
+          >
+            <Text 
+              size="sm" 
+              fw={600} 
+              c="dark.9" 
+              truncate 
+              style={{ cursor: 'pointer' }}
+              className="hover:underline transition-all duration-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/u/${handle}`);
+              }}
+            >
+              {displayName}
+            </Text>
+            <Text 
+              size="xs" 
+              c="dimmed" 
+              truncate 
+              style={{ cursor: 'pointer' }}
+              className="hover:underline transition-all duration-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/u/${handle}`);
+              }}
+            >
+              @{handle}
+            </Text>
+          </Group>
           
-          <div className="flex-1 min-w-0">
-            {/* Author name and handle */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-              <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base dark:text-gray-100">
-                {displayName}
-              </h3>
-              <div className="flex items-center gap-2">
-                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-200 truncate">
-                  @{handle}
-                </p>
-                <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
-              </div>
-            </div>
-            
-            {/* Timestamp */}
-            <p className="text-xs text-gray-400 mt-1">
-              {timestamp}
-            </p>
-          </div>
-        </div>
-      </CardHeader>
+          {/* Timestamp */}
+          <Text size="xs" c="dimmed">
+            {timestamp}  
+            <TokenIdDisplay uri={post.contentUri} isOriginal={isOriginal} licenseType={licenseType} />
+          </Text>
 
-      {/* Content */}
-      <CardContent className="pt-0 pb-2 space-y-4">
-        {/* Post text content */}
-        <div className="text-gray-800 leading-relaxed text-sm sm:text-base break-words dark:text-gray-200">
+        </Stack>
+      </Group>
+
+      {/* Post Title */}
+      {title !== "No title available" && (
+        <Text size="lg" fw={600} c="dark.9" mb="sm" lineClamp={2}>
+          {title}
+        </Text>
+      )}
+
+      {/* Post Content */}
+      <Box mb="md">
+        <Text size="sm" c="dark.7" lineClamp={5}>
           {content}
-        </div>
-        
-        {/* Media attachments */}
-        {attachments.length > 0 && (
-          <div className={`gap-2 ${
-            attachments.length === 1 
-              ? "flex justify-center" 
-              : attachments.length === 2 
-                ? "grid grid-cols-2" 
-                : "grid grid-cols-2 sm:grid-cols-3"
-          }`}>
+        </Text>
+      </Box>
+      
+      {/* Media attachments */}
+      {attachments.length > 0 && (
+        <Box mb="md" style={{ display: 'flex', alignItems: 'center' }}>
+          <Group gap="xs" justify="left" wrap="wrap">
             {attachments.map((attachment, index) => (
-              <div 
-                key={index} 
-                className="border rounded-lg overflow-hidden bg-gray-50 aspect-square sm:aspect-auto sm:max-h-[400px]"
-              >
-                <img 
-                  loading="lazy" 
-                  alt={`Attachment ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
-                  src={attachment.item} 
-                />
-              </div>
+              <Image
+                key={index}
+                src={attachment.item}
+                alt={`Attachment ${index + 1}`}
+                radius="md"
+                w={{ base: '80px', sm: '170px', md: '170px' }}
+                h={{ base: '80px', sm: '170px', md: '170px' }}
+                style={{ 
+                  objectFit: 'cover',
+                  flexShrink: 0,
+                  transition: 'transform 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              />
             ))}
-          </div>
-        )}
-        
-        {/* Actions bar */}
+          </Group>
+        </Box>
+      )}
+      
+      {/* Actions bar */}
         <PostActionsBar post={post} />
-      </CardContent>
     </Card>
   );
 }
