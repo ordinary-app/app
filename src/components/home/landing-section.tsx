@@ -17,7 +17,7 @@ export function LandingSection() {
   return (
     <section className="relative sm:py-20 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white max-auto mx-auto">
       {/* Harbor Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30 dark:from-black dark:via-gray-900 dark:to-gray-800" />
 
       {/* Animated Harbor Elements */}
       <div className="absolute top-10 right-10 opacity-15 float-animation ">
@@ -83,64 +83,64 @@ export function LandingSection() {
                   {t("subtitleFull")}
                 </span>
                 <br />
-                <span className="text-2xl text-neutral-600">
+                <span className="text-2xl text-neutral-600 dark:text-neutral-400">
                   {t("tagline")}
                 </span>
               </h1>
 
-              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline">
+              <p className="text-lg text-neutral-600 w-full max-w-full sm:max-w-xl text-left hidden sm:inline dark:text-neutral-400">
                 {t("description")}
               </p>
             </div>
 
             {/* Core Principles */}
             <div className="grid grid-cols-2 gap-4 max-w-full w-full overflow-x-auto sm:gap-7 sm:max-w-xl sm:w-full mt-8 mb-8">
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
                       (001)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.antiCensorship")}
                     </span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
                       (010)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.respectOriginality")}
                     </span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-500">
                       (011)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.decentralized")}
                     </span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto">
+              <Card className="border-harbor-200 bg-white hover:bg-harbor-50/50 transition-colors min-w-[160px] max-w-xs w-full mx-auto dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-mono text-harbor-600">
                       (100)
                     </span>
-                    <span className="text-sm font-medium text-neutral-700">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                       {t("principles.poweredByLove")}
                     </span>
                   </div>
@@ -176,7 +176,7 @@ export function LandingSection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto"
+                className="border-harbor-300 text-harbor-700 hover:bg-harbor-50 bg-white font-semibold w-full sm:w-auto dark:bg-gray-800 dark:border-gray-700 dark:text-neutral-300 dark:hover:bg-gray-700"
               >
                 <Link href="/feed"> {t("explore")} </Link>
               </Button>

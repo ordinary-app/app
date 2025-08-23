@@ -10,7 +10,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-  
+
   /* Masonry layout styles */
   .masonry-columns {
     column-count: 1;
@@ -39,7 +39,7 @@ body {
     break-inside: avoid;
     margin-bottom: 1.5rem;
   }
-  
+
   /* Fade-in animation */
   @keyframes fade-in {
     from {
@@ -51,7 +51,7 @@ body {
       transform: translateY(0);
     }
   }
-  
+
   .animate-fade-in {
     animation: fade-in 0.3s ease-out forwards;
   }
@@ -59,7 +59,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 100%; /* 白色 */
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -168,12 +168,15 @@ body {
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
+    --card-foreground: 222.2 84% 4.9%;
+    --text-card-foreground: 222.2 84% 4.9%;
+    --popover: 220 9% 16%; /*bg-gray-800*/
     --popover-foreground: 210 40% 98%;
     --primary: 199 89% 48%;
     --primary-foreground: 222.2 84% 4.9%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 220 9% 16%;
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
@@ -194,7 +197,7 @@ body {
   }
 }
 
-/* Ordinary Harbor Theme Custom Styles */
+/* o-kitchen Harbor Theme Custom Styles */
 @layer components {
   .harbor-gradient {
     @apply bg-harbor-gradient;
@@ -212,7 +215,7 @@ body {
     @apply bg-harbor-gradient hover:shadow-lg hover:shadow-harbor-500/25 transition-all duration-300;
   }
 
-  /* Ordinary Chip Theme Custom Styles */
+  /* o-kitchen Chip Theme Custom Styles */
   .chip-gradient {
     @apply bg-chip-gradient;
   }
@@ -252,14 +255,28 @@ body {
 
 /* Harbor Wave Background Pattern */
 .harbor-wave-bg {
-  background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 25%, #bae6fd 50%, #7dd3fc 75%, #38bdf8 100%);
+  background: linear-gradient(
+    90deg,
+    #f0f9ff 0%,
+    #e0f2fe 25%,
+    #bae6fd 50%,
+    #7dd3fc 75%,
+    #38bdf8 100%
+  );
   background-size: 200% 100%;
   animation: wave-flow 8s ease-in-out infinite;
 }
 
 /* Chip Golden Background Pattern */
 .chip-wave-bg {
-  background: linear-gradient(90deg, #fef3c7 0%, #fde68a 25%, #fcd34d 50%, #fbbf24 75%, #f59e0b 100%);
+  background: linear-gradient(
+    90deg,
+    #fef3c7 0%,
+    #fde68a 25%,
+    #fcd34d 50%,
+    #fbbf24 75%,
+    #f59e0b 100%
+  );
   background-size: 200% 100%;
   animation: wave-flow 8s ease-in-out infinite;
 }

@@ -25,7 +25,7 @@ export function DetailSection() {
   return (
     <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       {/* Harbor Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-harbor-50/30 via-white to-harbor-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800" />
 
       {/* Floating Harbor Elements */}
       <div className="absolute top-20 left-10 opacity-8 float-animation">
@@ -50,15 +50,15 @@ export function DetailSection() {
       <div className="relative max-w-7xl mx-auto">
         {/* Project Vision */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
+          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             {/*<div className="text-harbor-500">🚢</div>*/}
-            <span className="text-harbor-700 font-medium">
+            <span className="text-harbor-700 font-medium dark:text-harbor-500">
               {t("sectionTitle")}
             </span>
             {/*<div className="text-harbor-500">🚢</div>*/}
           </div>
 
-          <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
+          <h2 className="text-5xl sm:text-6xl font-bold text-neutral-900 mb-8 leading-tight dark:text-neutral-100">
             <p className="mb-4">{t("mainTitle")}</p>
             <span className="bg-gradient-to-r from-harbor-600 via-harbor-500 to-harbor-400 bg-clip-text text-transparent">
               {t("mainTitleHighlight")}
@@ -66,10 +66,10 @@ export function DetailSection() {
           </h2>
 
           <div className="max-w-4xl mx-auto space-y-4">
-            <p className="text-2xl text-neutral-700 leading-relaxed">
+            <p className="text-2xl text-neutral-700 leading-relaxed dark:text-neutral-300">
               {t("platformDescription")}
             </p>
-            <p className="text-lg text-neutral-600 leading-relaxed">
+            <p className="text-lg text-neutral-600 leading-relaxed dark:text-neutral-400">
               {t("protocolDescription")}
             </p>
           </div>
@@ -84,28 +84,28 @@ export function DetailSection() {
 
         {/* Core Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 "></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
                 <div className="p-3 bg-gradient-to-br from-harbor-500 to-harbor-700 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   <Shield className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.antiCensorship.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.antiCensorship.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
@@ -113,20 +113,20 @@ export function DetailSection() {
                   <Heart className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.dataProof.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed mb-4">
+              <p className="text-neutral-700 leading-relaxed mb-4 dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.dataProof.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
@@ -134,20 +134,20 @@ export function DetailSection() {
                   <Users className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.decentralized.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.decentralized.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
@@ -155,20 +155,20 @@ export function DetailSection() {
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.poweredByLove.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.poweredByLove.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
@@ -176,20 +176,20 @@ export function DetailSection() {
                   <Coins className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.coinExchange.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.coinExchange.description")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden">
+          <Card className="group border border-harbor-200 bg-white hover:shadow-xl hover:scale-105 transition-all duration-500 relative overflow-hidden dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/50 to-harbor-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <CardHeader className="relative z-10">
               <div className="flex items-center space-x-4">
@@ -197,14 +197,14 @@ export function DetailSection() {
                   <Globe className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-neutral-900 text-xl">
+                  <CardTitle className="text-neutral-900 text-xl dark:text-neutral-100">
                     {t("features.anonymousCommunity.title")}
                   </CardTitle>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed dark:text-neutral-300 dark:border-neutral-300">
                 {t("features.anonymousCommunity.description")}
               </p>
             </CardContent>
@@ -279,23 +279,23 @@ export function DetailSection() {
 
         {/* Roadmap */}
         <div className="text-center mb-32 mt-24">
-          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm">
+          <div className="inline-flex items-center space-x-2 bg-white border border-harbor-200 px-6 py-3 rounded-full mb-8 shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             {/*<div className="text-lg">🗺️</div>*/}
-            <span className="text-harbor-700 font-medium">
+            <span className="text-harbor-700 font-medium dark:text-harbor-500">
               {t("roadmap.title")}
             </span>
           </div>
 
-          <h3 className="text-4xl font-bold text-neutral-900 mb-4">
+          <h3 className="text-4xl font-bold text-neutral-900 mb-4 dark:text-neutral-100">
             {t("roadmap.title")}
           </h3>
-          <p className="text-lg text-neutral-600 mb-12">
+          <p className="text-lg text-neutral-600 mb-12 dark:text-neutral-400">
             {t("roadmap.subtitle")}
           </p>
 
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="group relative overflow-hidden border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105">
+              <Card className="group relative overflow-hidden border border-harbor-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-harbor-500 to-harbor-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-harbor-50/30 to-harbor-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
@@ -305,21 +305,21 @@ export function DetailSection() {
                     </Badge>
                     <div className="text-2xl">🚀</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">
+                  <CardTitle className="text-2xl text-neutral-900 dark:text-neutral-100">
                     {t("roadmap.phase1.title")}
                   </CardTitle>
-                  <p className="text-neutral-600">
+                  <p className="text-neutral-600 dark:text-neutral-200">
                     {t("roadmap.phase1.subtitle")}
                   </p>
                 </CardHeader>
-                <CardContent className="relative z-10">
+                <CardContent className="relative z-10 dark:text-neutral-300">
                   <ul className="space-y-3 text-left">
                     {t
                       .raw("roadmap.phase1.features")
                       .map((feature: string, index: number) => (
                         <li
                           key={index}
-                          className="flex items-center space-x-3 text-neutral-700"
+                          className="flex items-center space-x-3 text-neutral-700 dark:text-neutral-300"
                         >
                           <div className="w-2 h-2 bg-harbor-500 rounded-full"></div>
                           <span>{feature}</span>
@@ -329,7 +329,7 @@ export function DetailSection() {
                 </CardContent>
               </Card>
 
-              <Card className="group relative overflow-hidden border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105">
+              <Card className="group relative overflow-hidden border border-success-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-success-500 to-success-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-success-50/30 to-success-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
@@ -339,21 +339,21 @@ export function DetailSection() {
                     </Badge>
                     <div className="text-2xl">💬</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">
+                  <CardTitle className="text-2xl text-neutral-900 dark:text-neutral-100">
                     {t("roadmap.phase2.title")}
                   </CardTitle>
-                  <p className="text-neutral-600">
+                  <p className="text-neutral-600 dark:text-neutral-200">
                     {t("roadmap.phase2.subtitle")}
                   </p>
                 </CardHeader>
-                <CardContent className="relative z-10">
+                <CardContent className="relative z-10 dark:text-neutral-300">
                   <ul className="space-y-3 text-left">
                     {t
                       .raw("roadmap.phase2.features")
                       .map((feature: string, index: number) => (
                         <li
                           key={index}
-                          className="flex items-center space-x-3 text-neutral-700"
+                          className="flex items-center space-x-3 text-neutral-700 dark:text-neutral-300"
                         >
                           <div className="w-2 h-2 bg-success-500 rounded-full"></div>
                           <span>{feature}</span>
@@ -363,7 +363,7 @@ export function DetailSection() {
                 </CardContent>
               </Card>
 
-              <Card className="group relative overflow-hidden border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105">
+              <Card className="group relative overflow-hidden border border-warning-200 bg-white hover:shadow-xl transition-all duration-500 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-warning-500 to-warning-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-warning-50/30 to-warning-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
@@ -373,21 +373,21 @@ export function DetailSection() {
                     </Badge>
                     <div className="text-2xl">🌟</div>
                   </div>
-                  <CardTitle className="text-2xl text-neutral-900">
+                  <CardTitle className="text-2xl text-neutral-900 dark:text-neutral-100">
                     {t("roadmap.phase3.title")}
                   </CardTitle>
-                  <p className="text-neutral-600">
+                  <p className="text-neutral-600 dark:text-neutral-200">
                     {t("roadmap.phase3.subtitle")}
                   </p>
                 </CardHeader>
-                <CardContent className="relative z-10">
+                <CardContent className="relative z-10 dark:text-neutral-300">
                   <ul className="space-y-3 text-left">
                     {t
                       .raw("roadmap.phase3.features")
                       .map((feature: string, index: number) => (
                         <li
                           key={index}
-                          className="flex items-center space-x-3 text-neutral-700"
+                          className="flex items-center space-x-3 text-neutral-700 dark:text-neutral-300"
                         >
                           <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
                           <span>{feature}</span>

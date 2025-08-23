@@ -1,31 +1,24 @@
-# Ordinary app
+> [!WARNING]
+>  The o-kitchen app is still in prototyping and early development.
 
-[![License: AGPL](https://img.shields.io/badge/License-AGPL-purple.svg)](https://opensource.org/licenses/agpl-v3)
-[![Lens Protocol](https://img.shields.io/badge/Protocol-Lens-dark.svg)](https://lens.xyz/docs/protocol)
-[![Grove](https://img.shields.io/badge/Storage-Grove-orange.svg)](https://lens.xyz/docs/storage)
+## o-kitchen app
+
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.16-blue.svg)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22.16.0-green.svg)](https://nodejs.org/)
+[![Lens Protocol](https://img.shields.io/badge/Protocol-Lens-dark.svg)](https://lens.xyz/docs/protocol)
+[![Grove](https://img.shields.io/badge/Storage-Grove-orange.svg)](https://lens.xyz/docs/storage)
+[![License: AGPL](https://img.shields.io/badge/License-AGPL-purple.svg)](https://opensource.org/licenses/agpl-v3)
 
-> **Note:** The Ordinary app is still in early development.
+- A decentralized harbor for fandoms. 
 
-A decentralized harbor for fandoms. 
+- An alternative to Tumblr, Pixiv and Lofter.
 
-An alternative to Tumblr, Pixiv and Lofter.
-
-Ship and preserve your fanworks on-chain.
-
----
+- Ship and preserve your fanworks on-chain.
 
 
-[Feed 架构说明（zh）](./docs/FEED_ARCHITECTURE_CN.md)  
 
-[Post Actions 架构说明（en）](./docs/POST_ACTIONS_ARCHITECTURE.md)
-
----
-
+### Getting Started
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
 
 First, run the development server:
 
@@ -39,7 +32,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+### Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -48,7 +41,7 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 

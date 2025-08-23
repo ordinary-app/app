@@ -70,7 +70,7 @@ const config: Config = {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			},
-  			// Ordinary Harbor Blue Palette (Primary)
+  			// o-kitchen Harbor Blue Palette (Primary)
   			harbor: {
   				50: "#f0f9ff", // 泡沫白 - Foam White
   				100: "#e0f2fe", // 浅泡沫 - Light Foam
@@ -84,7 +84,7 @@ const config: Config = {
   				900: "#0c4a6e", // 深渊蓝 - Abyss Blue
   				950: "#082f49", // 最深海蓝 - Deepest Sea
   			},
-			// Ordinary CHIPS Palette (For chip-related elements)
+			// o-kitchen CHIPS Palette (For chip-related elements)
 			chip: {
 				50: "#fffbeb", // 薯条浅黄 - Light Chip Yellow
 				100: "#fef3c7", // 浅金黄 - Light Golden

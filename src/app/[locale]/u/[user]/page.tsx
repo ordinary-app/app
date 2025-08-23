@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { fetchAccount } from "@lens-protocol/client/actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -9,8 +10,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Edit, Calendar, LinkIcon, Heart, MessageCircle, Share, Bookmark, Loader2, ScanLine, CopyIcon } from "lucide-react"
 import { TokenIdDisplay } from "@/components/token-id-display"
-//import { usePosts } from "@lens-protocol/react";
-//import dayjs from 'dayjs';
 import { ProfileEdit } from "@/components/auth/profile-edit";
 import { resolveUrl } from "@/utils/resolve-url";
 import { useLensAuthStore } from "@/stores/auth-store"
@@ -21,11 +20,16 @@ import { PostList } from "@/components/feed/post-list";
 import { useFeed } from "@/hooks/use-feed";
 import { getLicenseType } from "@/utils/post-helpers";
 import { FeedFloatingActions } from "@/components/feed/feed-floating-actions"
+import { useParams } from 'next/navigation';
 import { useFeedContext } from "@/contexts/feed-context";
 
-export default function ProfilePage() {
+export default function UserPage() {
+  const params = useParams();
+  const username = params.user as string;
+  
   const { viewMode } = useFeedContext();
-  const { currentProfile } = useLensAuthStore();
+
+  const { currentProfile, client } = useLensAuthStore();
   const { checkAuthentication } = useAuthCheck();
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [stats, setStats] = useState({
@@ -35,10 +39,60 @@ export default function ProfilePage() {
     Scores: "n/a",
   })
 
-  // Memoize the profile address to prevent unnecessary re-renders
-  const profileAddress = useMemo(() => currentProfile?.address, [currentProfile?.address]);
+  // 目标用户的profile信息
+  const [targetProfile, setTargetProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
 
-  // 用 useFeed 获取 profile 帖子
+  // 获取目标用户profile信息
+  useEffect(() => {
+    const fetchTargetProfile = async () => {
+      try {
+        setProfileLoading(true);
+        
+        const result = await fetchAccount(client, {
+          username: {
+            localName: username,
+          },
+        });
+
+        if (result.isErr()) {
+          console.error('Failed to fetch account:', result.error);
+          setTargetProfile(null);
+          return;
+        }
+
+        const account = result.value;
+        if (account) {
+          setTargetProfile({
+            username: account.username?.localName || username,
+            name: account.metadata?.name || username,
+            bio: account.metadata?.bio || "No bio available",
+            picture: account.metadata?.picture || "/gull.jpg",
+            address: account.address
+          });
+        } else {
+          setTargetProfile(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        setTargetProfile(null);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    if (username) {
+      fetchTargetProfile();
+    }
+  }, [username]);
+
+  // 判断是否为当前用户的profile
+  const isOwnProfile = useMemo(() => 
+    currentProfile?.username?.localName === username, 
+    [currentProfile?.username?.localName, username]
+  );
+
+  // 用 useFeed 获取目标用户的帖子
   const {
     posts: userPosts,
     loading,
@@ -46,7 +100,25 @@ export default function ProfilePage() {
     refreshing,
     lastRefreshTime,
     handleRefresh,
-  } = useFeed({ type: "profile", profileAddress });
+  } = useFeed({ type: "profile", profileAddress: targetProfile?.address });
+
+  // 如果正在加载目标用户信息，显示加载状态
+  if (profileLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  // 如果目标用户不存在，显示错误状态
+  if (!targetProfile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-500">User not found</div>
+      </div>
+    );
+  }
 
   return (
     <TooltipProvider>
@@ -57,36 +129,23 @@ export default function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={currentProfile?.metadata?.picture || "/gull.jpg"} />
+                  <AvatarImage src={targetProfile?.picture || "/gull.jpg"} />
                   <AvatarFallback className="text-2xl">
-                    {currentProfile?.username?.localName?.charAt(0)?.toUpperCase() || "U"}
+                    {targetProfile?.name?.charAt(0)?.toUpperCase() || "U"}
                   </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h1 className="text-3xl font-bold">{currentProfile?.metadata?.name || currentProfile?.username?.localName || "Anonymous User"}</h1>
+                    <h1 className="text-3xl font-bold">{targetProfile?.name || "Anonymous User"}</h1>
                   </div>
 
-                  <p className="text-gray-600 mb-2">@{currentProfile?.username?.localName || "anonymous"}</p>
+                  <p className="text-gray-600 mb-2">@{targetProfile?.username || "anonymous"}</p>
 
                   <p className="text-gray-800 mb-4 max-w-2xl">
-                    {currentProfile?.metadata?.bio ||
+                    {targetProfile?.bio ||
                       "Building the future of decentralized social networks. Passionate about Web3, blockchain technology, and creating meaningful connections."}
                   </p>
-
-                  {/*<div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      Joined March 2024
-                    </div>
-                    <div className="flex items-center">
-                      <LinkIcon className="h-4 w-4 mr-1" />
-                      <a href="#" className="text-blue-600 hover:underline">
-                        portfolio.example.com
-                      </a>
-                    </div>
-                  </div>*/}
 
                   <div className="flex items-center space-x-6 mb-4">
                     <div className="text-center">
@@ -108,18 +167,21 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <Button 
-                  className="self-start chip-button" 
-                  onClick={() => {
-                    if (!checkAuthentication("编辑个人资料")) {
-                      return;
-                    }
-                    setIsEditOpen(true);
-                  }}
-                >
-                  <Edit className="h-4 w-4" />
-                  Edit
-                </Button>
+                {/* 只有自己的profile才显示编辑按钮 */}
+                {isOwnProfile && (
+                  <Button 
+                    className="self-start chip-button" 
+                    onClick={() => {
+                      if (!checkAuthentication("编辑个人资料")) {
+                        return;
+                      }
+                      setIsEditOpen(true);
+                    }}
+                  >
+                    <Edit className="h-4 w-4" />
+                    Edit
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -153,13 +215,6 @@ export default function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                   {(userPosts || [])
-                    // .filter((post: any) => {
-                    //   // Check if post is original based on license attribute
-                    //   const metadata = post.metadata;
-                    //   if (!metadata?.attributes) return false;
-                    //   const licenseAttr = metadata.attributes.find((attr: any) => attr.key === "license");
-                    //   return licenseAttr && licenseAttr.value && licenseAttr.value !== null && licenseAttr.value !== "";
-                    // })
                     .map((post: any) => {
                       const content = post.metadata?.content || "No content available";
                       const timestamp = new Date(post.timestamp).toLocaleDateString();
@@ -226,10 +281,13 @@ export default function ProfilePage() {
         </div>
       </main>
       
-      <ProfileEdit 
-        open={isEditOpen} 
-        onClose={() => setIsEditOpen(false)} 
-      />
+      {/* 只有自己的profile才显示编辑弹窗 */}
+      {isOwnProfile && (
+        <ProfileEdit 
+          open={isEditOpen} 
+          onClose={() => setIsEditOpen(false)} 
+        />
+      )}
 
       <FeedFloatingActions
         onRefresh={handleRefresh}

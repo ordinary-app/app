@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Settings, LogOut, Menu, X } from "lucide-react";
+import { User, Settings, LogOut, Menu, X, Sun, Moon, Monitor, Languages } from "lucide-react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import { useLensAuthStore } from "@/stores/auth-store";
@@ -21,6 +21,9 @@ import { UserAvatar } from "@/components/user-avatar";
 import { toast } from "sonner";
 import copy from "copy-to-clipboard";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import { useLocale } from "next-intl";
+import { useRouter as useIntlRouter } from "@/i18n/navigation";
 
 export default function Header() {
   const t = useTranslations("header");
@@ -33,6 +36,17 @@ export default function Header() {
   const { setProfileSelectModalOpen } = useProfileSelectStore();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const locale = useLocale();
+  const intlRouter = useIntlRouter();
+
+  // TODO: fix this
+  const handleLanguageChange = (newLocale: string) => {
+    // Remove the current locale prefix from pathname
+    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/";
+    // Navigate to the new locale path
+    intlRouter.push(pathWithoutLocale, { locale: newLocale });
+  };
 
   useEffect(() => {
     // handle wagmi wallet connect error
@@ -51,7 +65,7 @@ export default function Header() {
   const navItems = [
     { href: "/", label: navT("home") },
     { href: "/feed", label: navT("feed") },
-    //{ href: '/discover', label: navT('discover') },
+    { href: '/discover', label: navT('discover') },
     { href: "/what-is-chip", label: navT("onchainProof") },
   ];
 
@@ -63,9 +77,9 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:bg-gray-900 dark:border-gray-800 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12 md:h-14">
+        <div className="flex items-center justify-between h-12 md:h-14 ">
           {/* Mobile menu button */}
           <Button
             variant="ghost"
@@ -83,7 +97,7 @@ export default function Header() {
           <Link href="/" className="hidden md:flex items-center space-x-2">
             <div className="text-2xl"></div>
             <div className="font-bold text-xl bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 bg-clip-text text-transparent">
-              Ordinary
+              o-kitchen
             </div>
           </Link>
           {/* Desktop Navigation */}
@@ -94,8 +108,8 @@ export default function Header() {
                 <Link
                   key={href}
                   href={href}
-                  className={`font-medium transition-colors text-gray-600 hover:text-harbor-600 cursor-pointer ${
-                    isActive ? "text-harbor-600" : ""
+                  className={`font-medium transition-colors text-gray-600 hover:text-orange-600 cursor-pointer dark:text-gray-300 ${
+                    isActive ? "text-orange-600" : ""
                   }`}
                 >
                   {label}
@@ -105,6 +119,60 @@ export default function Header() {
           </nav>
           {/* User Actions */}
           <div className="flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  {theme === "light" ? (
+                    <Sun className="h-4 w-4" />
+                  ) : theme === "dark" ? (
+                    <Moon className="h-4 w-4" />
+                  ) : (
+                    <Monitor className="h-4 w-4" />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  <Sun className="mr-2 h-4 w-4" />
+                  <span>Light</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  <Moon className="mr-2 h-4 w-4" />
+                  <span>Dark</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>
+                  <Monitor className="mr-2 h-4 w-4" />
+                  <span>System</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Language Toggle */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild disabled={true}>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                >
+                  <Languages className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-32" >
+                <DropdownMenuItem 
+                  onClick={() => handleLanguageChange("zh")}
+                >
+                  <span>中文</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => handleLanguageChange("en")}
+                >
+                  <span>English</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Create Button - 只在用户登录时显示 */}
             {currentProfile && (
               <Button
@@ -143,10 +211,10 @@ export default function Header() {
                 >
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">
+                      <p className="font-medium dark:text-neutral-100 text-gray-800">
                         @{currentProfile?.username?.localName || t("anonymous")}
                       </p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      <p className="w-[200px] truncate text-sm text-muted-foreground dark:text-neutral-400">
                         {currentProfile?.metadata?.bio || t("fanworkLover")}
                       </p>
                     </div>
@@ -250,6 +318,76 @@ export default function Header() {
               >
                 {navT("onchainProof")}
               </Link>
+              <Link
+                href="/discover"
+                className="text-gray-600 hover:text-gray-800 transition-colors py-2 font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {navT("discover")}
+              </Link>
+
+              {/* Mobile Theme and Language Switches */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                {/* Theme Toggle */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">主题:</span>
+                  <div className="flex space-x-1">
+                    <Button
+                      variant={theme === "light" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setTheme("light")}
+                      className="h-8 px-2"
+                    >
+                      <Sun className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant={theme === "dark" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setTheme("dark")}
+                      className="h-8 px-2"
+                    >
+                      <Moon className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant={theme === "system" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setTheme("system")}
+                      className="h-8 px-2"
+                    >
+                      <Monitor className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Language Toggle */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">语言:</span>
+                  <div className="flex space-x-1">
+                    <Button
+                      variant={locale === "zh" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        handleLanguageChange("zh");
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="h-8 px-2"
+                    >
+                      中
+                    </Button>
+                    <Button
+                      variant={locale === "en" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        handleLanguageChange("en");
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="h-8 px-2"
+                    >
+                      EN
+                    </Button>
+                  </div>
+                </div>
+              </div>
 
               {/* {!currentProfile && (
                 <ConnectKitButton.Custom>

@@ -187,17 +187,17 @@ export default function CreatePage() {
     }
 
     if (!selectedRating) {
-      toast.error("请选择作品分类-分级")
+      toast.error("请选择投稿分类-分级")
       return
     }
 
     if (!selectedWarnings) {
-      toast.error("请选择作品分类-警告")
+      toast.error("请选择投稿分类-警告")
       return
     }
     
     if (!selectedCategories) {
-      toast.error("请选择作品分类-频道")
+      toast.error("请选择投稿分类-频道")
       return
     }
 
@@ -331,10 +331,10 @@ export default function CreatePage() {
         const txHash = await walletClient?.writeContract(result.request);
        
         toast.success("CHIPS +1", {
-          description: `View on explorer: ${explorerUrl}${txHash}`,
+          description: `View on explorer: ${explorerUrl}tx/${txHash}`,
             action: {
               label: 'copy',
-              onClick: () => copy(`${explorerUrl}${txHash}`)
+              onClick: () => copy(`${explorerUrl}tx/${txHash}`)
             },
         })
       }
@@ -372,7 +372,7 @@ export default function CreatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Development Toast */}
       <Toast
         show={showDevelopmentToast}
@@ -385,16 +385,16 @@ export default function CreatePage() {
 
       <main className="container mx-auto px-4 py-3 pb-4">
         <div className="max-w-2xl mx-auto">
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900">
+              <CardTitle className="flex items-center space-x-2 text-lg text-zinc-900 dark:text-neutral-100 font-semibold">
                 <FileText className="h-5 w-5" />
                 <span>Upload New Work</span>
               </CardTitle>
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 dark:text-neutral-300">
                 
                 {/* Unified Editor */}
                 <div className="space-y-4">
@@ -489,7 +489,7 @@ export default function CreatePage() {
                                   <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
                                   <span className="font-semibold text-sm">Token Bound NFT License</span>
                                 </div>
-                                <p className="text-xs text-gray-600">基于区块链的许可证(将铸造NFT TOKEN(sepolia)，功能测试中🍟)</p>
+                                <p className="text-xs text-gray-600">基于区块链的许可证，铸造稿件为 NFT (消耗sepolia测试币)</p>
                               </button>
 
                               <button
@@ -761,7 +761,7 @@ export default function CreatePage() {
                           <Settings className="h-5 w-5 text-zinc-700 group-hover:rotate-180 transition-transform " />
                         </div>
                         <div className="flex gap-1 text-sm font-medium text-zinc-700">
-                          作品分类<div className="text-destructive">*</div>
+                          投稿分类<div className="text-destructive">*</div>
                         </div>
                       </div>
                     </Button>
@@ -771,7 +771,7 @@ export default function CreatePage() {
                     <DialogHeader className="border-b border-gray-100 pb-4">
                       <div className="flex items-center justify-center gap-2">
                         <Settings className="h-4 w-4 text-zinc-900" />
-                        <DialogTitle className="text-l font-semibold text-gray-800 text-center">作品分类</DialogTitle>
+                        <DialogTitle className="text-l font-semibold text-gray-800 text-center">投稿分类</DialogTitle>
                       </div>
                     </DialogHeader>
 

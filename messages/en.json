@@ -54,15 +54,15 @@
     "comment": "Comment"
   },
   "home": {
-    "title": "Ordinary",
+    "title": "o-kitchen",
     "subtitle": "/ Decentralized ",
     "subtitleFull": "Fandoms /",
-    "description": "Ordinary is a nonprofit decentralized social platform for fanworks powered by open-source blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.",
+    "description": "o-kitchen is a nonprofit decentralized social platform for fanworks powered by open-source blockchain protocol. Protecting freedom of creativity and publishing rights for fanart creators.",
     "connectWallet": "Connect Wallet",
     "getStarted": "Start Here",
     "readMore": "Read More",
     "learnMore": "Explore",
-    "cta": "Go to the Chip Harbor! 》》",
+    "cta": "Go to the o-kitchen! >>",
     "tagline": "A SAFE HARBOR FOR FANDOMS",
     "explore": "Explore",
     "principles": {
@@ -160,9 +160,9 @@
       }
     },
     "cta": {
-      "title": "Join Ordinary Community",
+      "title": "Join o-kitchen Community",
       "subtitle": "Create freely with global creators in a decentralized harbor",
-      "sectionTitle": "Ordinary",
+      "sectionTitle": "o-kitchen",
       "sectionSubtitle": "Decentralized Fandoms",
       "description1": "On-chain records for publishing",
       "description2": "On-chain hosting for fanworks",
@@ -241,7 +241,7 @@
       "privacy": "Privacy Policy",
       "terms": "Terms of Service"
     },
-    "copyright": "© 2025 Ordinary. Built with ❤️ for the decentralized fanart networks.",
+    "copyright": "© 2025 o-kitchen. Built with ❤️ for the decentralized fanart networks.",
     "poweredBy": "Powered by"
   }
 }

@@ -38,10 +38,14 @@ import { TagFilterSidebar } from "@/components/feed/tag-filter-sidebar";
 import { FeedViewToggle } from "@/components/feed/feed-view-toggle";
 import { useFeed } from "@/hooks/use-feed";
 import { useTranslations } from "next-intl";
+import { FeedHeader } from "@/components/feed/feed-header";
+import { useFeedContext } from "@/contexts/feed-context";
+import { FeedFloatingActions } from "@/components/feed/feed-floating-actions";
 
 export function Feed() {
   const t = useTranslations("feed");
   
+  const { viewMode } = useFeedContext();
   const {
     posts,
     loading,
@@ -66,8 +70,8 @@ export function Feed() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* 错误信息显示 */}
+      <div className={`${viewMode === 'list' ? 'max-w-xl' : 'max-w-5xl'} mx-auto space-y-6`}>
+        {/* 出错提示 */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
@@ -75,7 +79,7 @@ export function Feed() {
         )}
         
         {/* 新帖子提示 */}
-        {newPostsAvailable && (
+        {/*newPostsAvailable && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
             <Button
               onClick={handleLoadNewPosts}
@@ -88,6 +92,8 @@ export function Feed() {
           </div>
         )}
         
+        )*/}
+        {/* 帖子导航栏 */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">
             {selectedTags.length > 0 
@@ -118,6 +124,7 @@ export function Feed() {
               </Button>
             </div>
           )}
+          <FeedHeader />
         </div>
         
         {/* 主内容布局：左侧标签过滤，右侧视图切换+内容 */}
@@ -153,6 +160,13 @@ export function Feed() {
         
         
         
+        {/* 帖子列表 */}
+        <PostList
+          posts={posts || []}
+          loading={loading || loadingMore}
+          emptyText="No More"
+          skeletonCount={6}
+        />
         {/* 加载更多按钮 */}
         {hasMore && (
           <div className="flex justify-center mt-6 mb-12">
@@ -165,6 +179,12 @@ export function Feed() {
             </Button>
           </div>
         )}
+        {/* 浮动操作栏 */}
+        <FeedFloatingActions
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
+          lastRefreshTime={lastRefreshTime}
+        />
       </div>
     </TooltipProvider>
   );

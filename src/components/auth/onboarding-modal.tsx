@@ -291,7 +291,7 @@ export function OnboardingModal({ open, onOpenChange, onSuccess }: OnboardingMod
         </DialogHeader>
         <div className="flex-1 flex gap-4 flex-col">
           <p className="text-xs text-muted-foreground">
-            Welcome to Ordinary! Let's start by choosing your username. Make it a good one - this can't be changed
+            Welcome to o-kitchen! Let's start by choosing your username. Make it a good one - this can't be changed
             later.
           </p>
           <div className="space-y-6">
