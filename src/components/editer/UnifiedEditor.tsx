@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, Plus, X, Search, Expand, Globe } from "lucide-react"
 import { TagDisplay } from "@/components/ui/tag-display"
+import { formatText as formatTextUtil } from "@/utils/text-editor"
 //import { Input } from "@/components/ui/input"
 
 
@@ -107,8 +108,18 @@ export function UnifiedEditor({
   }
 
   const formatText = (format: string) => {
-    // This would implement text formatting logic
-    console.log(`Formatting text with: ${format}`)
+    if (contentRef.current) {
+      formatTextUtil(contentRef.current, format);
+      // Update the content state to reflect the changes
+      const newContent = contentRef.current.value;
+      onContentChange(newContent);
+      // Update character count
+      setCharacterCount(newContent.length);
+      
+      // Auto-resize textarea
+      contentRef.current.style.height = "auto";
+      contentRef.current.style.height = contentRef.current.scrollHeight + "px";
+    }
   }
 
   const openTagModal = () => {
