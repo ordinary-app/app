@@ -5,9 +5,9 @@ import { useState, useRef, useCallback, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { 
-  Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, 
-  Plus, X, Search, Expand, Globe, TrendingUp, Users, RefreshCw 
+import {
+  Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare,
+  Plus, X, Search, Expand, Globe, TrendingUp, Users, RefreshCw
 } from "lucide-react"
 import { TagDisplay } from "@/components/ui/tag-display"
 import { useTagsWithStats, useTagSort } from "@/hooks/use-tags"
@@ -56,11 +56,11 @@ const FORMAT_OPTIONS = [
 ]
 
 // Sub-components
-const TitleInput = ({ 
-  title, 
-  onTitleChange, 
-  titleRef, 
-  t 
+const TitleInput = ({
+  title,
+  onTitleChange,
+  titleRef,
+  t
 }: {
   title: string
   onTitleChange: (title: string) => void
@@ -70,7 +70,7 @@ const TitleInput = ({
   const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
     onTitleChange(value)
-    
+
     // Auto-resize
     if (titleRef.current) {
       titleRef.current.style.height = "auto"
@@ -90,18 +90,18 @@ const TitleInput = ({
         maxLength={30}
       />
       <div className="flex gap-1 text-xs text-muted-foreground">
-        {title.length}/30 
+        {title.length}/30
         <div className="text-destructive">*</div>
       </div>
     </div>
   )
 }
 
-const ContentInput = ({ 
-  content, 
-  onContentChange, 
-  contentRef, 
-  t 
+const ContentInput = ({
+  content,
+  onContentChange,
+  contentRef,
+  t
 }: {
   content: string
   onContentChange: (content: string) => void
@@ -111,7 +111,7 @@ const ContentInput = ({
   const handleContentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
     onContentChange(value)
-    
+
     // Auto-resize
     if (contentRef.current) {
       contentRef.current.style.height = "auto"
@@ -137,10 +137,10 @@ const ContentInput = ({
   )
 }
 
-const TagDisplay = ({ 
-  tags, 
-  onRemove, 
-  t 
+const EditorTagDisplay = ({
+  tags,
+  onRemove,
+  t
 }: {
   tags: Tag[]
   onRemove: (tagName: string) => void
@@ -158,9 +158,9 @@ const TagDisplay = ({
             className="flex items-center gap-1 px-2 py-1 text-sm hover:bg-zinc-100 text-zinc-900 font-normal bg-slate-50"
           >
             {t("tagModal.tagPrefix")}{tag.name}
-            <button 
-              type="button" 
-              onClick={() => onRemove(tag.name)} 
+            <button
+              type="button"
+              onClick={() => onRemove(tag.name)}
               className="hover:text-red-500"
             >
               <X className="h-3 w-3" />
@@ -200,7 +200,7 @@ const TagModal = ({
   const filteredTags = useMemo(() => {
     if (!tagInput.trim()) return []
     const searchTerm = tagInput.toLowerCase()
-    return sortedTags.filter((tag) => 
+    return sortedTags.filter((tag) =>
       tag.name.toLowerCase().includes(searchTerm)
     )
   }, [tagInput, sortedTags])
@@ -229,7 +229,7 @@ const TagModal = ({
       ...tag,
       name: tag.name.toLowerCase()
     }
-    
+
     if (!selectedTags.find((t) => t.name === normalizedTag.name)) {
       setSelectedTags([...selectedTags, normalizedTag])
     }
@@ -262,7 +262,7 @@ const TagModal = ({
 
   const renderTagSuggestion = useCallback((tag: Tag, index: number) => {
     const isSelected = selectedTags.find((t) => t.name === tag.name)
-    
+
     return (
       <button
         key={`suggestion-${tag.name}-${index}`}
@@ -303,18 +303,18 @@ const TagModal = ({
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           </div>
 
-            {/* Selected Tags Preview */}
-            {selectedTags.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-700">已选择的标签:</p>
-                <TagDisplay 
-                  tags={selectedTags} 
-                  onRemove={removeTagFromSelection}
-                  showRemoveButton={true}
-                  className="border text-zinc-700 bg-zinc-50 border-black text-sm font-medium"
-                />
-              </div>
-            )}
+          {/* Selected Tags Preview */}
+          {selectedTags.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-700">{t("tagModal.selectedTags")}</p>
+              <TagDisplay
+                tags={selectedTags}
+                onRemove={removeTagFromSelection}
+                showRemoveButton={true}
+                className="border text-zinc-700 bg-zinc-50 border-black text-sm font-medium"
+              />
+            </div>
+          )}
 
           {/* Tag Suggestions */}
           {tagInput.length > 0 && (
@@ -322,11 +322,11 @@ const TagModal = ({
               <p className="text-sm font-medium text-gray-700">
                 {loadingTags ? t("tagModal.loadingTags") : t("tagModal.searchResults")}
               </p>
-              
+
               {/* Sort Buttons */}
               <div className="flex gap-2 items-center">
                 {SORT_OPTIONS.map(renderSortButton)}
-                
+
                 {/* Refresh Button */}
                 <Button
                   type="button"
@@ -340,7 +340,7 @@ const TagModal = ({
                   {loadingTags ? t("tagModal.loadingTags") : t("tagModal.refresh")}
                 </Button>
               </div>
-              
+
               <div className="max-h-48 overflow-y-auto custom-scrollbar space-y-1">
                 {loadingTags ? (
                   <div className="flex items-center justify-center py-8">
@@ -447,7 +447,7 @@ export function UnifiedEditor({
   onExpandedChange,
 }: UnifiedEditorProps) {
   const t = useTranslations("editor")
-  
+
   // State
   const [showTagModal, setShowTagModal] = useState(false)
   const [selectedTags, setSelectedTags] = useState<Tag[]>([])
@@ -470,24 +470,24 @@ export function UnifiedEditor({
 
   return (
     <div className="bg-white rounded-sm border border-gray-200 overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-      <TitleInput 
-        title={title} 
-        onTitleChange={onTitleChange} 
-        titleRef={titleRef} 
-        t={t} 
+      <TitleInput
+        title={title}
+        onTitleChange={onTitleChange}
+        titleRef={titleRef}
+        t={t}
       />
 
-      <ContentInput 
-        content={content} 
-        onContentChange={onContentChange} 
-        contentRef={contentRef} 
-        t={t} 
+      <ContentInput
+        content={content}
+        onContentChange={onContentChange}
+        contentRef={contentRef}
+        t={t}
       />
 
-      <TagDisplay 
-        tags={tags} 
-        onRemove={removeTag} 
-        t={t} 
+      <EditorTagDisplay
+        tags={tags}
+        onRemove={removeTag}
+        t={t}
       />
 
       {/* Tag Input Section */}
