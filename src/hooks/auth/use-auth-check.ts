@@ -17,7 +17,7 @@ export const useAuthCheck = () => {
 
     if (!currentProfile || !sessionClient) {
       reconnectWallet();
-      toast.info(`请连接钱包并选择 Profile 进行 ${action} 操作`);
+      toast.info(`Please connect and select a Profile to ${action}`);
       return false;
     }
     

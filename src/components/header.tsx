@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Settings, LogOut, Menu, X, Sun, Moon, Monitor, Languages } from "lucide-react";
+import { User, Settings, LogOut, Menu, X, Sun, Moon, Monitor, Languages, Wallet } from "lucide-react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import { useLensAuthStore } from "@/stores/auth-store";
@@ -24,6 +24,7 @@ import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { useLocale } from "next-intl";
 import { useRouter as useIntlRouter } from "@/i18n/navigation";
+import { useReconnectWallet } from "@/hooks/auth/use-reconnect-wallet";
 
 export default function Header() {
   const t = useTranslations("header");
@@ -39,6 +40,7 @@ export default function Header() {
   const { theme, setTheme } = useTheme();
   const locale = useLocale();
   const intlRouter = useIntlRouter();
+  const reconnectWallet = useReconnectWallet();
 
   // TODO: fix this
   const handleLanguageChange = (newLocale: string) => {
@@ -220,6 +222,15 @@ export default function Header() {
                     </div>
                   </div>
                   <DropdownMenuSeparator className="bg-gray-200" />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      reconnectWallet();
+                    }}
+                    className="text-gray-700 hover:text-gray-900"
+                  >
+                    <Wallet className="mr-2 h-4 w-4" />
+                    <span>Address</span>
+                  </DropdownMenuItem> 
                   <DropdownMenuItem asChild>
                     <Link
                       href="/profile"
@@ -233,6 +244,10 @@ export default function Header() {
                     <Link
                       href="/settings"
                       className="text-gray-700 hover:text-gray-900"
+                      style={{
+                        cursor: 'not-allowed',
+                        opacity: 0.5,
+                      }}
                     >
                       <Settings className="mr-2 h-4 w-4" />
                       {t("settings")} ({t("developing")})

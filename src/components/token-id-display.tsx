@@ -85,7 +85,7 @@ export function TokenIdDisplay({ uri, isOriginal, licenseType }: TokenIdDisplayP
             background: 'linear-gradient(135deg, #fdf6e3, #f5deb3)',
           }}
         >
-          {error ? `错误: ${error.message}` : '无法获取 token ID'}
+          {error ? `错误: ${error.message}` : '暂时无法获取，请稍后再试'}
         </TooltipContent>
       </Tooltip>
     );
