@@ -9,8 +9,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BackButton } from "@/components/ui/back-button";
 import { StorageDisplay } from "@/components/ui/storage-display";
 import { CommentSection } from "@/components/ui/comment-section";
-//import { CommentSheet } from "@/components/comment/comment-sheet";
-//import { CommentToggle } from "@/components/ui/comment-toggle";
 import { useComments } from "@/hooks/use-comments";
 
 export default function PostPage() {
