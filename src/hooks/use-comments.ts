@@ -30,14 +30,50 @@ export function useComments({ postId, autoFetch = true }: UseCommentsProps) {
   const [error, setError] = useState<string | null>(null);
   const { currentProfile, sessionClient } = useLensAuthStore();
 
+  // Mock comments data for demonstration
+  const mockComments: Comment[] = [
+    {
+      id: '1',
+      content: 'This is a great post! Really enjoyed reading it.',
+      author: {
+        username: { localName: 'alice' },
+        metadata: { name: 'Alice Johnson', picture: '/gull.jpg' }
+      },
+      timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+      likes: 5,
+      replies: [
+        {
+          id: '1-1',
+          content: 'I agree! The content is very insightful.',
+          author: {
+            username: { localName: 'bob' },
+            metadata: { name: 'Bob Smith', picture: '/gull.jpg' }
+          },
+          timestamp: new Date(Date.now() - 1800000).toISOString(), // 30 min ago
+          likes: 2
+        }
+      ]
+    },
+    {
+      id: '2',
+      content: 'Thanks for sharing this information. Very helpful!',
+      author: {
+        username: { localName: 'charlie' },
+        metadata: { name: 'Charlie Brown', picture: '/gull.jpg' }
+      },
+      timestamp: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
+      likes: 3
+    }
+  ];
+
   const fetchComments = async () => {
     setLoading(true);
     setError(null);
     
     try {
       // TODO: Replace with actual Lens Protocol API call to fetch comments
-      // For now, return empty array since we're not using mock data
-      setComments([]);
+      // For now, use mock data for demonstration
+      setComments(mockComments);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch comments');
       toast.error('Failed to load comments');
@@ -58,6 +94,21 @@ export function useComments({ postId, autoFetch = true }: UseCommentsProps) {
     }
 
     try {
+      // Create new comment object for demonstration
+      const newComment: Comment = {
+        id: Date.now().toString(),
+        content: content.trim(),
+        author: {
+          username: currentProfile.username,
+          metadata: currentProfile.metadata
+        },
+        timestamp: new Date().toISOString(),
+        likes: 0
+      };
+
+      // Add to comments list for demonstration
+      setComments(prev => [newComment, ...prev]);
+
       // TODO: Send to Lens Protocol API
       // const result = await sessionClient?.publication.comment({
       //   on: postId,
@@ -65,7 +116,6 @@ export function useComments({ postId, autoFetch = true }: UseCommentsProps) {
       // });
 
       toast.success('Comment added successfully!');
-      // Note: We don't add to local state since we're using Lens Protocol data
     } catch (err) {
       toast.error('Failed to add comment');
       console.error('Error adding comment:', err);
@@ -79,6 +129,16 @@ export function useComments({ postId, autoFetch = true }: UseCommentsProps) {
     }
 
     try {
+      // Update local state for demonstration
+      setComments(prev => 
+        prev.map(comment => {
+          if (comment.id === commentId) {
+            return { ...comment, likes: comment.likes + 1 };
+          }
+          return comment;
+        })
+      );
+
       // TODO: Send like to Lens Protocol API
       toast.success('Comment liked!');
     } catch (err) {
@@ -99,6 +159,30 @@ export function useComments({ postId, autoFetch = true }: UseCommentsProps) {
     }
 
     try {
+      const newReply: Comment = {
+        id: `${commentId}-${Date.now()}`,
+        content: content.trim(),
+        author: {
+          username: currentProfile.username,
+          metadata: currentProfile.metadata
+        },
+        timestamp: new Date().toISOString(),
+        likes: 0
+      };
+
+      // Update local state for demonstration
+      setComments(prev => 
+        prev.map(comment => {
+          if (comment.id === commentId) {
+            return {
+              ...comment,
+              replies: [...(comment.replies || []), newReply]
+            };
+          }
+          return comment;
+        })
+      );
+
       // TODO: Send reply to Lens Protocol API
       toast.success('Reply added successfully!');
     } catch (err) {
