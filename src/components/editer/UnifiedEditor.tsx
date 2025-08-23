@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, Plus, X, Search, Expand, Globe } from "lucide-react"
+import { TagDisplay } from "@/components/ui/tag-display"
 //import { Input } from "@/components/ui/input"
 
 
@@ -154,20 +155,11 @@ export function UnifiedEditor({
       {/* Tags Section */}
       {tags.length > 0 && (
         <div className="px-4 py-2 border-t border-none">
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
-              <Badge
-                key={`${tag.name}-${index}`}
-                variant="secondary"
-                className="flex items-center gap-1 px-2 py-1 hover:bg-zinc-100 text-zinc-900 font-normal bg-slate-50 text-sm"
-              >
-                #{tag.name}
-                <button type="button" onClick={() => removeTag(tag.name)} className="hover:text-red-500">
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
+          <TagDisplay 
+            tags={tags} 
+            onRemove={removeTag}
+            showRemoveButton={true}
+          />
         </div>
       )}
 
@@ -208,24 +200,12 @@ export function UnifiedEditor({
             {selectedTags.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-700">已选择的标签:</p>
-                <div className="flex flex-wrap gap-2">
-                  {selectedTags.map((tag, index) => (
-                    <Badge
-                      key={`selected-${tag.name}-${index}`}
-                      variant="secondary"
-                      className="flex items-center gap-1 px-2 py-1 border text-zinc-700 bg-zinc-50 border-black text-sm font-medium"
-                    >
-                      #{tag.name}
-                      <button
-                        type="button"
-                        onClick={() => removeTagFromSelection(tag.name)}
-                        className="hover:text-red-500"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
+                <TagDisplay 
+                  tags={selectedTags} 
+                  onRemove={removeTagFromSelection}
+                  showRemoveButton={true}
+                  className="border text-zinc-700 bg-zinc-50 border-black text-sm font-medium"
+                />
               </div>
             )}
 
