@@ -45,6 +45,28 @@
     "share": "分享",
     "comment": "评论"
   },
+  "search": {
+    "search": "搜索",
+    "recentSearches": "最近搜索",
+    "noSearchHistory": "暂无搜索记录",
+    "resultsFor": "搜索结果 \"{query}\"",
+    "noResults": "暂无搜索结果",
+    "noTagsFound": "未找到匹配的标签",
+    "tryOtherKeywords": "尝试搜索其他关键词",
+    "posts": "{count} 个帖子",
+    "trending": "热门",
+    "searchTypes": {
+      "tag": "标签",
+      "people": "用户", 
+      "content": "内容",
+      "token": "Token ID"
+    },
+    "developing": {
+      "people": "用户搜索功能开发中...",
+      "content": "内容搜索功能开发中...",
+      "token": "Token搜索功能开发中..."
+    }
+  },
   "home": {
     "title": "o-kitchen",
     "subtitle": "o厨房:",
