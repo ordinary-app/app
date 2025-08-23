@@ -1,24 +1,22 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { PageSize, Post } from "@lens-protocol/client";
+import { Post, PageSize, PostReferenceType } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
 import { useFeedContext } from "@/contexts/feed-context";
-import { useAvailableTags } from "@/hooks/use-available-tags";
 
-type FeedType = "global" | "profile" | "custom" | "tag";
+type FeedType = "global" | "profile" | "custom";
 
 interface useFeedOptions {
   type?: FeedType;
   profileAddress?: string;
   customFilter?: any;
-  tag?: string;
 }
 
 //
 
 export function useFeed(options: useFeedOptions = {}) {
-  const { type: initialType = "global", profileAddress, customFilter, tag } = options;
+  const { type: initialType = "global", profileAddress, customFilter } = options;
   
   // Auth and client
   const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
@@ -42,18 +40,8 @@ export function useFeed(options: useFeedOptions = {}) {
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   
-  // Tag search state (compact)
-  
-  // Multi-tag selection state
-  const [selectedTags, setSelectedTags] = useState<string[]>(tag ? [tag] : []);
-  
-  // Dynamic tag list state via shared hook
-  const { tags: availableTags, loading: tagsLoading, error: tagsError, refresh: fetchAvailableTags } = useAvailableTags();
-  
-  // Determine feed type based on current tag
+  // Determine feed type
   const [feedType, setFeedType] = useState<FeedType>(initialType);
-  
-
   
   // Refs for polling
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,20 +56,11 @@ export function useFeed(options: useFeedOptions = {}) {
       return { feeds: [{ globalFeed: true }] };
     } else if (feedType === "profile" && profileAddress) {
       return { authors: [profileAddress] };
-    } else if (feedType === "tag" && selectedTags.length > 0) {
-      // Multi-tag filtering - search in post content and metadata
-      return {
-        metadata: {
-          tags: {
-            oneOf: selectedTags
-          }
-        }
-      };
     } else if (feedType === "custom" && customFilter) {
       return customFilter;
     }
     return { feeds: [{ globalFeed: true }] };
-  }, [feedType, profileAddress, customFilter, selectedTags]);
+  }, [feedType, profileAddress, customFilter]);
 
 
 
@@ -154,12 +133,14 @@ export function useFeed(options: useFeedOptions = {}) {
 
   // Update feed type when tag changes
   useEffect(() => {
-    if (selectedTags.length > 0) {
-      setFeedType("tag");
+    if (feedType === "profile" && profileAddress) {
+      setFeedType("profile");
+    } else if (feedType === "custom" && customFilter) {
+      setFeedType("custom");
     } else {
       setFeedType("global");
     }
-  }, [selectedTags]);
+  }, [feedType, profileAddress, customFilter]);
 
   const checkForNewPosts = useCallback(async () => {
     // Client should always be available for public posts
@@ -201,34 +182,21 @@ export function useFeed(options: useFeedOptions = {}) {
 
   // Multi-tag selection functions
   const toggleTagSelection = useCallback((tag: string) => {
-    setSelectedTags(prev => (
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    ));
+    // This function is no longer needed as tags are removed
+    return;
   }, []);
 
   // Select only one tag (radio-style)
   const selectOnlyTag = useCallback((tag: string) => {
-    setSelectedTags([tag]);
+    // This function is no longer needed as tags are removed
+    return;
   }, []);
   // Dropdown confirm/cancel removed in favor of immediate apply
 
   const clearTagSearch = useCallback(() => {
-    setSelectedTags([]);
-    
-    // Reset to global feed
-    setFeedType("global");
-    
-    setCurrentCursor(null);
-    setHasMore(true);
-    setPosts([]);
-    
-    // Trigger search immediately
-    if (client && isAuthReady) {
-      setTimeout(() => {
-        loadPostsFromLens(true);
-      }, 0);
-    }
-  }, [client, isAuthReady, loadPostsFromLens]);
+    // This function is no longer needed as tags are removed
+    return;
+  }, []);
 
 
   // Initialize feed
@@ -294,7 +262,7 @@ export function useFeed(options: useFeedOptions = {}) {
     initializeAndLoadPosts();
     
     // Fetch available tags
-    fetchAvailableTags();
+    // fetchAvailableTags(); // This line is removed as tags are removed
     
     // Set up polling for new posts
     const pollForNewPosts = async () => {
@@ -329,11 +297,11 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, sessionClient, isAuthReady, feedType, profileAddress, customFilter, viewMode, selectedTags]);
+  }, [client, sessionClient, isAuthReady, feedType, profileAddress, customFilter, viewMode]);
 
   // Feed interface
   return {
-    // Feed state
+    // State
     posts,
     loading,
     error,
@@ -343,25 +311,12 @@ export function useFeed(options: useFeedOptions = {}) {
     newPostsAvailable,
     lastRefreshTime,
     
-    // Feed actions
+    // Actions
     handleRefresh,
     handleLoadMore,
     handleLoadNewPosts,
-    clearTagSearch,
     
-    // Tag selector actions
-    toggleTagSelection,
-    selectOnlyTag,
-    
-    
-    // State
+    // Auth state
     isLoggedIn,
-    selectedTags,
-    availableTags,
-    tagsLoading,
-    tagsError,
-    
-    // Tag actions
-    fetchAvailableTags,
   };
 }

@@ -1,11 +1,16 @@
 "use client"
-import { Stack, Text, Group, Card, Badge, Skeleton, useMantineColorScheme, useMantineTheme } from "@mantine/core"
-import { Hash, User, FileText, Key } from "lucide-react"
+import { Stack, Text, Group, Card, Badge, Skeleton, useMantineColorScheme, useMantineTheme, Button, Avatar, Flex } from "@mantine/core"
+import { Hash, User, FileText, Key, Heart, MessageCircle, Share2, Calendar } from "lucide-react"
+import type { SearchResult } from "@/hooks/use-search"
 
 interface SearchResultsProps {
   searchValue: string
   selectedType: "tag" | "people" | "content" | "token"
   isLoading?: boolean
+  results?: SearchResult[]
+  hasMore?: boolean
+  onLoadMore?: () => void
+  error?: string | null
 }
 
 const searchTypeConfig = {
@@ -13,7 +18,9 @@ const searchTypeConfig = {
   people: { icon: User, label: "People", color: "green" },
   content: { icon: FileText, label: "Content", color: "orange" },
   token: { icon: Key, label: "Token ID", color: "red" },
-}
+} as const
+
+type SearchTypeKey = keyof typeof searchTypeConfig
 
 // People skeleton with avatar
 const PeopleSkeleton = () => {
@@ -84,13 +91,141 @@ const TagSkeleton = () => {
   )
 }
 
-export function SearchResults({ searchValue, selectedType, isLoading = true }: SearchResultsProps) {
-  if (!searchValue.trim()) {
+export function SearchResults({ 
+  searchValue, 
+  selectedType, 
+  isLoading = true, 
+  results = [], 
+  hasMore = false, 
+  onLoadMore, 
+  error 
+}: SearchResultsProps) {
+  const { colorScheme } = useMantineColorScheme()
+  const theme = useMantineTheme()
+
+  if (!searchValue.trim() && results.length === 0) {
     return null
   }
 
+  // 渲染搜索结果
+  const renderSearchResults = () => {
+    if (error) {
+      return (
+        <Card padding="md" radius="md" withBorder>
+          <Stack align="center" gap="sm">
+            <Text c="red" size="sm">搜索出错: {error}</Text>
+            <Button variant="light" size="sm" onClick={() => window.location.reload()}>
+              重试
+            </Button>
+          </Stack>
+        </Card>
+      )
+    }
+
+    if (results.length === 0 && !isLoading) {
+      return (
+        <Card padding="md" radius="md" withBorder>
+          <Stack align="center" gap="sm">
+            <Text c="dimmed" size="sm">未找到相关结果</Text>
+          </Stack>
+        </Card>
+      )
+    }
+
+    return (
+      <Stack gap="md">
+        {results.map((result) => (
+          <Card key={result.id} padding="md" radius="md" withBorder>
+            <Stack gap="sm">
+              {/* 作者信息 */}
+              <Group>
+                <Avatar 
+                  src={result.authorAvatar} 
+                  size="sm" 
+                  radius="xl"
+                  color={theme.colors.blue[6]}
+                >
+                  {result.author?.charAt(0) || 'U'}
+                </Avatar>
+                <Stack gap={2} style={{ flex: 1 }}>
+                  <Text size="sm" fw={500} c={colorScheme === "dark" ? "white" : "black"}>
+                    {result.author}
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    {result.timestamp?.toLocaleDateString()}
+                  </Text>
+                </Stack>
+              </Group>
+
+              {/* 内容 */}
+              {result.title && (
+                <Text size="lg" fw={600} c={colorScheme === "dark" ? "white" : "black"}>
+                  {result.title}
+                </Text>
+              )}
+              
+              {result.content && (
+                <Text size="sm" lineClamp={3}>
+                  {result.content}
+                </Text>
+              )}
+
+              {/* 标签 */}
+              {result.tags && result.tags.length > 0 && (
+                <Flex wrap="wrap" gap="xs">
+                  {result.tags.slice(0, 5).map((tag, index) => (
+                    <Badge key={index} variant="light" size="sm" color="blue">
+                      #{tag}
+                    </Badge>
+                  ))}
+                  {result.tags.length > 5 && (
+                    <Badge variant="light" size="sm" color="gray">
+                      +{result.tags.length - 5} 更多
+                    </Badge>
+                  )}
+                </Flex>
+              )}
+
+              {/* 统计信息 */}
+              <Group gap="xs">
+                <Group gap={4}>
+                  <Heart size={14} />
+                  <Text size="xs">{result.stats?.likes || 0}</Text>
+                </Group>
+                <Group gap={4}>
+                  <MessageCircle size={14} />
+                  <Text size="xs">{result.stats?.comments || 0}</Text>
+                </Group>
+                <Group gap={4}>
+                  <Share2 size={14} />
+                  <Text size="xs">{result.stats?.shares || 0}</Text>
+                </Group>
+              </Group>
+            </Stack>
+          </Card>
+        ))}
+
+        {/* 加载更多按钮 */}
+        {hasMore && results.length > 0 && (
+          <Card padding="md" radius="md" withBorder>
+            <Stack align="center" gap="sm">
+              <Button 
+                variant="light" 
+                size="sm" 
+                onClick={onLoadMore}
+                loading={isLoading}
+              >
+                加载更多结果
+              </Button>
+            </Stack>
+          </Card>
+        )}
+      </Stack>
+    )
+  }
+
   const renderSkeleton = () => {
-    switch (selectedType) {
+    switch (selectedType as SearchTypeKey) {
       case "people":
         return <PeopleSkeleton />
       case "content":
@@ -117,9 +252,7 @@ export function SearchResults({ searchValue, selectedType, isLoading = true }: S
       {isLoading ? (
         renderSkeleton()
       ) : (
-        <Text size="sm" c="dimmed" ta="center" py="xl">
-          暂无搜索结果
-        </Text>
+        renderSearchResults()
       )}
     </Stack>
   )
