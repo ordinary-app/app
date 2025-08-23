@@ -22,6 +22,8 @@ import { getLicenseType } from "@/utils/post-helpers";
 import { FeedFloatingActions } from "@/components/feed/feed-floating-actions"
 import { useParams } from 'next/navigation';
 import { useFeedContext } from "@/contexts/feed-context";
+import { BackButton } from "@/components/ui/back-button";
+import { StorageDisplay } from "@/components/ui/storage-display";
 
 export default function UserPage() {
   const params = useParams();
@@ -124,6 +126,9 @@ export default function UserPage() {
     <TooltipProvider>
       <main className="min-h-screen container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Back Button */}
+          <BackButton />
+
           {/* Profile Header */}
           <Card className="mb-8">
             <CardContent className="pt-6">
@@ -205,56 +210,16 @@ export default function UserPage() {
             </TabsContent>
 
             <TabsContent value="original">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <ScanLine className="w-5 h-5 text-orange-600" />
-                    <span>Onchain Proof</span>
-                  </CardTitle>
-                  <CardDescription>Here is the detail of your post data onchain</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {(userPosts || [])
-                    .map((post: any) => {
-                      const content = post.metadata?.content || "No content available";
-                      const timestamp = new Date(post.timestamp).toLocaleDateString();
-                      
-                      // Check if post has token-bound-nft license
-                      const metadata = post.metadata;
-                      const licenseType = getLicenseType(metadata);
-                      const isTokenBoundNFT = licenseType === "token-bound-nft";
-                      
-                      return (
-                        <div
-                          key={post.id}
-                          className="p-4 bg-gradient-to-r from-orange-50 to-white-50 rounded-lg border border-orange-200 mb-4"
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <p className="text-gray-800 flex-1">{content}</p>
-                            {isTokenBoundNFT && (
-                              <TokenIdDisplay uri={post.contentUri} isOriginal={true} licenseType="token-bound-nft" />
-                            )}
-                          </div>
-                          <div className="flex items-start justify-between text-sm">
-                            <span className="text-orange-600 break-all flex-1 mr-2">
-                              Grove Storage: {post.contentUri || 'len://...'}
-                              { post.contentUri ? (
-                                <CopyIcon
-                                  className="cursor-pointer inline-block ml-2 w-4 h-4" 
-                                  onClick={() => {
-                                    copy(resolveUrl(post.contentUri))
-                                    toast('Copy success!')
-                                  }} 
-                                />
-                              ) : null }
-                            </span>
-                            <span className="text-gray-500 flex-shrink-0">{timestamp}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                </CardContent>
-            </Card>
+              <div className="space-y-4">
+                {(userPosts || []).map((post: any) => (
+                  <StorageDisplay 
+                    key={post.id}
+                    post={post} 
+                    title="Onchain Proof"
+                    description="Here is the detail of your post data onchain"
+                  />
+                ))}
+              </div>
             </TabsContent>
 
             <TabsContent value="works">

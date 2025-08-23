@@ -39,10 +39,12 @@ import { storageClient } from "@/lib/storage-client";
 // import { acl } from '@/lib/acl';
 import { post } from "@lens-protocol/client/actions";
 import { useLensAuthStore } from "@/stores/auth-store"
-import { useWalletClient, usePublicClient, useAccount } from 'wagmi'
+import { useWalletClient, usePublicClient, useAccount, useSwitchChain, useChainId } from 'wagmi'
+import { sepolia } from 'wagmi/chains'
 import { abi } from '@/lib/abi'
 import { useAppConfigStore } from "@/stores/app-config-store"
 import { useAuthCheck } from "@/hooks/auth/use-auth-check"
+import { useReconnectWallet } from "@/hooks/auth/use-reconnect-wallet"
 import { toast } from "sonner"
 import copy from "copy-to-clipboard";
 
@@ -162,6 +164,9 @@ export default function CreatePage() {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnected } = useAccount();
+  const chainId = useChainId();
+  const { switchChain } = useSwitchChain();
+  const reconnectWallet = useReconnectWallet();
   const { checkAuthentication } = useAuthCheck();
 
   // Toast state
@@ -320,6 +325,20 @@ export default function CreatePage() {
 
         if (!address) throw new Error("No wallet connected");
         
+        // Check if wallet is on lens testnet and switch to sepolia if needed
+        if (chainId !== sepolia.id) {
+          try {
+            reconnectWallet();
+            await switchChain({ chainId: sepolia.id });
+            toast.success("已自动切换到 Sepolia 网络，请重新发布！");
+            return;
+          } catch (error) {
+            reconnectWallet();
+            toast.error("切换到 Sepolia 网络失败，请手动切换！");
+            return;
+          }
+        }
+        
         const result = await publicClient?.simulateContract({
           address: contractAddress,
           abi,
@@ -475,7 +494,13 @@ export default function CreatePage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               <button
                                 type="button"
-                                onClick={() => setLicenseType("token-bound-nft")}
+                                onClick={() => {
+                                  setLicenseType("token-bound-nft")
+                                  if (chainId !== sepolia.id) {
+                                    reconnectWallet();
+                                    toast.info("请选择 Sepolia 网络！");
+                                  }
+                                }}
                                 className={`
                                   p-4 rounded-lg border-2 transition-all duration-200 text-left
                                   ${

@@ -9,6 +9,7 @@ import {
   Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, 
   Plus, X, Search, Expand, Globe, TrendingUp, Users, RefreshCw 
 } from "lucide-react"
+import { TagDisplay } from "@/components/ui/tag-display"
 import { useTagsWithStats, useTagSort } from "@/hooks/use-tags"
 import { useTranslations } from "next-intl"
 
@@ -302,30 +303,18 @@ const TagModal = ({
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           </div>
 
-          {/* Selected Tags Preview */}
-          {selectedTags.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700">{t("tagModal.selectedTags")}</p>
-              <div className="flex flex-wrap gap-2">
-                {selectedTags.map((tag, index) => (
-                  <Badge
-                    key={`selected-${tag.name}-${index}`}
-                    variant="secondary"
-                    className="flex items-center gap-1 px-2 py-1 text-sm border text-zinc-700 bg-zinc-50 border-black font-medium"
-                  >
-                    {t("tagModal.tagPrefix")}{tag.name}
-                    <button 
-                      type="button" 
-                      onClick={() => removeTagFromSelection(tag.name)} 
-                      className="hover:text-red-500"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
+            {/* Selected Tags Preview */}
+            {selectedTags.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">已选择的标签:</p>
+                <TagDisplay 
+                  tags={selectedTags} 
+                  onRemove={removeTagFromSelection}
+                  showRemoveButton={true}
+                  className="border text-zinc-700 bg-zinc-50 border-black text-sm font-medium"
+                />
               </div>
-            </div>
-          )}
+            )}
 
           {/* Tag Suggestions */}
           {tagInput.length > 0 && (
