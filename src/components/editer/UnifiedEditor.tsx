@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Bold, Italic, Underline, Strikethrough, Link, AtSign, MessageSquare, Plus, X, Search, Expand, Globe } from "lucide-react"
 import { TagDisplay } from "@/components/ui/tag-display"
 import { formatText as formatTextUtil } from "@/utils/text-editor"
+import { marked } from "marked"
 //import { Input } from "@/components/ui/input"
 
 
@@ -42,6 +43,7 @@ export function UnifiedEditor({
   const [tagInput, setTagInput] = useState("")
   const [showTagModal, setShowTagModal] = useState(false)
   const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const [isPreviewMode, setIsPreviewMode] = useState(false)
   const titleRef = useRef<HTMLTextAreaElement>(null)
   const contentRef = useRef<HTMLTextAreaElement>(null)
 
@@ -78,6 +80,12 @@ export function UnifiedEditor({
       contentRef.current.style.height = "auto"
       contentRef.current.style.height = contentRef.current.scrollHeight + "px"
     }
+  }
+
+  // Calculate dynamic rows based on content
+  const calculateRows = () => {
+    const lines = content.split('\n').length
+    return Math.max(5, lines + 1) // Minimum 5 rows, or content lines + 1
   }
 
   const addTagToSelection = (tag: Tag) => {
@@ -147,17 +155,52 @@ export function UnifiedEditor({
         </div>
       </div>
 
-      {/* Content Input */}
+      {/* Write/Preview Tabs */}
+      <div className="px-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex space-x-1 mb-2">
+          <button
+            type="button"
+            onClick={() => setIsPreviewMode(false)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              !isPreviewMode 
+                ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600' 
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+            }`}
+          >
+            Write
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsPreviewMode(true)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              isPreviewMode 
+                ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600' 
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+            }`}
+          >
+            Preview
+          </button>
+        </div>
+      </div>
+
+      {/* Content Input/Preview */}
       <div className="px-4 py-2.5">
-        <textarea
-          ref={contentRef}
-          placeholder="分享你的想法... ... (必填)"
-          value={content}
-          onChange={handleContentChange}
-          className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm dark:text-gray-300"
-          rows={5}
-          maxLength={5000}
-        />
+        {isPreviewMode ? (
+          <div 
+            className="w-full min-h-[120px] text-gray-700 dark:text-gray-300 text-sm prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: marked(content.replace(/\n/g, '\n\n') || "预览内容为空...") }}
+          />
+        ) : (
+          <textarea
+            ref={contentRef}
+            placeholder="分享你的想法... ... (必填)"
+            value={content}
+            onChange={handleContentChange}
+            className="w-full text-gray-700 resize-none border-none outline-none bg-transparent placeholder-gray-400 text-sm dark:text-gray-300"
+            rows={calculateRows()}
+            maxLength={5000}
+          />
+        )}
         <div className="text-right text-xs text-muted-foreground">
           {content.length}/5000
         </div>

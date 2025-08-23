@@ -80,26 +80,8 @@ export function formatText(textarea: HTMLTextAreaElement, format: string): void 
 
 function handleLinkFormatting(textarea: HTMLTextAreaElement): void {
   const selection = getTextSelection(textarea);
-  
-  if (selection.selectedText) {
-    // If text is selected, use it as link text
-    const url = prompt('Enter URL:');
-    if (url) {
-      const linkText = `[${selection.selectedText}](${url})`;
-      insertTextAtCursor(textarea, linkText, selection.start, selection.end);
-    }
-  } else {
-    // No selection, insert link template
-    const url = prompt('Enter URL:');
-    const linkText = prompt('Enter link text:');
-    if (url && linkText) {
-      const link = `[${linkText}](${url})`;
-      insertTextAtCursor(textarea, link);
-    } else if (url) {
-      const link = `[${url}](${url})`;
-      insertTextAtCursor(textarea, link);
-    }
-  }
+  const linkText = `[${selection.selectedText}](url)`;
+  insertTextAtCursor(textarea, linkText, selection.start, selection.end);
 }
 
 function handleMentionFormatting(textarea: HTMLTextAreaElement): void {
