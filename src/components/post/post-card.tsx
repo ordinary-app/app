@@ -7,7 +7,6 @@ import { resolveUrl } from "@/utils/resolve-url";
 import { formatTimestamp, checkIfOriginal, extractAttachments, getLicenseType } from "@/utils/post-helpers";
 import { useRouter } from "next/navigation";
 import { TagDisplay } from "@/components/ui/tag-display";
-import { marked } from "marked";
 
 interface PostCardProps {
   post: Post;
@@ -118,10 +117,9 @@ export function PostCard({ post, disableNavigation = false }: PostCardProps) {
 
       {/* Post Content */}
       <Box mb="md">
-        <div 
-          className="text-sm text-gray-700 dark:text-gray-300 line-clamp-5 prose prose-sm max-w-none"
-          dangerouslySetInnerHTML={{ __html: marked(content.replace(/\n/g, '\n\n')) }}
-        />
+        <Text size="sm" className="text-gray-700 dark:text-gray-300 line-clamp-5">
+          {content}
+        </Text>
       </Box>
       
       {/* Tags Section */}
