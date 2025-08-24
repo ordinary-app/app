@@ -45,6 +45,28 @@
     "share": "Share",
     "comment": "Comment"
   },
+  "search": {
+    "search": "Search",
+    "recentSearches": "Recent Searches",
+    "noSearchHistory": "No search history",
+    "resultsFor": "Search results for \"{query}\"",
+    "noResults": "No results found",
+    "noTagsFound": "No matching tags found",
+    "tryOtherKeywords": "Try searching with other keywords",
+    "posts": "{count} posts",
+    "trending": "Trending",
+    "searchTypes": {
+      "tag": "Tag",
+      "people": "People", 
+      "content": "Content",
+      "token": "Token ID"
+    },
+    "developing": {
+      "people": "User search feature is under development...",
+      "content": "Content search feature is under development...",
+      "token": "Token search feature is under development..."
+    }
+  },
   "home": {
     "title": "o-kitchen",
     "subtitle": "/ Decentralized ",

@@ -32,6 +32,7 @@ import {
 } from "lucide-react"
 import { SearchResults } from "./search-results"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 interface SearchHistoryItem {
   id: string
@@ -41,15 +42,16 @@ interface SearchHistoryItem {
 }
 
 const searchTypeConfig = {
-  tag: { icon: Hash, label: "Tag" },
-  people: { icon: User, label: "People" },
-  content: { icon: FileText, label: "Content" },
-  token: { icon: Key, label: "Token ID" },
+  tag: { icon: Hash },
+  people: { icon: User },
+  content: { icon: FileText },
+  token: { icon: Key },
 }
 
 export function SearchInterface() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const theme = useMantineTheme()
+  const t = useTranslations("search")
   const [searchValue, setSearchValue] = useState("")
   const [selectedType, setSelectedType] = useState<keyof typeof searchTypeConfig>("tag")
   const [isSearching, setIsSearching] = useState(false)
@@ -165,7 +167,7 @@ export function SearchInterface() {
                         leftSection={<IconComponent size={16} />}
                         onClick={() => setSelectedType(key as keyof typeof searchTypeConfig)}
                       >
-                        {config.label}
+                        {t(`searchTypes.${key}`)}
                       </Menu.Item>
                     )
                   })}
@@ -215,7 +217,7 @@ export function SearchInterface() {
             variant="transparent" color="gray" size="sm" onClick={handleSearch} 
             leftSection={<Search size={16} />}
             >
-              搜索
+              {t("search")}
             </Button>
           </Group>
         </Group>
@@ -226,7 +228,7 @@ export function SearchInterface() {
           <Stack gap="sm">
             <Group justify="space-between" align="center">
               <Text size="sm" fw={500} c={colorScheme === "dark" ? "white" : "dimmed"}>
-                最近搜索
+                {t("recentSearches")}
               </Text>
               <ActionIcon
                 variant="subtle"
@@ -263,7 +265,7 @@ export function SearchInterface() {
               </Flex>
             ) : (
               <Text size="sm" c={colorScheme === "dark" ? "white" : "dimmed"} ta="center" py="md">
-                暂无搜索记录
+                {t("noSearchHistory")}
               </Text>
             )}
           </Stack>

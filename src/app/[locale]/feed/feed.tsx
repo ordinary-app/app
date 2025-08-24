@@ -35,7 +35,11 @@ import { FeedHeader } from "@/components/feed/feed-header";
 import { useFeedContext } from "@/contexts/feed-context";
 import { FeedFloatingActions } from "@/components/feed/feed-floating-actions";
 
-export function Feed() {
+interface FeedProps {
+  tagFilter?: string | null;
+}
+
+export function Feed({ tagFilter }: FeedProps) {
   const { viewMode } = useFeedContext();
   const {
     posts,
@@ -51,16 +55,30 @@ export function Feed() {
     handleLoadNewPosts,
   } = useFeed();
 
+  // Filter posts by tag if tagFilter is provided
+  const filteredPosts = tagFilter 
+    ? posts?.filter(post => {
+        // Check for tags in metadata
+        const tags = (post.metadata as any)?.tags;
+        if (Array.isArray(tags)) {
+          return tags.some(tag => 
+            tag.toLowerCase().includes(tagFilter.toLowerCase())
+          );
+        }
+        return false;
+      }) || []
+    : posts || [];
+
   return (
     <TooltipProvider>
       <div className={`${viewMode === 'list' ? 'max-w-xl' : 'max-w-5xl'} mx-auto space-y-6`}>
-        {/* 出错提示 */}
+        {/* Error notification */}
         {error && (
           <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
             {error}
           </div>
         )}
-        {/* 新帖子提示 */}
+        {/* New posts notification */}
         {/*newPostsAvailable && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
             <Button
@@ -73,18 +91,24 @@ export function Feed() {
             </Button>
           </div>
         )*/}
-        {/* 帖子导航栏 */}
+        {/* Post navigation bar */}
         <div className="text-center mb-8">
           <FeedHeader />
         </div>
-        {/* 帖子列表 */}
+        {/* Tag filter notification */}
+        {tagFilter && (
+          <div className="bg-blue-100 text-blue-700 px-4 py-2 rounded mb-4 text-center">
+            Showing posts with tag "#{tagFilter}"
+          </div>
+        )}
+        {/* Post list */}
         <PostList
-          posts={posts || []}
+          posts={filteredPosts}
           loading={loading || loadingMore}
-          emptyText="No More"
+          emptyText={tagFilter ? `No posts found with tag "#${tagFilter}"` : "No More"}
           skeletonCount={6}
         />
-        {/* 加载更多按钮 */}
+        {/* Load more button */}
         {hasMore && (
           <div className="flex justify-center mt-6 mb-12">
             <Button
@@ -96,7 +120,7 @@ export function Feed() {
             </Button>
           </div>
         )}
-        {/* 浮动操作栏 */}
+        {/* Floating action bar */}
         <FeedFloatingActions
           onRefresh={handleRefresh}
           refreshing={refreshing}
