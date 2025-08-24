@@ -158,9 +158,6 @@ importers:
       lucide-react:
         specifier: ^0.454.0
         version: 0.454.0(react@18.3.1)
-      marked:
-        specifier: ^16.2.0
-        version: 16.2.0
       next:
         specifier: 14.2.16
         version: 14.2.16(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3115,11 +3112,6 @@ packages:
     resolution: {integrity: sha512-hw7zMDwykCLnEzgncEEjHeA6+45aeEzRYuKHuyRSOPkhko+J3ySGjGIzu+mmMfDFG1vazHepMaYFYHbTFAZAAQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-
-  marked@16.2.0:
-    resolution: {integrity: sha512-LbbTuye+0dWRz2TS9KJ7wsnD4KAtpj0MVkWc90XvBa6AslXsT0hTBVH5k32pcSyHH1fst9XEFJunXHktVy0zlg==}
-    engines: {node: '>= 20'}
-    hasBin: true
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -8480,8 +8472,6 @@ snapshots:
   lucide-react@0.454.0(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  marked@16.2.0: {}
 
   math-intrinsics@1.1.0: {}
 
