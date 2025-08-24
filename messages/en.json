@@ -26,7 +26,32 @@
     "error": "Error",
     "retry": "Retry",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "refresh": "Refresh"
+  },
+  "editor": {
+    "title": "Title",
+    "content": "Share your thoughts... ... (required)",
+    "addTag": "Add Tag",
+    "tagModal": {
+      "title": "Add Tag",
+      "searchPlaceholder": "Search or create recommended tags...",
+      "selectedTags": "Selected Tags:",
+      "searchResults": "Search Results:",
+      "loadingTags": "Loading tags...",
+      "createNewTag": "Create New Tag",
+      "saveTags": "Save Tags",
+      "cancel": "Cancel",
+      "refresh": "Refresh",
+      "sortBy": {
+        "name": "Name",
+        "postCount": "Posts",
+        "userCount": "Users"
+      },
+      "postCount": "posts",
+      "userCount": "users",
+      "tagPrefix": "#"
+    }
   },
   "feed": {
     "title": "Latest",
@@ -36,7 +61,15 @@
     "loadMore": "Load More",
     "newPosts": "New posts available",
     "noMore": "No More",
-    "lastUpdated": "Last updated: {time}"
+    "lastUpdated": "Last updated: {time}",
+    "smartFilter": {
+      "title": "Filter"
+    },
+    "tagSearch": {
+      "category": "Tag Categories",
+      "activeFilters": "Active filters",
+      "clear": "Clear"
+    }
   },
   "post": {
     "like": "Like",
@@ -235,5 +268,20 @@
     },
     "copyright": "© 2025 o-kitchen. Built with ❤️ for the decentralized fanart networks.",
     "poweredBy": "Powered by"
+  },
+  "search": {
+    "sortMethod": "Sort Method",
+    "refresh": "Refresh",
+    "sortByName": "Name",
+    "sortByPostCount": "Post Count",
+    "sortByUserCount": "User Count",
+    "selectedTags": "Selected Tags",
+    "logic": "Logic",
+    "clear": "Clear",
+    "loadingTags": "Loading tags...",
+    "selected": "Selected",
+    "posts": "posts",
+    "participants": "participants",
+    "noTagsFound": "No tags found"
   }
 }

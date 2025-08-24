@@ -26,7 +26,32 @@
     "error": "错误",
     "retry": "重试",
     "cancel": "取消",
-    "confirm": "确认"
+    "confirm": "确认",
+    "refresh": "刷新"
+  },
+  "editor": {
+    "title": "标题",
+    "content": "分享你的想法... ... (必填)",
+    "addTag": "添加标签",
+    "tagModal": {
+      "title": "添加标签",
+      "searchPlaceholder": "搜索或创建推荐标签...",
+      "selectedTags": "已选择的标签:",
+      "searchResults": "搜索结果:",
+      "loadingTags": "正在加载标签...",
+      "createNewTag": "创建新标签",
+      "saveTags": "保存标签",
+      "cancel":"取消",
+      "refresh": "刷新",
+      "sortBy": {
+        "name": "名称",
+        "postCount": "发帖数",
+        "userCount": "发帖人数"
+      },
+      "postCount": "发帖",
+      "userCount": "参与",
+      "tagPrefix": "#"
+    }
   },
   "feed": {
     "title": "最新",
@@ -36,7 +61,15 @@
     "loadMore": "加载更多",
     "newPosts": "有新内容",
     "noMore": "没有更多了",
-    "lastUpdated": "最后更新：{time}"
+    "lastUpdated": "最后更新：{time}",
+    "smartFilter": {
+      "title": "筛选"
+    },
+    "tagSearch": {
+      "category": "标签分类",
+      "activeFilters": "激活筛选",
+      "clear": "清除"
+    }
   },
   "post": {
     "like": "点赞",
@@ -235,5 +268,20 @@
     },
     "copyright": "© 2025 o-kitchen. 为去中心化同人创作网络倾情打造 ❤️",
     "poweredBy": "技术支持"
+  },
+  "search": {
+    "sortMethod": "排序方式",
+    "refresh": "刷新",
+    "sortByName": "名称",
+    "sortByPostCount": "发帖数",
+    "sortByUserCount": "发帖人数",
+    "selectedTags": "已选择的标签",
+    "logic": "逻辑",
+    "clear": "清除",
+    "loadingTags": "正在加载标签...",
+    "selected": "已选择",
+    "posts": "发帖",
+    "participants": "参与",
+    "noTagsFound": "未找到相关标签"
   }
 }

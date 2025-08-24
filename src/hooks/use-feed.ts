@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { PageSize, Post } from "@lens-protocol/client";
+import { Post, PageSize, PostReferenceType } from "@lens-protocol/client";
 import { fetchPosts } from "@lens-protocol/client/actions";
 import { useSharedPostActions } from "@/contexts/post-actions-context";
 import { useLensAuthStore } from "@/stores/auth-store";
@@ -13,9 +13,10 @@ interface useFeedOptions {
   customFilter?: any;
 }
 
+//
 
 export function useFeed(options: useFeedOptions = {}) {
-  const { type = "global", profileAddress, customFilter } = options;
+  const { type: initialType = "global", profileAddress, customFilter } = options;
   
   // Auth and client
   const { client, sessionClient, currentProfile, loading: authStoreLoading } = useLensAuthStore();
@@ -39,6 +40,9 @@ export function useFeed(options: useFeedOptions = {}) {
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   
+  // Determine feed type
+  const [feedType, setFeedType] = useState<FeedType>(initialType);
+  
   // Refs for polling
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastPostIdRef = useRef<string | null>(null);
@@ -48,15 +52,16 @@ export function useFeed(options: useFeedOptions = {}) {
   
   // Helper functions
   const getFilter = useCallback(() => {
-    if (type === "global") {
+    if (feedType === "global") {
       return { feeds: [{ globalFeed: true }] };
-    } else if (type === "profile" && profileAddress) {
+    } else if (feedType === "profile" && profileAddress) {
       return { authors: [profileAddress] };
-    } else if (type === "custom" && customFilter) {
+    } else if (feedType === "custom" && customFilter) {
       return customFilter;
     }
     return { feeds: [{ globalFeed: true }] };
-  }, [type, profileAddress, customFilter]);
+  }, [feedType, profileAddress, customFilter]);
+
 
 
 
@@ -126,6 +131,17 @@ export function useFeed(options: useFeedOptions = {}) {
     }
   }, [client, sessionClient, getFilter, initPostState]);
 
+  // Update feed type when tag changes
+  useEffect(() => {
+    if (feedType === "profile" && profileAddress) {
+      setFeedType("profile");
+    } else if (feedType === "custom" && customFilter) {
+      setFeedType("custom");
+    } else {
+      setFeedType("global");
+    }
+  }, [feedType, profileAddress, customFilter]);
+
   const checkForNewPosts = useCallback(async () => {
     // Client should always be available for public posts
     if (!client) return;
@@ -161,6 +177,27 @@ export function useFeed(options: useFeedOptions = {}) {
     loadPostsFromLens(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [loadPostsFromLens]);
+
+
+
+  // Multi-tag selection functions
+  const toggleTagSelection = useCallback((tag: string) => {
+    // This function is no longer needed as tags are removed
+    return;
+  }, []);
+
+  // Select only one tag (radio-style)
+  const selectOnlyTag = useCallback((tag: string) => {
+    // This function is no longer needed as tags are removed
+    return;
+  }, []);
+  // Dropdown confirm/cancel removed in favor of immediate apply
+
+  const clearTagSearch = useCallback(() => {
+    // This function is no longer needed as tags are removed
+    return;
+  }, []);
+
 
   // Initialize feed
   useEffect(() => {
@@ -224,6 +261,9 @@ export function useFeed(options: useFeedOptions = {}) {
     
     initializeAndLoadPosts();
     
+    // Fetch available tags
+    // fetchAvailableTags(); // This line is removed as tags are removed
+    
     // Set up polling for new posts
     const pollForNewPosts = async () => {
       if (!client) return;
@@ -257,11 +297,11 @@ export function useFeed(options: useFeedOptions = {}) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [client, sessionClient, isAuthReady, type, profileAddress, customFilter, viewMode]);
+  }, [client, sessionClient, isAuthReady, feedType, profileAddress, customFilter, viewMode]);
 
   // Feed interface
   return {
-    // Feed state
+    // State
     posts,
     loading,
     error,
@@ -271,12 +311,12 @@ export function useFeed(options: useFeedOptions = {}) {
     newPostsAvailable,
     lastRefreshTime,
     
-    // Feed actions
+    // Actions
     handleRefresh,
     handleLoadMore,
     handleLoadNewPosts,
     
-    // State
+    // Auth state
     isLoggedIn,
   };
 }
