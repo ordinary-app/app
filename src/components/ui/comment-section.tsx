@@ -102,7 +102,6 @@ export function CommentSection({
         <div className="space-y-4">
                      {comments.length === 0 ? (
              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-               <MessageCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
                <p>No comments yet. Be the first to comment!</p>
              </div>
           ) : (
