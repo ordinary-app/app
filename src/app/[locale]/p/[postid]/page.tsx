@@ -33,8 +33,6 @@ export default function PostPage() {
     loading: commentsLoading,
     error: commentsError,
     addComment,
-    likeComment,
-    replyToComment,
     refetch: refetchComments
   } = useComments({
     postId,
@@ -76,19 +74,12 @@ export default function PostPage() {
         {/* Storage API Section */}
         <StorageDisplay post={post} className="mt-6" />
         
-        {/* Comments Header */}
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold">Comments ({post.stats.comments})</h3>
-        </div>
-        
         {/* Comments Section - Only show in inline mode */}
         {isInlineMode && (
           <CommentSection
             postId={postId}
             comments={comments}
             onAddComment={addComment}
-            onLikeComment={likeComment}
-            onReplyToComment={replyToComment}
             className="mt-4"
           />
         )}
